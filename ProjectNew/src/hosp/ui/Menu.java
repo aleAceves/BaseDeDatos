@@ -39,7 +39,7 @@ public class Menu {
 		do {
 			System.out.println("Choose an option:");
 			System.out.println("1: Register");
-			System.out.println("3: Log in");
+			System.out.println("2: Log in");
 	
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
