@@ -9,12 +9,12 @@ public class User implements Serializable{
 	
 	
 	
+
+	private static final long serialVersionUID = 6444797276759676017L;
 	@Id
 	@GeneratedValue(generator="users")
 	@TableGenerator(name="useers", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="users")
-	private static final long serialVersionUID = 6444797276759676017L;
-	@Id
 	private Integer id;
 	private String email;
 	

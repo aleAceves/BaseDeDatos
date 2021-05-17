@@ -15,8 +15,8 @@ public class Role implements Serializable{
 
 	private static final long serialVersionUID = 247947661084291846L;
 	
-	@Id
 	
+	@Id
 	@GeneratedValue(generator="roles")
 	@TableGenerator(name="roles", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="roles")
