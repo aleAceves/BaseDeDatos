@@ -256,7 +256,7 @@ public class Menu {
 		// we need to find a nurse and to find an operation; we have methods for that
 		System.out.println("Choose the operation where is going to assist:");
 		searchOperationByName();
-		System.out.println("Type the operation´s id:");
+		System.out.println("Type the operation's id:");
 		int operationId = Integer.parseInt(reader.readLine());
 		System.out.println("Choose the nurse");
 		searchNurseByName();
@@ -270,7 +270,7 @@ public class Menu {
 	private static void fireNurse() throws Exception {
 		System.out.println("Choose the operation where is NOT going to assist:");
 		searchOperationByName();
-		System.out.println("Type the operation´s id:");
+		System.out.println("Type the operation's id:");
 		int operationId = Integer.parseInt(reader.readLine());
 		System.out.println("Choose the nurse");
 		searchNurseByName();
@@ -352,7 +352,7 @@ public class Menu {
 		// we need to find a surgeon and to find an operation; we have methods for that
 		System.out.println("Choose the operation where is going to assist:");
 		searchOperationByName();
-		System.out.println("Type the operation´s id:");
+		System.out.println("Type the operation's id:");
 		int operationId = Integer.parseInt(reader.readLine());
 		System.out.println("Choose the surgeon");
 		searchSurgeonByName();
@@ -364,11 +364,11 @@ public class Menu {
 	private static void fireSurgeon()throws Exception{
 		System.out.println("Choose the operation where is going to assist:");
 		searchOperationByName();
-		System.out.println("Type the operation´s id:");
+		System.out.println("Type the operation's id:");
 		int operationId = Integer.parseInt(reader.readLine());
 		System.out.println("Choose first the surgeon");
 		searchSurgeonByName();
-		System.out.println("Type the surgeon´s id:");
+		System.out.println("Type the surgeon's id:");
 		int surgeonId = Integer.parseInt(reader.readLine());
 		dbman.fireSurgeon(operationId,surgeonId); 
 		
