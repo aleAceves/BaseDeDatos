@@ -62,8 +62,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 				+ "(id   INTEGER PRIMARY KEY AUTOINCREMENT, "
 				+ " name  TEXT NOT NULL, "
 				+ " surname TEXT NOT NULL) ";
-				//+ " email TEXT NOT NULL, "
-				//+ " address TEXT NOT NULL)";
+			
 		
 		stm1.executeUpdate(s1);
 		
@@ -357,6 +356,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 		}
 		return null;
 	}
+	
 	// TODO HACER PARA EL RESTO DE POJOS
 	
 	// IN ORDER TO LINK THE TABLE OPERATIONS AND SURGEONS

@@ -92,6 +92,7 @@ public class Patient implements Serializable{
 		this.operations=new ArrayList<Operation>();
 	}
 	
+	//without the operations
 	public Patient(Integer id, String name, String surname, List<Operation> operations) {
 		super();
 		this.id = id;
@@ -103,6 +104,13 @@ public class Patient implements Serializable{
 	
 	
 	
+	public Patient(Integer id, String name, String surname, WaitingRoom room) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+		this.room = room;
+	}
 	//HASHCODE AND EQUALS METHOD
 	@Override
 	public int hashCode() {

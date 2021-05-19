@@ -88,34 +88,6 @@ public class Menu {
 	}
 
 
-
-	private static void userMenu()throws Exception {
-		// TODO Auto-generated method stub
-		do {
-			System.out.println("Choose an option:");
-			//TODO
-			System.out.println("0: Exit");
-			int choice = Integer.parseInt(reader.readLine());
-			
-			switch (choice) {
-			case 1:
-				
-				break;
-			
-			case 0:
-				return;
-			default:
-				break;	
-			}
-			
-		}while(true); // to show again the menu
-
-}
-		
-	
-
-
-
 	private static void register() throws Exception {
 		
 		// Ask the user for an email
@@ -141,7 +113,14 @@ public class Menu {
 	}
 
 
-
+//----------------------------------------------
+	
+	
+	//ADMIN MENU
+	
+	
+//---------------------------------------------------
+	
 	private static void adminMenu() throws Exception{
 		do {
 			System.out.println("Choose an option:");
@@ -199,7 +178,7 @@ public class Menu {
 				searchPatientByName();
 				break;
 			case 13:
-				//hirePatient();
+				hirePatient();
 				break;
 			case 0:
 				return;
@@ -210,25 +189,29 @@ public class Menu {
 		}while(true); // to show again the menu
 
 }
+	
+//------------------------------------------------------------------------------------
+	
+	//PATIENT PART
+	
+//------------------------------------------------------------------------
 
-/*	
+
 	private static void hirePatient() throws Exception{
 		// TODO Auto-generated method stub
 		
 		System.out.println("Choose the operation which is going to be perform:");
 		searchOperationByName();
-		System.out.println("Type the operation´s id:");
+		System.out.println("Type the operation's id:");
 		int operationId = Integer.parseInt(reader.readLine());
-		System.out.println("Agregate the patient:");
+		System.out.println("Add the patient who's going to get the surgery:");
 		searchPatientByName();
-		System.out.println("Type the patient´s id:");
+		System.out.println("Type the patient's id:");
 		int patientId = Integer.parseInt(reader.readLine());
-		
-		
-		dbman.hirePatient(dbman.getOperation(operationId), dbman.getPatient(patientId)); 
+		dbman.hirePatient(dbman.getPatient(patientId)); 
 		
 	}
-*/
+
 
 	private static void searchPatientByName() throws Exception {
 		System.out.println("Input:");
@@ -254,6 +237,13 @@ public class Menu {
 		
 	}
 
+	
+//-----------------------------------------------------------------------
+	
+	//NURSE PART
+	
+//---------------------------------------------------------------------------
+	
 	private static void hireNurse() throws Exception{
 		// we need to find a nurse and to find an operation; we have methods for that
 		System.out.println("Choose the operation where is going to assist:");
@@ -262,7 +252,7 @@ public class Menu {
 		int operationId = Integer.parseInt(reader.readLine());
 		System.out.println("Choose the nurse");
 		searchNurseByName();
-		System.out.println("Type the nurse´s id:");
+		System.out.println("Type the nurse's id:");
 		int nurseId = Integer.parseInt(reader.readLine());
 		dbman.hireNurse(dbman.getOperation(operationId), dbman.getNurse(nurseId)); //we call the methods that search by the id
 		
@@ -276,7 +266,7 @@ public class Menu {
 		int operationId = Integer.parseInt(reader.readLine());
 		System.out.println("Choose the nurse");
 		searchNurseByName();
-		System.out.println("Type the nurse´s id:");
+		System.out.println("Type the nurse's id:");
 		int nurseId = Integer.parseInt(reader.readLine());
 		dbman.fireNurse(operationId,nurseId); 
 	}
@@ -304,6 +294,13 @@ public class Menu {
 		
 	}
 
+	
+//----------------------------------------------------------------------------
+	
+	//SURGEON PART
+	
+//----------------------------------------------------------------------------
+	
 	private static void addSurgeon() throws Exception {
 			System.out.println("1: Input the surgeon data:");
 			System.out.println("Name:");
@@ -327,33 +324,6 @@ public class Menu {
 				System.out.println(surgeons);
 			}
 		}
-	private static void addOperation() throws Exception {
-			System.out.println("1: Input the operation info:");
-			System.out.println("Type:");
-			String type=reader.readLine();
-			System.out.println("Start Date (yyyy-MM-dd):");
-			LocalDate startDate = LocalDate.parse(reader.readLine(), formatter);
-			System.out.println("Total duration:");
-			int duration=Integer.parseInt(reader.readLine());
-			System.out.println("Which patient do you want to add?:");
-			searchPatientByName();
-			System.out.println("Type the patients´s id:");
-			int patientId = Integer.parseInt(reader.readLine());
-			
-			dbman.addOperation(new Operation(type,Date.valueOf(startDate),duration,patientId)); //transform date into a sql date
-		}
-		
-	private static void searchOperationByName() throws Exception {
-			System.out.println("Input:");
-			System.out.println("Name contains:");
-			String name = reader.readLine();
-			List<Operation> operations = dbman.searchOperationByName(name);
-			if (operations.isEmpty()) {
-				System.out.println("No results");
-			}else {
-				System.out.println(operations);
-			}
-		}
 	
 	private static void hireSurgeon()throws Exception{
 		// we need to find a surgeon and to find an operation; we have methods for that
@@ -363,7 +333,7 @@ public class Menu {
 		int operationId = Integer.parseInt(reader.readLine());
 		System.out.println("Choose the surgeon");
 		searchSurgeonByName();
-		System.out.println("Type the surgeon´s id:");
+		System.out.println("Type the surgeon's id:");
 		int surgeonId = Integer.parseInt(reader.readLine());
 		dbman.hireSurgeon(dbman.getOperation(operationId), dbman.getSurgeon(surgeonId)); //we call the methods that search by the id
 	}
@@ -380,9 +350,186 @@ public class Menu {
 		dbman.fireSurgeon(operationId,surgeonId); 
 		
 	}
+	
+	
+//-----------------------------------------------------------------------------
+	
+	//OPERATION PART
+	
+//------------------------------------------------------------------------------
+	
+	
+	private static void addOperation() throws Exception {
+			System.out.println("1: Input the operation info:");
+			System.out.println("Type:");
+			String type=reader.readLine();
+			System.out.println("Start Date (yyyy-MM-dd):");
+			LocalDate startDate = LocalDate.parse(reader.readLine(), formatter);
+			System.out.println("Total duration:");
+			int duration=Integer.parseInt(reader.readLine());
+			System.out.println("Which patient do you want to add?:");
+			searchPatientByName();
+			System.out.println("Type the patient's id:");
+			int patientId = Integer.parseInt(reader.readLine());
 			
+			dbman.addOperation(new Operation(type,Date.valueOf(startDate),duration,patientId)); //transform date into a sql date
+		}
+		
+	private static void searchOperationByName() throws Exception {
+			System.out.println("Input:");
+			System.out.println("Name contains:");
+			String name = reader.readLine();
+			List<Operation> operations = dbman.searchOperationByName(name);
+			if (operations.isEmpty()) {
+				System.out.println("No results");
+			}else {
+				System.out.println(operations);
+			}
+		}
 
+//---------------------------------------------------------
 
+	//USER MENU
+
+//----------------------------------------------------
+			
+	private static void userMenu()throws Exception {
+		// TODO Auto-generated method stub
+		do {
+			System.out.println("Who are you?:");
+			//TODO
+			System.out.println("1: Surgeon ");
+			System.out.println("2: Nurse ");
+			System.out.println("3: Patient ");
+			System.out.println("0: Exit ");
+			int choice = Integer.parseInt(reader.readLine());
+			
+			switch (choice) {
+			case 1:
+				surgeonMenu();
+				break;
+			case 2:
+				nurseMenu();
+				break;
+			case 3:
+				patientMenu();
+				break;
+			case 0:
+				return;
+			default:
+				break;	
+			}
+			
+		}while(true); // to show again the menu
+
+}
+	
+	
+//---------------------------------------------------
+	
+	//SURGEON MENU
+	
+//-------------------------------------------------
+	
+	
+	private static void surgeonMenu()throws Exception {
+		// TODO Auto-generated method stub
+		do {
+			System.out.println("Choose an option:");
+			System.out.println("1: Check schedule");
+			System.out.println("2: Check rooms");
+			System.out.println("0: Exit");
+			int choice = Integer.parseInt(reader.readLine());
+			
+			switch (choice) {
+			case 1:
+				
+				break;
+			case 2:
+				
+				break;
+			case 0:
+				return;
+			default:
+				break;	
+			}
+			
+		}while(true); // to show again the menu
+
+}
+	
+	
+
+	
+	
+	
+//----------------------------------------------------------
+	
+	//NURSES MENU
+	
+//--------------------------------------------------------
+	
+	private static void nurseMenu()throws Exception {
+		// TODO Auto-generated method stub
+		do {
+			System.out.println("Choose an option:");
+			System.out.println("1: Check schedule");
+			System.out.println("2: Check rooms");
+			System.out.println("0: Exit");
+			int choice = Integer.parseInt(reader.readLine());
+			
+			switch (choice) {
+			case 1:
+			
+				break;
+			case 2:
+				
+				break;
+			case 0:
+				return;
+			default:
+				break;	
+			}
+			
+		}while(true); // to show again the menu
+
+}
+	
+	
+	
+	
+//----------------------------------------------------
+	
+	//PATIENT MENU
+	
+//--------------------------------------------------------
+	private static void patientMenu()throws Exception {
+		// TODO Auto-generated method stub
+		do {
+			System.out.println("Choose an option:");
+			System.out.println("1: Check schedule");
+			System.out.println("2: Check rooms");
+			System.out.println("0: Exit");
+			int choice = Integer.parseInt(reader.readLine());
+			
+			switch (choice) {
+			case 1:
+				
+				break;
+			case 2:
+				
+				break;
+			case 0:
+				return;
+			default:
+				break;	
+			}
+			
+		}while(true); // to show again the menu
+
+}
+	
+	
 }
 		
 	
