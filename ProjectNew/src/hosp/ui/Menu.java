@@ -211,7 +211,7 @@ public class Menu {
 
 }
 
-	/*
+/*	
 	private static void hirePatient() throws Exception{
 		// TODO Auto-generated method stub
 		
@@ -223,6 +223,8 @@ public class Menu {
 		searchPatientByName();
 		System.out.println("Type the patient´s id:");
 		int patientId = Integer.parseInt(reader.readLine());
+		
+		
 		dbman.hirePatient(dbman.getOperation(operationId), dbman.getPatient(patientId)); 
 		
 	}
@@ -333,7 +335,12 @@ public class Menu {
 			LocalDate startDate = LocalDate.parse(reader.readLine(), formatter);
 			System.out.println("Total duration:");
 			int duration=Integer.parseInt(reader.readLine());
-			dbman.addOperation(new Operation(type,Date.valueOf(startDate),duration)); //transform date into a sql date
+			System.out.println("Which patient do you want to add?:");
+			searchPatientByName();
+			System.out.println("Type the patients´s id:");
+			int patientId = Integer.parseInt(reader.readLine());
+			
+			dbman.addOperation(new Operation(type,Date.valueOf(startDate),duration,patientId)); //transform date into a sql date
 		}
 		
 	private static void searchOperationByName() throws Exception {
