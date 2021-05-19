@@ -231,11 +231,11 @@ public class JDBCManager implements DBManager { //everything related with the da
 	public void addOperation(Operation operation) {
 		try {
 			// Id is chosen by the database
-			String sql = "INSERT INTO operation (type,startDate,duration) VALUES (?,?,?)";
+			String sql = "INSERT INTO operation (type,startDate,duration,patient_id) VALUES (?,?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, operation.getType());
 			prep.setDate(2, operation.getStartdate());
-			prep.setInt(3, operation.getDuration());
+			prep.setInt(3, operation.getDuration());//TODO
 			
 			prep.executeUpdate();
 			prep.close();
@@ -516,11 +516,11 @@ public class JDBCManager implements DBManager { //everything related with the da
 	}
 
 	
-	/*
+	
+	 //add an operation at the same time with the id of the patient
+	
 	@Override
-	public void hirePatient(Operation operation,Patient patient) {
-		// TODO Auto-generated method stub
-		
+	public void hirePatient(Patient patient) {
 			try {
 				String sql = "INSERT INTO operation (patient_id) VALUES (?)";
 				PreparedStatement prep = c.prepareStatement(sql);
@@ -533,7 +533,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 			
 		
 	}
-	*/
+	
 
 	
 }

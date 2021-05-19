@@ -38,7 +38,7 @@ public interface DBManager { //add all method we are going to use
 	public void addPatient(Patient patient);
 	public Patient getPatient(int id);
 	public List<Patient> searchPatientByName(String name);
-	//public void hirePatient(Operation operation,Patient patient);
+	public void hirePatient(Patient patient);
 
 
 }
