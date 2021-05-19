@@ -16,10 +16,23 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import hosp.xml.utils.SQLDateAdapter;
+
 
 @Entity
 @Table(name = "operations")
+
+//XML
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="Operation")
+@XmlType(propOrder= {"type", "startdate", "duration"}) // the proper order of things, the order is important
+
+
 public class Operation implements Serializable {
+	
 	
 	
 	private static final long serialVersionUID = -4212586232702635067L;
@@ -28,10 +41,20 @@ public class Operation implements Serializable {
 	@TableGenerator(name="operations", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="operations")
 	
+	//XML
+	@XmlTransient
 	private Integer id;
+	@XmlElement
 	private String type;
+	@XmlElement
+	@XmlJavaTypeAdapter(SQLDateAdapter.class) // to convert the string into a readable thing for xml file
 	private Date startdate; //import from java.sql
+	@XmlElement
 	private Integer duration;
+	
+	
+	@XmlElement(name="operation_surgeons") 
+	@XmlElementWrapper(name="surgeons")
 	
 	@ManyToMany(mappedBy="operation")
 	@JoinTable(name="operations_surgeons",
@@ -39,16 +62,23 @@ public class Operation implements Serializable {
     inverseJoinColumns={@JoinColumn(name="surgeon_ID", referencedColumnName="id")})
 	private List<Surgeon> surgeons; //list of surgeons that have this operation
 	
+	@XmlElement(name="operation_nurses") 
+	@XmlElementWrapper(name="nurses")
+	
 	@ManyToMany(mappedBy="operation")
 	@JoinTable(name="operations_nurses",
 	joinColumns={@JoinColumn(name="operation_id", referencedColumnName="id")},
     inverseJoinColumns={@JoinColumn(name="nurse_ID", referencedColumnName="id")})
 	private List<Nurse> nurses; // list of nurses on the operation
 	
+	
+	@XmlTransient
 	@ManyToOne(fetch = FetchType.LAZY) //to save time, we do not need to access all time to it.
 	@JoinColumn(name = "patient_id") //use to indicate in the side of the many we are going to have a foreign key, and we specify the name of the column
 	private Patient patient;
 	
+	
+	@XmlTransient
 	@OneToOne(mappedBy="operation")
 	private OperatingRoom room;
 	

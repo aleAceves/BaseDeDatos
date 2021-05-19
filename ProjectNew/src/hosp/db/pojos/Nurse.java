@@ -5,10 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.*;
 
 
 @Entity
 @Table(name = "nurses") //the name is optional, is going to create a table by default with the name of the class
+
+
+@XmlAccessorType(XmlAccessType.FIELD) //activate the annotations for xml
+@XmlRootElement(name="Nurse")
+@XmlType(propOrder= {"name", "surname"}) // the proper order of things
+
 public class Nurse implements Serializable {
 	
 
@@ -19,9 +26,17 @@ public class Nurse implements Serializable {
 	@TableGenerator(name="nurses", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="nurses")
 	
+	
+	@XmlTransient //id is not going to appear on a xml; also for photos
 	private Integer id;
+	@XmlElement
 	private String name;
+	@XmlElement
 	private String surname;
+	
+	
+	@XmlElement(name="nurse_operations") //we can specify a name, is optional
+	@XmlElementWrapper(name="operations") //for each item of the list
 	
 	@ManyToMany(mappedBy="nurses")
 	private List<Operation> operations; //The nurse has a list of operations, many to many relationship

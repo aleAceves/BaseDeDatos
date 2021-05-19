@@ -11,9 +11,19 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 @Entity
 @Table(name = "patients")
+
+@XmlAccessorType(XmlAccessType.FIELD) //activate the annotations for xml
+@XmlRootElement(name="Patient")
+@XmlType(propOrder= {"name", "surname"}) // the proper order of things
 public class Patient implements Serializable{
 	
 	
@@ -23,13 +33,18 @@ public class Patient implements Serializable{
 	@TableGenerator(name="patients", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="patients")
 	
+	@XmlTransient
 	private Integer id;
+	@XmlElement
 	private String name;
+	@XmlElement
 	private String surname;
 	
+	@XmlTransient
 	@OneToMany(mappedBy="patient") // patient is the one, and operations is the many
 	private List<Operation> operations; //indicate that patient has a one to may relationship with operations
 	
+	@XmlTransient
 	@OneToOne(mappedBy="patient")
 	private WaitingRoom room;
 	

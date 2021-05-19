@@ -10,26 +10,38 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 @Entity
 @Table(name = "surgeons")
+
+@XmlAccessorType(XmlAccessType.FIELD) //activate the annotations for xml
+@XmlRootElement(name="Surgeon")
+@XmlType(propOrder= {"name", "surname", "speciality"}) // the proper order of things
 public class Surgeon implements Serializable {
 
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4442487532035713640L;
 	@Id
 	@GeneratedValue(generator="surgeons")
 	@TableGenerator(name="surgeons", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="surgeons")
 	
+	@XmlTransient
 	private Integer id;
+	@XmlElement
 	private String name;
+	@XmlElement
 	private String surname;
+	@XmlElement
 	private String speciality;
 	
+	@XmlTransient
 	@ManyToMany(mappedBy="surgeons")
 	//The surgeons has a list of operations cause is a many to many relationship
 	private List<Operation> operations;
