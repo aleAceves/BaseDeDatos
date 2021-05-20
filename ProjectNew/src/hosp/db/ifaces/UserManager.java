@@ -1,5 +1,6 @@
 package hosp.db.ifaces;
 
+
 import java.util.List;
 
 import hosp.db.pojos.users.Role;
@@ -14,6 +15,12 @@ public interface UserManager {
 	public Role getRole(int id);
 	public List<Role> getRoles();
 	public User checkPassword(String email, String password); //important method
+	void deleteSurgeon(Integer surgeonid);
+	void deleteNurse(Integer nurseId);
+	void deletePatient(Integer id);
+	void deleteOperation(Integer id);
+	
+	
 	
 
 }

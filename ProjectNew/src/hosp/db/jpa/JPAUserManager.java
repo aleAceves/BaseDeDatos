@@ -10,8 +10,12 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import hosp.db.ifaces.UserManager;
+import hosp.db.pojos.Operation;
+import hosp.db.pojos.Patient;
 import hosp.db.pojos.users.Role;
 import hosp.db.pojos.users.User;
+
+
 
 public class JPAUserManager implements UserManager {
 	
@@ -37,6 +41,48 @@ public class JPAUserManager implements UserManager {
 	@Override
 	public void disconnect() {
 		em.close();
+
+	}
+	
+
+	// delete surgeon using JDBC
+	@Override
+	public void deleteSurgeon(Integer surgeonId) {
+		
+	}
+	
+	//delete nurse using JDBC
+	@Override
+	public void deleteNurse(Integer nurseId) {
+		
+	}
+	
+	//delete patient using JPA
+	@Override
+	public void deletePatient(Integer id) {
+
+		int patient_id = id;
+		Query q2 = em.createNativeQuery("SELECT * FROM patients WHERE id = ?", Patient.class);
+		q2.setParameter(1, patient_id);
+		Patient p = (Patient) q2.getSingleResult();
+
+		em.getTransaction().begin();
+		em.remove(p);
+		em.getTransaction().commit();		
+	}
+
+	//delete operation using JPA
+	@Override
+	public void deleteOperation(Integer id) {
+
+		int operation_id = id;
+		Query q2 = em.createNativeQuery("SELECT * FROM operation WHERE id = ?", Operation.class);
+		q2.setParameter(1, operation_id);
+		Operation o = (Operation) q2.getSingleResult();
+
+		em.getTransaction().begin();
+		em.remove(o);
+		em.getTransaction().commit();
 
 	}
 

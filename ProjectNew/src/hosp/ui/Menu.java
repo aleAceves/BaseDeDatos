@@ -140,6 +140,10 @@ public class Menu {
 			System.out.println("11: Add a patient");
 			System.out.println("12: Search a patient");
 			System.out.println("13: Add a patient to a surgery"); //TODO
+			System.out.println("14: Delete a surgeon");
+			System.out.println("15: Delete a nurse");
+			System.out.println("16: Delete a patient");
+			System.out.println("17: Delete an operation");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
@@ -183,6 +187,18 @@ public class Menu {
 			case 13:
 				//hirePatient();
 				break;
+			case 14:
+				deleteSurgeon();
+				break;
+			case 15:
+				deleteNurse();
+				break;
+			case 16:
+				deletePatient();
+				break;
+			case 17:
+				deleteOperation();
+				break;
 			case 0:
 				return;
 			default:
@@ -216,6 +232,14 @@ public class Menu {
 	}
 */
 
+	
+
+
+
+	
+
+
+
 	private static void searchPatientByName() throws Exception {
 		System.out.println("Input:");
 		System.out.println("Name contains:");
@@ -239,6 +263,18 @@ public class Menu {
 				
 		dbman.addPatient(new Patient(name,surname));
 		
+	}
+	
+	// DELETE PATIENT USING JPA
+	public static void deletePatient() throws Exception {
+
+		System.out.println("Choose the patient you want to eliminate:");
+		searchPatientByName();
+		System.out.println("Type the patient's id:");
+		int patientId = Integer.parseInt(reader.readLine());
+		dbman.deletePatient(patientId);
+		System.out.println("Deletion completed.");
+
 	}
 
 	
@@ -297,6 +333,16 @@ public class Menu {
 		dbman.addNurse(new Nurse(name,surname));
 		
 	}
+	
+	private static void deleteNurse() throws Exception {
+		System.out.println("Enter the nurse id of the nurse you want to eliminate:");
+		searchNurseByName();
+		System.out.println("Type the nurse's id:");
+		int nurseId = Integer.parseInt(reader.readLine());
+		dbman.deleteNurse(nurseId);
+		System.out.println("Deletion completed.");
+		
+	}
 
 	
 //----------------------------------------------------------------------------
@@ -316,6 +362,18 @@ public class Menu {
 			dbman.addSurgeon(new Surgeon(name,surname,speciality));
 			
 		}
+	 
+	private static void deleteSurgeon() throws Exception { //TODO
+		System.out.println("Enter the surgeon id of the surgeon you want to eliminate:");
+		searchPatientByName();
+		System.out.println("Type the surgeon's id:");
+		int surgeonId = Integer.parseInt(reader.readLine());
+		dbman.deleteSurgeon(surgeonId);
+		System.out.println("Deletion completed.");
+		
+	
+		
+	}
 		
 	private static void searchSurgeonByName() throws Exception {
 			System.out.println("Input:");
@@ -395,6 +453,18 @@ public class Menu {
 			}
 		}
 	
+	// DELETE OPERATION USING JPA
+	private static void deleteOperation() throws Exception{
+		// TODO Auto-generated method stub
+
+		System.out.println("Choose the operation you want to eliminate:");
+		searchOperationByName();
+		System.out.println("Type the operation's id:");
+		int operationId = Integer.parseInt(reader.readLine());
+		dbman.deleteOperation(operationId);
+		System.out.println("Deletion completed.");
+		
+	}
 
 	/*
 //---------------------------------------------------------

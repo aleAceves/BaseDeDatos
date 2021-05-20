@@ -407,6 +407,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 	}
 	
+	
 	//FIRE NURSES FROM AN OPERATION
 	@Override
 	public void fireNurse(int operationId, int nurseId) {
@@ -517,6 +518,8 @@ public class JDBCManager implements DBManager { //everything related with the da
 
 	
 	
+	
+	
 	 //add an operation at the same time with the id of the patient
 	
 	@Override
@@ -534,6 +537,67 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 	}
 	
+	//DELETE SURGEON using JDBC
+	@Override
+	public void deleteSurgeon(int surgeonId) {
+		
+		try {
+			String sql = "DELETE FROM surgeons WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, surgeonId);
+			prep.executeUpdate();
+			prep.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	//DELETE NURSE using JDBC
+	@Override
+	public void deleteNurse(int nurseId) {
+		
+		try {
+			String sql = "DELETE FROM nurses WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, nurseId);
+			prep.executeUpdate();
+			prep.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+	}
+
+	//delete patient using JPA
+	@Override
+	public void deletePatient(int patientId) {
+		try {
+			String sql = "DELETE FROM patients WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, patientId);
+			prep.executeUpdate();
+			prep.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	//delete operation using JPA
+	@Override
+	public void deleteOperation(int operationId) {
+		try {
+			String sql = "DELETE FROM operation WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, operationId);
+			prep.executeUpdate();
+			prep.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	
 }
