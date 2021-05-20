@@ -599,6 +599,21 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 	}
 
+	@Override
+	public void updatePatient(Patient p) {  //TODO
+		try {
+			String sql = "UPDATE patients SET name=?,surname=? WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, p.getName());
+			prep.setString(2, p.getSurname());
+			prep.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 	
 }
 

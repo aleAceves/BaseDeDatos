@@ -3,6 +3,7 @@ package hosp.db.ifaces;
 
 import java.util.List;
 
+import hosp.db.pojos.Patient;
 import hosp.db.pojos.users.Role;
 import hosp.db.pojos.users.User;
 
@@ -19,6 +20,7 @@ public interface UserManager {
 	void deleteNurse(Integer nurseId);
 	void deletePatient(Integer id);
 	void deleteOperation(Integer id);
+	void updatePatient(Patient p);
 	
 	
 	

@@ -44,6 +44,7 @@ public interface DBManager { //add all method we are going to use
 	public void hirePatient(Patient patient);
 	void deleteNurse(int nurseId);
 	public void deletePatient(int patientId);
+	public void updatePatient(Patient p);
 	
 	
 

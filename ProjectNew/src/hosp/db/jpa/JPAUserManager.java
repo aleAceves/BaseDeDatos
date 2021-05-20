@@ -17,6 +17,7 @@ import hosp.db.pojos.users.User;
 
 
 
+
 public class JPAUserManager implements UserManager {
 	
 	
@@ -82,6 +83,19 @@ public class JPAUserManager implements UserManager {
 
 		em.getTransaction().begin();
 		em.remove(o);
+		em.getTransaction().commit();
+
+	}
+	
+	
+	//update patient using JPA
+	@Override
+	public void updatePatient(Patient p) {
+		// Begin transaction
+		em.getTransaction().begin();
+		// Make changes
+		em.flush();
+		// End transaction
 		em.getTransaction().commit();
 
 	}

@@ -144,6 +144,10 @@ public class Menu {
 			System.out.println("15: Delete a nurse");
 			System.out.println("16: Delete a patient");
 			System.out.println("17: Delete an operation");
+			System.out.println("18: Update patient information");
+			System.out.println("19: Update operation info");
+			System.out.println("20: Update nurse info");
+			System.out.println("21: Update surgeon info");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
@@ -199,6 +203,18 @@ public class Menu {
 			case 17:
 				deleteOperation();
 				break;
+			case 18:
+				updatePatient();
+				break;
+			case 19:
+				updateOperation();
+				break;
+			case 20:
+				updateNurse();
+				break;
+			case 21:
+				updateSurgeon();
+				break;
 			case 0:
 				return;
 			default:
@@ -233,6 +249,31 @@ public class Menu {
 */
 
 	
+
+
+
+	
+
+
+
+	private static void updateSurgeon() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	private static void updateNurse() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	private static void updateOperation() {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 
@@ -275,6 +316,40 @@ public class Menu {
 		dbman.deletePatient(patientId);
 		System.out.println("Deletion completed.");
 
+	}
+	
+	// UPDATE PATIENT USING JPA
+	private static void updatePatient() throws Exception {
+		// TODO Auto-generated method stub
+		
+		System.out.println("Choose a patient, type its ID: ");
+		searchPatientByName();
+		System.out.println("Type the patient's id:");
+		int patientId = Integer.parseInt(reader.readLine());
+		Patient p = dbman.getPatient(patientId);
+		
+		System.out.println("Do you want to change the name?");
+		System.out.println("Y/N");
+		String answer;
+		answer = reader.readLine();
+		if (answer.equalsIgnoreCase("Y")) {
+			System.out.print("Type the new patient's name: ");
+			p.setName(reader.readLine());
+		}
+		
+		System.out.println("Do you want to change the surname?");
+		System.out.println("Y/N");
+		
+		answer = reader.readLine();
+		if (answer.equalsIgnoreCase("Y")) {
+			System.out.print("Type the new patient's surname: ");
+			p.setName(reader.readLine());
+		}
+		
+		userman.updatePatient(p); //using jpa
+		dbman.updatePatient(p);
+		System.out.println("Resident updated:\n" + p);
+		
 	}
 
 	
