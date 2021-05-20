@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
@@ -218,19 +219,6 @@ public class Operation implements Serializable {
 		this.room = new OperatingRoom();
 	}
 	
-	public Operation(String type, Date startdate, Integer duration2, Integer patientId) {
-		super();
-		this.type = type;
-		this.startdate = startdate;
-		this.duration = duration2;
-		this.surgeons = new ArrayList<Surgeon>();
-		this.nurses = new ArrayList<Nurse>();
-		this.patient= new Patient();
-		this.room = new OperatingRoom();
-		//this.patient.setId(patientId);
-		
-		
-	}
 	
 	// constructor needed in the menu
 	public Operation(String type, Date startdate, Integer duration2) {
@@ -243,6 +231,16 @@ public class Operation implements Serializable {
 		this.patient= new Patient();
 		this.room = new OperatingRoom();
 	}
+	public Operation(String type, Date startdate, Integer duration2, Patient patient) {
+		super();
+		this.type = type;
+		this.startdate = startdate;
+		this.duration = duration2;
+		this.patient= patient;
+		this.room = new OperatingRoom();
+		this.surgeons = new ArrayList<Surgeon>();
+		this.nurses = new ArrayList<Nurse>();
+	}
 	
 	//CONSTRUCTOR WITH THE ID AND THE LIST
 	public Operation(Integer id, String type, Date startdate, Integer duration, List<Surgeon> surgeons, List<Nurse> nurses) {
@@ -254,6 +252,9 @@ public class Operation implements Serializable {
 		this.surgeons = surgeons;
 		this.nurses = nurses;
 	}
+	
+	
+	
 	
 	
 	//GENERATE THE HASHCODE AND EQUALS
@@ -292,7 +293,7 @@ public class Operation implements Serializable {
 	@Override
 	public String toString() {
 		return "Operation [id=" + id + ", type=" + type + ", startdate=" + startdate + ", duration=" + duration
-				+ ", surgeons=" + surgeons + ", nurses=" + nurses + ", patient=" + patient + ", room=" + room + "]";
+				+ ", surgeons=" + surgeons + ", nurses=" + nurses + ", patient=" + this.getPatient().getName() + ", room=" + room + "]";
 	}
 	
 	

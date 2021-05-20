@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -14,6 +15,7 @@ import javax.persistence.TableGenerator;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -41,7 +43,10 @@ public class Patient implements Serializable{
 	private String surname;
 	
 	@XmlTransient
-	@OneToMany(mappedBy="patient") // patient is the one, and operations is the many
+	
+	@OneToMany(mappedBy="patient",fetch=FetchType.LAZY) // patient is the one, and operations is the many
+	@XmlElement(name = "patient_operations")
+    @XmlElementWrapper(name = "operations")
 	private List<Operation> operations; //indicate that patient has a one to may relationship with operations
 	
 	@XmlTransient

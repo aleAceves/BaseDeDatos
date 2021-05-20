@@ -21,7 +21,7 @@ public class XMLManager {
 	
 	// Use the Unmarshaller to unmarshal the XML document from a file
 	
-	// we are going to marshall and unmarshall(Nurse, surgeo, patient, operation)
+	// we are going to marshall and unmarshall(Nurse, surgeon, patient, operation)
 	
 	public void marshallNurse(Nurse nurse,String name) throws JAXBException {
 			JAXBContext jaxbContext = JAXBContext.newInstance(Nurse.class);

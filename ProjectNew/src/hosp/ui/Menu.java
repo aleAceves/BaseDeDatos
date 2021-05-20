@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.io.BufferedReader;
+import java.io.IOException;
 
 import hosp.db.ifaces.DBManager;
 import hosp.db.ifaces.UserManager;
@@ -26,6 +27,7 @@ public class Menu {
 	private static DBManager dbman = new JDBCManager();
 	private static UserManager userman = new JPAUserManager();
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
 
 	// Used for parsing dates
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -81,7 +83,8 @@ public class Menu {
 		} else if (user.getRole().getName().equalsIgnoreCase("admin")) {
 			adminMenu();
 		} else if (user.getRole().getName().equalsIgnoreCase("user")) {
-			userMenu();
+			adminMenu();
+			//userMenu();
 		}
 		
 		
@@ -178,7 +181,7 @@ public class Menu {
 				searchPatientByName();
 				break;
 			case 13:
-				hirePatient();
+				//hirePatient();
 				break;
 			case 0:
 				return;
@@ -196,7 +199,7 @@ public class Menu {
 	
 //------------------------------------------------------------------------
 
-
+/*
 	private static void hirePatient() throws Exception{
 		// TODO Auto-generated method stub
 		
@@ -211,7 +214,7 @@ public class Menu {
 		dbman.hirePatient(dbman.getPatient(patientId)); 
 		
 	}
-
+*/
 
 	private static void searchPatientByName() throws Exception {
 		System.out.println("Input:");
@@ -225,6 +228,7 @@ public class Menu {
 			}	
 		
 	}
+	
 
 	private static void addPatient() throws Exception{
 		System.out.println("1: Input the patient data:");
@@ -369,10 +373,14 @@ public class Menu {
 			int duration=Integer.parseInt(reader.readLine());
 			System.out.println("Which patient do you want to add?:");
 			searchPatientByName();
-			System.out.println("Type the patient's id:");
+			System.out.println("Type the patient's id to assign to the operation:");
 			int patientId = Integer.parseInt(reader.readLine());
+			Patient p = null;
+			p = dbman.getPatient(patientId);
+			//System.out.println("patient:"+p.getName()); //si hago esto si me imprime bien el paciente escogido
+			//TODO
+			dbman.addOperation(new Operation(type,Date.valueOf(startDate),duration,p)); //transform date into a sql date
 			
-			dbman.addOperation(new Operation(type,Date.valueOf(startDate),duration,patientId)); //transform date into a sql date
 		}
 		
 	private static void searchOperationByName() throws Exception {
@@ -386,7 +394,9 @@ public class Menu {
 				System.out.println(operations);
 			}
 		}
+	
 
+	/*
 //---------------------------------------------------------
 
 	//USER MENU
@@ -528,7 +538,7 @@ public class Menu {
 		}while(true); // to show again the menu
 
 }
-	
+*/	
 	
 }
 		
