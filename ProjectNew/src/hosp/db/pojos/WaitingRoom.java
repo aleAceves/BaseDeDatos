@@ -7,33 +7,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
 
 @Entity
 @Table(name = "waitingRooms")
-
-@XmlAccessorType(XmlAccessType.FIELD) //activate the annotations for xml
-@XmlRootElement(name="WaitingRoom")
-@XmlType(propOrder= {"name"}) 
-
 public class WaitingRoom implements Serializable {
 	
-	
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 7452405030872022152L;
 	@Id
 	@GeneratedValue(generator="waitingRooms")
 	@TableGenerator(name="waitingRooms", table="sqlite_sequence",
 	    pkColumnName="waitingRooms", valueColumnName="seq", pkColumnValue="waitingRooms")
 	
-	@XmlTransient
 	private Integer id;
-	@XmlElement
 	private String name;
 	
 	
