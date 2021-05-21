@@ -188,16 +188,16 @@ public class Operation implements Serializable {
 		this.room = new OperatingRoom();
 	}
 	
-	public Operation(String type, Date startdate, Integer duration2, Integer patientId) {
+	public Operation(String type, Date startdate, Integer duration2, Patient patient) {
 		super();
 		this.type = type;
 		this.startdate = startdate;
 		this.duration = duration2;
 		this.surgeons = new ArrayList<Surgeon>();
 		this.nurses = new ArrayList<Nurse>();
-		this.patient= new Patient();
+		this.patient= patient;
 		this.room = new OperatingRoom();
-		//this.patient.setId(patientId);
+		
 		
 		
 	}
