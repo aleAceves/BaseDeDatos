@@ -235,6 +235,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 			prep.setString(1, operation.getType());
 			prep.setDate(2, operation.getStartdate());
 			prep.setInt(3, operation.getDuration());//TODO
+			prep.setInt(4, operation.getPatient().getId());
 			
 			prep.executeUpdate();
 			prep.close();
