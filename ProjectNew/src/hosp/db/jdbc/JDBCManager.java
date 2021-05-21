@@ -264,6 +264,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 	@Override
 	public Operation getOperation(int id) {
+		Patient p= new Patient ();
 		try {
 			String sql = "SELECT * FROM operation WHERE id = ?";
 			PreparedStatement prep = c.prepareStatement(sql);
@@ -273,8 +274,11 @@ public class JDBCManager implements DBManager { //everything related with the da
 				String type = rs.getString("type");
 				Date startDate = rs.getDate("startDate");
 				Integer duration = rs.getInt("duration");
+				Integer patientId= rs.getInt("patientId");
+				//get the patient id
+				//use another method to get the patient
 				//not include operations, just the atributes
-				return new Operation(id,type,startDate,duration);
+				//return new Operation(id,type,startDate,duration, p.setId(patientId));
 			}
 			rs.close();
 			prep.close();
