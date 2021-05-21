@@ -583,7 +583,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 	}
 	
-	//delete operation using JPA
+	//delete operation 
 	@Override
 	public void deleteOperation(int operationId) {
 		try {

@@ -537,6 +537,7 @@ public class Menu {
 		System.out.println("Type the operation's id:");
 		int operationId = Integer.parseInt(reader.readLine());
 		dbman.deleteOperation(operationId);
+		//userman.deleteOperation(operationId);
 		System.out.println("Deletion completed.");
 		
 	}
