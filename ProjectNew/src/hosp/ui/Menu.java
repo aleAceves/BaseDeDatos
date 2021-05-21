@@ -313,7 +313,7 @@ public class Menu {
 		searchPatientByName();
 		System.out.println("Type the patient's id:");
 		int patientId = Integer.parseInt(reader.readLine());
-		dbman.deletePatient(patientId);
+		userman.deletePatient(patientId);
 		System.out.println("Deletion completed.");
 
 	}
@@ -530,14 +530,12 @@ public class Menu {
 	
 	// DELETE OPERATION USING JPA
 	private static void deleteOperation() throws Exception{
-		// TODO Auto-generated method stub
 
 		System.out.println("Choose the operation you want to eliminate:");
 		searchOperationByName();
 		System.out.println("Type the operation's id:");
 		int operationId = Integer.parseInt(reader.readLine());
-		dbman.deleteOperation(operationId);
-		//userman.deleteOperation(operationId);
+		userman.deleteOperation(operationId); //userman because we are using JPA
 		System.out.println("Deletion completed.");
 		
 	}

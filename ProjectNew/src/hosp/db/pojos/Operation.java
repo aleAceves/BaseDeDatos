@@ -39,7 +39,7 @@ public class Operation implements Serializable {
     inverseJoinColumns={@JoinColumn(name="surgeon_ID", referencedColumnName="id")})
 	private List<Surgeon> surgeons; //list of surgeons that have this operation
 	
-	@ManyToMany(mappedBy="operation")
+	@ManyToMany(mappedBy="operations")
 	@JoinTable(name="operations_nurses",
 	joinColumns={@JoinColumn(name="operation_id", referencedColumnName="id")},
     inverseJoinColumns={@JoinColumn(name="nurse_ID", referencedColumnName="id")})
