@@ -12,6 +12,13 @@
 		<!-- Entity Class -->
 		<class>hosp.db.pojos.users.Role</class>
 		<class>hosp.db.pojos.users.User</class>
+		<class>hosp.db.pojos.Patient</class>
+		<class>hosp.db.pojos.Operation</class>
+		<class>hosp.db.pojos.Nurse</class>
+		<class>hosp.db.pojos.Surgeon</class>
+		<class>hosp.db.pojos.WaitingRoom</class>
+		<class>hosp.db.pojos.OperatingRoom</class>
+		
 
 		<properties>	
 			<!-- Connection properties -->
