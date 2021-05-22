@@ -36,7 +36,7 @@ public class Nurse implements Serializable {
 	
 	
 	@XmlElement(name="nurse_operations") //we can specify a name, is optional
-	@XmlElementWrapper(name="operations") //for each item of the list
+	@XmlElementWrapper(name="operations")  //for each item of the list
 	
 	@ManyToMany(mappedBy="nurses")
 	private List<Operation> operations; //The nurse has a list of operations, many to many relationship
