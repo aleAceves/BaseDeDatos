@@ -47,6 +47,7 @@ public interface DBManager { //add all method we are going to use
 	public void updatePatient(Patient p);
 	
 	
+	
 
 
 

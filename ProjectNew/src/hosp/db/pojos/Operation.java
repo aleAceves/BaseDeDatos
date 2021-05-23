@@ -197,10 +197,9 @@ public class Operation implements Serializable {
 		this.nurses = new ArrayList<Nurse>();
 		this.patient= patient;
 		this.room = new OperatingRoom();
-		
-		
-		
+	
 	}
+
 	
 	// constructor needed in the menu
 	public Operation(String type, Date startdate, Integer duration2) {

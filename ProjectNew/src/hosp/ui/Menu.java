@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.io.BufferedReader;
-import java.io.IOException;
+
 
 import hosp.db.ifaces.DBManager;
 import hosp.db.ifaces.UserManager;
@@ -25,8 +25,13 @@ public class Menu {
 	
 	// static, because is the only DBManager that is going to work
 	private static DBManager dbman = new JDBCManager();
-	private static UserManager userman = new JPAUserManager();
+	//private static UserManager userman = new JPAUserManager();
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	
+	
+	public static JPAUserManager userman = new JPAUserManager();
+	//public static XMLManager xm = new XMLManager();
+
 
 
 	// Used for parsing dates
@@ -250,12 +255,6 @@ public class Menu {
 
 	
 
-
-
-	
-
-
-
 	private static void updateSurgeon() {
 		// TODO Auto-generated method stub
 		
@@ -275,9 +274,6 @@ public class Menu {
 		
 	}
 
-
-
-	
 
 
 
@@ -308,13 +304,17 @@ public class Menu {
 	
 	// DELETE PATIENT USING JPA
 	public static void deletePatient() throws Exception {
-
-		System.out.println("Choose the patient you want to eliminate:");
-		searchPatientByName();
-		System.out.println("Type the patient's id:");
-		int patientId = Integer.parseInt(reader.readLine());
-		userman.deletePatient(patientId);
+		List<Patient> list = userman.selectPatients();// with jpa
+		for (Patient p : list) {
+			System.out.println(p.toString());
+		}
+		System.out.println("Choose a patient to delete, type its ID: ");
+		Integer id = Integer.parseInt(reader.readLine());
+		//userman.deletePatient(id);// jpa
+		dbman.deletePatient(id);
 		System.out.println("Deletion completed.");
+
+		
 
 	}
 	
@@ -346,9 +346,9 @@ public class Menu {
 			p.setName(reader.readLine());
 		}
 		
-		userman.updatePatient(p); //using jpa
+		//userman.updatePatient(p); //using jpa
 		dbman.updatePatient(p);
-		System.out.println("Resident updated:\n" + p);
+		System.out.println("Patient updated:\n" + p);
 		
 	}
 

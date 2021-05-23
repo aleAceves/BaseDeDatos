@@ -22,6 +22,7 @@ public interface UserManager {
 	void deletePatient(Integer id);
 	void deleteOperation(Integer id);
 	void updatePatient(Patient p);
+	List<Patient> selectPatients();
 	
 	
 	

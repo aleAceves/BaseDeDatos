@@ -18,6 +18,7 @@ import hosp.db.pojos.users.User;
 
 
 
+
 public class JPAUserManager implements UserManager {
 	
 	
@@ -70,6 +71,14 @@ public class JPAUserManager implements UserManager {
 		em.getTransaction().begin();
 		em.remove(p);
 		em.getTransaction().commit();		
+	}
+	
+	
+	@Override
+	public List<Patient> selectPatients() {
+		Query q1 = em.createNativeQuery("SELECT * FROM patients", Patient.class);
+		List <Patient> patients= (List<Patient>) q1.getResultList();
+		return patients;
 	}
 
 	//delete operation using JPA

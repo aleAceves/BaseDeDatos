@@ -18,6 +18,7 @@ import hosp.db.pojos.Surgeon;
 
 
 
+
 public class JDBCManager implements DBManager { //everything related with the database
 	//not put reader and prints here
 
@@ -90,7 +91,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 				+ " type TEXT NOT NULL,"
 				+ " startdate DATE NOT NULL,"
 				+ " duration INTEGER,"
-				+ " patient_id INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL)";
+				+ " patientId INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL)";
 		stm1.executeUpdate(s1);
 		
 		// Create table operations_surgeons: many to many relationship
@@ -230,11 +231,11 @@ public class JDBCManager implements DBManager { //everything related with the da
 	public void addOperation(Operation operation) {
 		try {
 			// Id is chosen by the database
-			String sql = "INSERT INTO operation (type,startDate,duration,patient_id) VALUES (?,?,?,?)";
+			String sql = "INSERT INTO operation (type,startDate,duration,patientId) VALUES (?,?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, operation.getType());
 			prep.setDate(2, operation.getStartdate());
-			prep.setInt(3, operation.getDuration());//TODO
+			prep.setInt(3, operation.getDuration());
 			prep.setInt(4, operation.getPatient().getId());
 			
 			prep.executeUpdate();
@@ -264,7 +265,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 	@Override
 	public Operation getOperation(int id) {
-		Patient p= new Patient ();
+		
 		try {
 			String sql = "SELECT * FROM operation WHERE id = ?";
 			PreparedStatement prep = c.prepareStatement(sql);
@@ -274,11 +275,12 @@ public class JDBCManager implements DBManager { //everything related with the da
 				String type = rs.getString("type");
 				Date startDate = rs.getDate("startDate");
 				Integer duration = rs.getInt("duration");
-				Integer patientId= rs.getInt("patientId");
 				//get the patient id
 				//use another method to get the patient
+				Integer patientId = rs.getInt("patientId");
+				Patient patient = getPatient(patientId);
 				//not include operations, just the atributes
-				//return new Operation(id,type,startDate,duration, p.setId(patientId));
+				return new Operation(id,type,startDate,duration, patient);
 			}
 			rs.close();
 			prep.close();
@@ -302,7 +304,9 @@ public class JDBCManager implements DBManager { //everything related with the da
 				String type = rs.getString("type");
 				Date startDate = rs.getDate("startDate");
 				Integer duration = rs.getInt("duration");
-				Operation operation = new Operation (id,type,startDate,duration);
+				Integer patientId = rs.getInt("patientId");
+				Patient patient = getPatient(patientId);
+				Operation operation = new Operation (id,type,startDate,duration,patient);
 				operation.setSurgeons(this.getSurgeonsOfOperation(operation.getId())); 
 				operation.setNurses(this.getNursesOfOperation(operation.getId())); 
 				operations.add(operation); //add the operation to the list
@@ -315,6 +319,8 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 		return operations; // return the list 
 	}
+	
+	
 
 	//GET SURGEON
 	@Override
@@ -611,6 +617,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, p.getName());
 			prep.setString(2, p.getSurname());
+			prep.executeUpdate();
 			prep.close();
 
 		} catch (SQLException e) {
