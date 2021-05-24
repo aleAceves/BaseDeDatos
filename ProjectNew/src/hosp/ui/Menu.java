@@ -158,6 +158,7 @@ public class Menu {
 			System.out.println("22: Show operating rooms");
 			System.out.println("23: Add a waiting room");
 			System.out.println("24: Show waiting rooms");
+			System.out.println("25: Show operations of a surgeon");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
@@ -234,6 +235,8 @@ public class Menu {
 			case 24:
 				searchWaitingRoom();
 				break;
+			case 25:
+				listOperationsOfSurgeon();
 			case 0:
 				return;
 			default:
@@ -244,6 +247,16 @@ public class Menu {
 
 }
 	
+private static void listOperationsOfSurgeon() {
+	// TODO Auto-generated method stub
+	//mostrar lista de los surgeons
+	//seleccionar el id del surgeon
+	//y mostrar las operations que tengan ese id para el surgeon
+	
+}
+
+
+
 private static void searchWaitingRoom() throws IOException {
 		
 	System.out.println("Input:");
