@@ -45,6 +45,9 @@ public interface DBManager { //add all method we are going to use
 	void deleteNurse(int nurseId);
 	public void deletePatient(int patientId);
 	public void updatePatient(Patient p);
+	public OperatingRoom getOperationRoom(int id);
+	public List<OperatingRoom> selectOperatingRooms();
+	public void addOperationRoom(OperatingRoom operatingRoom);
 	
 	
 	

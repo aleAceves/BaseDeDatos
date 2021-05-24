@@ -12,9 +12,11 @@ import java.util.List;
 
 import hosp.db.ifaces.DBManager;
 import hosp.db.pojos.Nurse;
+import hosp.db.pojos.OperatingRoom;
 import hosp.db.pojos.Operation;
 import hosp.db.pojos.Patient;
 import hosp.db.pojos.Surgeon;
+
 
 
 
@@ -91,7 +93,9 @@ public class JDBCManager implements DBManager { //everything related with the da
 				+ " type TEXT NOT NULL,"
 				+ " startdate DATE NOT NULL,"
 				+ " duration INTEGER,"
-				+ " patientId INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL)";
+				+ " patientId INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL"
+				+ " roomId INTEGER"
+				+ " FOREIGN KEY(roomId) REFERENCES operating_room (id)";
 		stm1.executeUpdate(s1);
 		
 		// Create table operations_surgeons: many to many relationship
@@ -231,12 +235,13 @@ public class JDBCManager implements DBManager { //everything related with the da
 	public void addOperation(Operation operation) {
 		try {
 			// Id is chosen by the database
-			String sql = "INSERT INTO operation (type,startDate,duration,patientId) VALUES (?,?,?,?)";
+			String sql = "INSERT INTO operation (type,startDate,duration,patientId,roomId) VALUES (?,?,?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, operation.getType());
 			prep.setDate(2, operation.getStartdate());
 			prep.setInt(3, operation.getDuration());
 			prep.setInt(4, operation.getPatient().getId());
+			prep.setInt(4, operation.getOperatingRoom().getId());
 			
 			prep.executeUpdate();
 			prep.close();
@@ -280,7 +285,9 @@ public class JDBCManager implements DBManager { //everything related with the da
 				Integer patientId = rs.getInt("patientId");
 				Patient patient = getPatient(patientId);
 				//not include operations, just the atributes
-				return new Operation(id,type,startDate,duration, patient);
+				Integer roomId = rs.getInt("roomId");
+				OperatingRoom r = getOperationRoom(roomId);
+				return new Operation(id,type,startDate,duration, patient,r);
 			}
 			rs.close();
 			prep.close();
@@ -305,8 +312,10 @@ public class JDBCManager implements DBManager { //everything related with the da
 				Date startDate = rs.getDate("startDate");
 				Integer duration = rs.getInt("duration");
 				Integer patientId = rs.getInt("patientId");
+				Integer roomId = rs.getInt("roomId"); //TODO
 				Patient patient = getPatient(patientId);
-				Operation operation = new Operation (id,type,startDate,duration,patient);
+				OperatingRoom r = getOperationRoom(roomId);
+				Operation operation = new Operation (id,type,startDate,duration,patient,r);
 				operation.setSurgeons(this.getSurgeonsOfOperation(operation.getId())); 
 				operation.setNurses(this.getNursesOfOperation(operation.getId())); 
 				operations.add(operation); //add the operation to the list
@@ -626,8 +635,65 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 	}
 
+	@Override
+	public OperatingRoom getOperationRoom(int id) {
+		
+		try {
+			String s = "SELECT * FROM operating_room WHERE id=?";
+			PreparedStatement p = c.prepareStatement(s);
+			p.setInt(1, id);
+			ResultSet rs = p.executeQuery();
+			OperatingRoom r = null;
+			while (rs.next()) {
+				Integer r_id = rs.getInt("id");
+				String r_name = rs.getString("name");
+
+				r = new OperatingRoom(r_id, r_name);
+			}
+			return r;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+}
+	
+	public List<OperatingRoom> selectOperatingRooms() {
+		try {
+			Statement stmt = c.createStatement();
+			String sql = "SELECT * FROM operating_room";
+			ResultSet rs = stmt.executeQuery(sql);
+			List<OperatingRoom> roomList = new ArrayList<OperatingRoom>();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String roomtype = rs.getString("name");
+				OperatingRoom room = new OperatingRoom(id, roomtype);
+				roomList.add(room);
+			}
+			rs.close();
+			stmt.close();
+			return roomList;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public void addOperationRoom(OperatingRoom operatingRoom) {
+		
+		try {
+			// Id is chosen by the database
+			String sql = "INSERT INTO operating_room (name) VALUES (?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, operatingRoom.getName());
+			prep.executeUpdate();
+			prep.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 }
-
 
 

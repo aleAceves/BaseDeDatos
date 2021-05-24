@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.io.BufferedReader;
-
+import java.io.IOException;
 
 import hosp.db.ifaces.DBManager;
 import hosp.db.ifaces.UserManager;
@@ -19,6 +19,7 @@ import hosp.db.pojos.users.User;
 import hosp.db.pojos.Operation;
 import hosp.db.pojos.Patient;
 import hosp.db.pojos.Nurse;
+import hosp.db.pojos.OperatingRoom;
 
 
 public class Menu {
@@ -144,7 +145,7 @@ public class Menu {
 			System.out.println("10: Eliminate a nurse from an operation");
 			System.out.println("11: Add a patient");
 			System.out.println("12: Search a patient");
-			System.out.println("13: Add a patient to a surgery"); //TODO
+			System.out.println("13: Add an operating room"); 
 			System.out.println("14: Delete a surgeon");
 			System.out.println("15: Delete a nurse");
 			System.out.println("16: Delete a patient");
@@ -153,6 +154,7 @@ public class Menu {
 			System.out.println("19: Update operation info");
 			System.out.println("20: Update nurse info");
 			System.out.println("21: Update surgeon info");
+			System.out.println("22: Show operating rooms");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
@@ -194,7 +196,7 @@ public class Menu {
 				searchPatientByName();
 				break;
 			case 13:
-				//hirePatient();
+				addOperationRoom();
 				break;
 			case 14:
 				deleteSurgeon();
@@ -220,6 +222,9 @@ public class Menu {
 			case 21:
 				updateSurgeon();
 				break;
+			case 22:
+				searchOperationRoom();
+				break;
 			case 0:
 				return;
 			default:
@@ -230,28 +235,27 @@ public class Menu {
 
 }
 	
+private static void searchOperationRoom() throws IOException {
+	
+	System.out.println("Input:");
+	System.out.println("Name contains:");
+	String name = reader.readLine();
+	List<OperatingRoom> rooms = dbman.selectOperatingRooms();
+	if (rooms.isEmpty()) {
+		System.out.println("No results");
+	}else {
+		System.out.println(rooms);
+		}
+	
+}
+
+
+
 //------------------------------------------------------------------------------------
 	
 	//PATIENT PART
 	
 //------------------------------------------------------------------------
-
-/*
-	private static void hirePatient() throws Exception{
-		// TODO Auto-generated method stub
-		
-		System.out.println("Choose the operation which is going to be perform:");
-		searchOperationByName();
-		System.out.println("Type the operation's id:");
-		int operationId = Integer.parseInt(reader.readLine());
-		System.out.println("Add the patient who's going to get the surgery:");
-		searchPatientByName();
-		System.out.println("Type the patient's id:");
-		int patientId = Integer.parseInt(reader.readLine());
-		dbman.hirePatient(dbman.getPatient(patientId)); 
-		
-	}
-*/
 
 	
 
@@ -304,10 +308,15 @@ public class Menu {
 	
 	// DELETE PATIENT USING JPA
 	public static void deletePatient() throws Exception {
+		/*
 		List<Patient> list = userman.selectPatients();// with jpa
 		for (Patient p : list) {
 			System.out.println(p.toString());
 		}
+		*/
+		System.out.println("Choose a patient, type its ID: ");
+		searchPatientByName();
+		
 		System.out.println("Choose a patient to delete, type its ID: ");
 		Integer id = Integer.parseInt(reader.readLine());
 		//userman.deletePatient(id);// jpa
@@ -319,7 +328,7 @@ public class Menu {
 	}
 	
 	// UPDATE PATIENT USING JPA
-	private static void updatePatient() throws Exception {
+	private static void updatePatient() throws Exception { //NO FUNCIONA!!!
 		// TODO Auto-generated method stub
 		
 		System.out.println("Choose a patient, type its ID: ");
@@ -510,9 +519,13 @@ public class Menu {
 			int patientId = Integer.parseInt(reader.readLine());
 			Patient p = null;
 			p = dbman.getPatient(patientId);
-			//System.out.println("patient:"+p.getName()); //si hago esto si me imprime bien el paciente escogido
-			//TODO
-			dbman.addOperation(new Operation(type,Date.valueOf(startDate),duration,p)); //transform date into a sql date
+			System.out.println("Which room is going to be selected?");
+			searchOperationRoom();
+			System.out.println("Type the room´s id where the operations is going to take place:");
+			int roomId = Integer.parseInt(reader.readLine());
+			OperatingRoom r=null;
+			r = dbman.getOperationRoom(roomId);
+			dbman.addOperation(new Operation(type,Date.valueOf(startDate),duration,p,r)); //transform date into a sql date
 			
 		}
 		
@@ -537,6 +550,22 @@ public class Menu {
 		int operationId = Integer.parseInt(reader.readLine());
 		userman.deleteOperation(operationId); //userman because we are using JPA
 		System.out.println("Deletion completed.");
+		
+	}
+	
+	
+	//---------------------------------------------------------
+
+		//OPERATION ROOM
+
+	//----------------------------------------------------
+
+	
+	private static void addOperationRoom() throws Exception {
+		System.out.println("1: Input the room data:");
+		System.out.println("Name:");
+		String name=reader.readLine();
+		dbman.addOperationRoom(new OperatingRoom(name));
 		
 	}
 

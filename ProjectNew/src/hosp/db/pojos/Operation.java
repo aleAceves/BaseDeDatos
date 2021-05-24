@@ -176,7 +176,7 @@ public class Operation implements Serializable {
 		this.room = new OperatingRoom();
 	}
 	
-	public Operation(Integer id, String type, Date startdate, Integer duration2, Patient patient) {
+	public Operation(Integer id, String type, Date startdate, Integer duration2, Patient patient, OperatingRoom r) {
 		super();
 		this.id=id;
 		this.type = type;
@@ -185,7 +185,7 @@ public class Operation implements Serializable {
 		this.patient= patient;
 		this.surgeons = new ArrayList<Surgeon>();
 		this.nurses = new ArrayList<Nurse>();
-		this.room = new OperatingRoom();
+		this.room = r;
 	}
 	
 	public Operation(String type, Date startdate, Integer duration2, Patient patient) {
@@ -199,6 +199,18 @@ public class Operation implements Serializable {
 		this.room = new OperatingRoom();
 	
 	}
+	public Operation(String type, Date startdate, Integer duration2, Patient patient, OperatingRoom r) {
+		super();
+		this.type = type;
+		this.startdate = startdate;
+		this.duration = duration2;
+		this.surgeons = new ArrayList<Surgeon>();
+		this.nurses = new ArrayList<Nurse>();
+		this.patient= patient;
+		this.room = r;
+	
+	}
+
 
 	
 	// constructor needed in the menu
