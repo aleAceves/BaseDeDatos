@@ -64,7 +64,9 @@ public class JDBCManager implements DBManager { //everything related with the da
 		s1= "CREATE TABLE patients "
 				+ "(id   INTEGER PRIMARY KEY AUTOINCREMENT, "
 				+ " name  TEXT NOT NULL, "
-				+ " surname TEXT NOT NULL) ";
+				+ " surname TEXT NOT NULL"
+				+ " room INTEGER,"
+				+ " FOREIGN KEY(room) REFERENCES waiting_room (id)) "; 
 			
 		
 		stm1.executeUpdate(s1);
@@ -93,8 +95,8 @@ public class JDBCManager implements DBManager { //everything related with the da
 				+ " type TEXT NOT NULL,"
 				+ " startdate DATE NOT NULL,"
 				+ " duration INTEGER,"
-				+ " patientId INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL"
-				+ " roomId INTEGER"
+				+ " patientId INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL,"
+				+ " roomId INTEGER,"
 				+ " FOREIGN KEY(roomId) REFERENCES operating_room (id)";
 		stm1.executeUpdate(s1);
 		
