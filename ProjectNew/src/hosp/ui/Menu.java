@@ -14,6 +14,7 @@ import hosp.db.ifaces.UserManager;
 import hosp.db.jdbc.JDBCManager;
 import hosp.db.jpa.JPAUserManager;
 import hosp.db.pojos.Surgeon;
+import hosp.db.pojos.WaitingRoom;
 import hosp.db.pojos.users.Role;
 import hosp.db.pojos.users.User;
 import hosp.db.pojos.Operation;
@@ -155,6 +156,8 @@ public class Menu {
 			System.out.println("20: Update nurse info");
 			System.out.println("21: Update surgeon info");
 			System.out.println("22: Show operating rooms");
+			System.out.println("23: Add a waiting room");
+			System.out.println("24: Show waiting rooms");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
@@ -225,6 +228,12 @@ public class Menu {
 			case 22:
 				searchOperationRoom();
 				break;
+			case 23:
+				addWaitingRoom();
+				break;
+			case 24:
+				searchWaitingRoom();
+				break;
 			case 0:
 				return;
 			default:
@@ -235,6 +244,34 @@ public class Menu {
 
 }
 	
+private static void searchWaitingRoom() throws IOException {
+		
+	System.out.println("Input:");
+	System.out.println("Name contains:");
+	String name = reader.readLine();
+	List<WaitingRoom> rooms = dbman.selectWaitingRooms();
+	if (rooms.isEmpty()) {
+		System.out.println("No results");
+	}else {
+		System.out.println(rooms);
+		}
+	
+		
+	}
+
+
+
+private static void addWaitingRoom() throws IOException {
+		
+	System.out.println("1: Input the room data:");
+	System.out.println("Name:");
+	String name=reader.readLine();
+	dbman.addWaitingRoom(new WaitingRoom(name));
+		
+	}
+
+
+
 private static void searchOperationRoom() throws IOException {
 	
 	System.out.println("Input:");

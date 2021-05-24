@@ -48,6 +48,8 @@ public interface DBManager { //add all method we are going to use
 	public OperatingRoom getOperationRoom(int id);
 	public List<OperatingRoom> selectOperatingRooms();
 	public void addOperationRoom(OperatingRoom operatingRoom);
+	public List<WaitingRoom> selectWaitingRooms();
+	public void addWaitingRoom(WaitingRoom waitingRoom);
 	
 	
 	

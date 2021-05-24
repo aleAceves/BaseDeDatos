@@ -16,6 +16,7 @@ import hosp.db.pojos.OperatingRoom;
 import hosp.db.pojos.Operation;
 import hosp.db.pojos.Patient;
 import hosp.db.pojos.Surgeon;
+import hosp.db.pojos.WaitingRoom;
 
 
 
@@ -64,9 +65,9 @@ public class JDBCManager implements DBManager { //everything related with the da
 		s1= "CREATE TABLE patients "
 				+ "(id   INTEGER PRIMARY KEY AUTOINCREMENT, "
 				+ " name  TEXT NOT NULL, "
-				+ " surname TEXT NOT NULL"
-				+ " room INTEGER,"
-				+ " FOREIGN KEY(room) REFERENCES waiting_room (id)) "; 
+				+ " surname TEXT NOT NULL)";
+				//+ " room_id INTEGER)";
+				//+ " FOREIGN KEY(room_id) REFERENCES waiting_room (id)) "; 
 			
 		
 		stm1.executeUpdate(s1);
@@ -86,7 +87,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 
 		s1= "CREATE TABLE operating_room "
 				+ "(id   INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ " name TEEXT NOT NULL )";
+				+ " name TEXT NOT NULL )";
 		
 		stm1.executeUpdate(s1);
 		
@@ -95,9 +96,9 @@ public class JDBCManager implements DBManager { //everything related with the da
 				+ " type TEXT NOT NULL,"
 				+ " startdate DATE NOT NULL,"
 				+ " duration INTEGER,"
-				+ " patientId INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL,"
-				+ " roomId INTEGER,"
-				+ " FOREIGN KEY(roomId) REFERENCES operating_room (id)";
+				+ " patientId INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL)";
+			//	+ " roomId INTEGER,"
+				//+ " FOREIGN KEY(roomId) REFERENCES operating_room (id)";
 		stm1.executeUpdate(s1);
 		
 		// Create table operations_surgeons: many to many relationship
@@ -688,6 +689,44 @@ public class JDBCManager implements DBManager { //everything related with the da
 			String sql = "INSERT INTO operating_room (name) VALUES (?)";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, operatingRoom.getName());
+			prep.executeUpdate();
+			prep.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public List<WaitingRoom> selectWaitingRooms() {
+		try {
+			Statement stmt = c.createStatement();
+			String sql = "SELECT * FROM waiting_room";
+			ResultSet rs = stmt.executeQuery(sql);
+			List<WaitingRoom> roomList = new ArrayList<WaitingRoom>();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String roomtype = rs.getString("name");
+				WaitingRoom room = new WaitingRoom(id, roomtype);
+				roomList.add(room);
+			}
+			rs.close();
+			stmt.close();
+			return roomList;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+	@Override
+	public void addWaitingRoom(WaitingRoom waitingRoom) {
+		try {
+			// Id is chosen by the database
+			String sql = "INSERT INTO waiting_room (name) VALUES (?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, waitingRoom.getName());
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
