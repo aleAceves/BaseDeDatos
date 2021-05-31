@@ -5,13 +5,16 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import hosp.db.ifaces.UserManager;
+import hosp.db.pojos.Nurse;
 import hosp.db.pojos.Operation;
 import hosp.db.pojos.Patient;
+import hosp.db.pojos.Surgeon;
 import hosp.db.pojos.users.Role;
 import hosp.db.pojos.users.User;
 
@@ -23,11 +26,12 @@ public class JPAUserManager implements UserManager {
 	
 	
 	
-	private EntityManager em;
+ 
+	private static EntityManager em;
 
-	@Override
+	
 	public void connect() {
-		em = Persistence.createEntityManagerFactory("user-hospital").createEntityManager();;
+		em = Persistence.createEntityManagerFactory("user-hospital").createEntityManager();
 		
 		em.getTransaction().begin();
 		em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
@@ -49,7 +53,17 @@ public class JPAUserManager implements UserManager {
 
 	// delete surgeon using JDBC
 	@Override
+	
 	public void deleteSurgeon(Integer surgeonId) {
+		int s_id = surgeonId; 
+		Query q2 = em.createNativeQuery("SELECT * FROM surgeons WHERE id = ?", Surgeon.class);
+		q2.setParameter(1, s_id);
+		Surgeon s = (Surgeon) q2.getSingleResult();
+		em.getTransaction().begin();
+		System.out.println(s);
+		em.remove(s);
+		em.getTransaction().commit();
+
 		
 	}
 	
@@ -57,20 +71,30 @@ public class JPAUserManager implements UserManager {
 	@Override
 	public void deleteNurse(Integer nurseId) {
 		
+	
+		int nu_id = nurseId;
+		Query q2 = em.createNativeQuery("SELECT * FROM nurses WHERE id = ?", Patient.class);
+		q2.setParameter(1, nu_id);
+		Nurse p = (Nurse) q2.getSingleResult();
+		em.getTransaction().begin();
+		em.remove(p);
+		em.getTransaction().commit();    
+		
+		
 	}
 	
 	//delete patient using JPA
 	@Override
+	
 	public void deletePatient(Integer id) {
 
 		int patient_id = id;
 		Query q2 = em.createNativeQuery("SELECT * FROM patients WHERE id = ?", Patient.class);
 		q2.setParameter(1, patient_id);
 		Patient p = (Patient) q2.getSingleResult();
-
 		em.getTransaction().begin();
 		em.remove(p);
-		em.getTransaction().commit();		
+		em.getTransaction().commit();      
 	}
 	
 	
@@ -85,9 +109,9 @@ public class JPAUserManager implements UserManager {
 	@Override
 	public void deleteOperation(Integer id) {
 
-		int operation_id = id;
+	
 		Query q2 = em.createNativeQuery("SELECT * FROM operation WHERE id = ?", Operation.class);
-		q2.setParameter(1, operation_id);
+		q2.setParameter(1, id);
 		Operation o = (Operation) q2.getSingleResult();
 
 		em.getTransaction().begin();
@@ -101,7 +125,11 @@ public class JPAUserManager implements UserManager {
 	@Override
 	public void updatePatient(Patient p) {
 		// Begin transaction
+	
 		em.getTransaction().begin();
+		EntityTransaction  t = em.getTransaction(); 
+		t.begin();
+		t.commit();
 		// Make changes
 		em.flush();
 		// End transaction
@@ -136,7 +164,7 @@ public class JPAUserManager implements UserManager {
 	@Override
 	public List<Role> getRoles() {
 		Query q = em.createNativeQuery("SELECT * FROM roles", Role.class);
-		return (List<Role>) q.getResultList(); //return a list of objects, that we are casting
+		return (List<Role>)q.getResultList(); //return a list of objects, that we are casting
 		
 	}
 

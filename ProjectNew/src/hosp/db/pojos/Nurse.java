@@ -4,21 +4,25 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-
+ //the name is optional, is going to create a table by default with the name of the class
 @Entity
-@Table(name = "nurses") //the name is optional, is going to create a table by default with the name of the class
-
-
-@XmlAccessorType(XmlAccessType.FIELD) //activate the annotations for xml
-@XmlRootElement(name="Nurse")
-@XmlType(propOrder= {"name", "surname"}) // the proper order of things
+@Table(name = "nurses")
 
 public class Nurse implements Serializable {
 	
-
+	
 	private static final long serialVersionUID = 9046867226460663272L;
 	
 	@Id //indicate the id is going to be the primary key
@@ -27,7 +31,7 @@ public class Nurse implements Serializable {
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="nurses")
 	
 	
-	@XmlTransient //id is not going to appear on a xml; also for photos
+	@XmlAttribute //id is not going to appear on a xml; also for photos
 	private Integer id;
 	@XmlElement
 	private String name;
@@ -35,10 +39,12 @@ public class Nurse implements Serializable {
 	private String surname;
 	
 	
-	@XmlElement(name="nurse_operations") //we can specify a name, is optional
-	@XmlElementWrapper(name="operations")  //for each item of the list
+
 	
-	@ManyToMany(mappedBy="nurses")
+	@XmlElement	
+	@ManyToMany
+	@JoinTable(name="operations_nurses")
+
 	private List<Operation> operations; //The nurse has a list of operations, many to many relationship
 
 	
@@ -106,6 +112,10 @@ public class Nurse implements Serializable {
 			this.name = name;
 			this.surname = surname;
 			this.operations=new ArrayList<Operation>(); //to initialize the list
+		}
+		public Nurse() {
+			super();
+			this.operations=new ArrayList<Operation>();
 		}
 		
 	

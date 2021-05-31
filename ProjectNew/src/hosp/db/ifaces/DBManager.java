@@ -18,12 +18,15 @@ public interface DBManager { //add all method we are going to use
 	public void fireSurgeon(int operationId, int surgeonId);
 	public List<Surgeon> getSurgeonsOfOperation(int operationId); //surgeons that participate in a given operation
 	public void deleteSurgeon(int surgeonId);
-
+	void updateSurgeon(int id);
+	
+	
 	//FOR OPERATION
 	public void addOperation(Operation operation); //add a new operation to the database
 	public Operation getOperation(int id);
 	public List<Operation> searchOperationByName(String name);
 	void deleteOperation(int operationId);
+	public void updateOperation(int id,String type)
 	//public List<Operation> getOperationsOfPatient(int OperationId);
 
 	
@@ -50,6 +53,12 @@ public interface DBManager { //add all method we are going to use
 	public void addOperationRoom(OperatingRoom operatingRoom);
 	public List<WaitingRoom> selectWaitingRooms();
 	public void addWaitingRoom(WaitingRoom waitingRoom);
+	public void showSurgeons();
+	public void showNurses();
+	public void showOperations(); 
+	void updateSurgeon(int id, String sp);
+
+	
 	
 	
 	

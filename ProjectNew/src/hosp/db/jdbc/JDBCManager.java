@@ -25,7 +25,7 @@ import hosp.db.pojos.WaitingRoom;
 public class JDBCManager implements DBManager { //everything related with the database
 	//not put reader and prints here
 
-	private Connection c;
+	private static Connection c;
 	
 	@Override
 	public void connect() {
@@ -44,6 +44,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 			e.printStackTrace();
 		}
 	}
+	
 	
 	// CREATION OF TABLES AFTER CONNECT
 	private void createTables() {
@@ -96,8 +97,8 @@ public class JDBCManager implements DBManager { //everything related with the da
 				+ " type TEXT NOT NULL,"
 				+ " startdate DATE NOT NULL,"
 				+ " duration INTEGER,"
-				+ " patientId INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL)";
-			//	+ " roomId INTEGER,"
+			    + " roomId INTEGER,"
+			    + " patientId INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL)";
 				//+ " FOREIGN KEY(roomId) REFERENCES operating_room (id)";
 		stm1.executeUpdate(s1);
 		
@@ -139,7 +140,75 @@ public class JDBCManager implements DBManager { //everything related with the da
 
 	}
 
-	@Override
+	public void showNurses(){
+		try{
+			String sql = "SELECT * FROM nurses"; 
+			Statement stm1= c.createStatement();
+			ResultSet rs = stm1.executeQuery(sql);
+			while (yo os rs.next()) { // true: there is another result and I have advanced to it
+								// false: there are no more results
+			
+				int id = rs.getInt("id");
+			
+				String Name = rs.getString("name");
+				String Surname = rs.getString("surname");
+				Nurse n = new Nurse(id, Name, Surname); 
+				System.out.println("hola"
+					);; //show Nurse 
+			}
+		}catch(Exception e){
+			System.out.println("something went wrong");
+			e.printStackTrace();
+		}
+		
+		
+	}
+	public void showSurgeons(){
+		try{
+			String sql = "SELECT * FROM surgeons"; 
+			Statement stm1= c.createStatement();
+			ResultSet rs = stm1.executeQuery(sql);
+			while (rs.next()) { // true: there is another result and I have advanced to it
+								// false: there are no more results
+			
+				int id = rs.getInt("id");
+			
+				String Name = rs.getString("name");
+				String Surname = rs.getString("surname");
+				String Speciality = rs.getString("speciality");
+				Surgeon surgeon = new Surgeon (id, Name, Surname, Speciality); 
+				System.out.println(surgeon);; //add the surgeon to the list
+			}
+		}catch(Exception e){
+			System.out.println("something went wrong");
+			e.printStackTrace();
+		}
+		
+		
+	}
+	public void showOperations(){
+		try{
+			String sql = "SELECT * FROM operation"; 
+			Statement stm1= c.createStatement();
+			ResultSet rs = stm1.executeQuery(sql);
+			while (rs.next()) { // true: there is another result and I have advanced to it
+								// false: there are no more results
+			
+				int id = rs.getInt("id");
+				String type = rs.getString("type");
+				Date date = rs.getDate("startdate");
+				int dur = rs.getInt("duration");
+				Operation op = new Operation(id, type, date,dur); 
+				System.out.println(op);; //show 
+			}
+		}catch(Exception e){
+			System.out.println("something went wrong");
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 	public void addSurgeon(Surgeon surgeon) {
 		//we want to insert the new person into the database
 		//create the statement, the SQL sentence
@@ -238,13 +307,13 @@ public class JDBCManager implements DBManager { //everything related with the da
 	public void addOperation(Operation operation) {
 		try {
 			// Id is chosen by the database
-			String sql = "INSERT INTO operation (type,startDate,duration,patientId,roomId) VALUES (?,?,?,?,?)";
+			String sql = "INSERT INTO operation (type, startdate , duration , patientId) VALUES (?,?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, operation.getType());
 			prep.setDate(2, operation.getStartdate());
 			prep.setInt(3, operation.getDuration());
 			prep.setInt(4, operation.getPatient().getId());
-			prep.setInt(4, operation.getOperatingRoom().getId());
+			//prep.setInt(5, operation.getOperatingRoom().getId());  PONER ROOM ID OTRA INTERROGACIÇON Y CREAR NUEVAS TABLAS CON ROOMID
 			
 			prep.executeUpdate();
 			prep.close();
@@ -288,8 +357,8 @@ public class JDBCManager implements DBManager { //everything related with the da
 				Integer patientId = rs.getInt("patientId");
 				Patient patient = getPatient(patientId);
 				//not include operations, just the atributes
-				Integer roomId = rs.getInt("roomId");
-				OperatingRoom r = getOperationRoom(roomId);
+				//Integer roomId = rs.getInt("roomId");
+				OperatingRoom r = getOperationRoom(1);
 				return new Operation(id,type,startDate,duration, patient,r);
 			}
 			rs.close();
@@ -493,7 +562,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 	
 	
     //GET PATIENT OF OPERATION BY ID
-	@Override
+
 	public Patient getPatient(int id) {
 		try {
 			String sql = "SELECT * FROM patients WHERE id = ?";
@@ -622,7 +691,38 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 	}
 
-	@Override
+
+	public void updateSurgeon(int id, String sp) {  //TODO
+		try {
+			String sql = "UPDATE surgeons SET speciality=? WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, sp);
+			prep.setInt(2, id);
+			
+			prep.executeUpdate();
+			prep.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void updateOperation(int id,String type) {
+		try {
+			String sql = "UPDATE operations SET type=? WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, type);
+			prep.setInt(2, id);
+			
+			prep.executeUpdate();
+			prep.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	public void updatePatient(Patient p) {  //TODO
 		try {
 			String sql = "UPDATE patients SET name=?,surname=? WHERE id=?";
@@ -631,7 +731,6 @@ public class JDBCManager implements DBManager { //everything related with the da
 			prep.setString(2, p.getSurname());
 			prep.executeUpdate();
 			prep.close();
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -732,6 +831,12 @@ public class JDBCManager implements DBManager { //everything related with the da
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+	}
+
+	@Override
+	public void updateSurgeon(int id) {
+		// TODO Auto-generated method stub
 		
 	}
 	

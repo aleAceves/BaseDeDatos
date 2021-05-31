@@ -8,16 +8,43 @@
 	<!-- JTA: Container-managed transactions -->
 	<persistence-unit name="user-hospital" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
- 
-		<!-- Entity Class -->
-		<class>hosp.db.pojos.users.Role</class>
-		<class>hosp.db.pojos.users.User</class>
-		
 
+		<!-- Entity Class -->
+
+    
+        <class>hosp.db.pojos.users.Role</class>
+		<class>hosp.db.pojos.users.User</class>
+		<!--   -->
+		<class>hosp.db.pojos.Operation</class>
+		<class>hosp.db.pojos.Surgeon</class>
+		<class>hosp.db.pojos.Nurse</class>
+        <class>hosp.db.pojos.Patient</class>
+        <class>hosp.db.pojos.OperatingRoom</class>
+        <class>hosp.db.pojos.WaitingRoom</class>
+
+       
 		<properties>	
 			<!-- Connection properties -->
+			
 			<property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC" />
 		    <property name="javax.persistence.jdbc.url"	value="jdbc:sqlite:./db/ProjectNew.db" />
+	        <property name="eclipselink.target-database" value="Auto"/>
+		    <!-- StackOverflow code      
+		    
+		    <property name="eclipselink.target-database" value="Auto" />
+		    <property name="eclipselink.logging.level" value="ALL" />
+			<property name="eclipselink.logging.level.sql" value="FINE"/>
+		 	<property name="eclipselink.logging.parameters" value="true" />
+			<property name="eclipselink.logging.connection" value="true" />
+			<property name="eclipselink.logging.session" value="true" />
+			<property name="eclipselink.logging.thread" value="true" />
+			
+			   StackOverflow code for solve connection problems-->
+			
+			
+			
+			<property name="eclipselink.logging.timestamp" value="true" />
+		    
 			<!-- Fill if we need user and password -->
 			<property name="javax.persistence.jdbc.user" value="" />
 			<property name="javax.persistence.jdbc.password" value="" />

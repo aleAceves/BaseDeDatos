@@ -20,7 +20,7 @@ public class WaitingRoom implements Serializable {
 	@Id
 	@GeneratedValue(generator="waitingRooms")
 	@TableGenerator(name="waitingRooms", table="sqlite_sequence",
-	    pkColumnName="waitingRooms", valueColumnName="seq", pkColumnValue="waitingRooms")
+	    pkColumnName="name", valueColumnName="seq", pkColumnValue="waitingRooms")
 	
 	private Integer id;
 	private String name;
@@ -51,6 +51,10 @@ public class WaitingRoom implements Serializable {
 	public WaitingRoom( String name) {
 		super();
 		this.name = name;
+	}
+	public WaitingRoom() {
+		super();
+	
 	}
 
 	//HASHCODE AND EQUALS METHOD

@@ -16,9 +16,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import hosp.xml.utils.SQLDateAdapter;
 
 @Entity
 @Table(name = "operations")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Operation")
+@XmlType(propOrder = { "id", "type", "startdate", "duration", "surgeons","nurses","patient","room" })
 public class Operation implements Serializable {
 	
 	
@@ -27,29 +39,31 @@ public class Operation implements Serializable {
 	@GeneratedValue(generator="operations")
 	@TableGenerator(name="operations", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="operations")
-	
+	@XmlAttribute
 	private Integer id;
+	@XmlAttribute
 	private String type;
+	@XmlElement
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date startdate; //import from java.sql
+	@XmlAttribute
 	private Integer duration;
 	
-	@ManyToMany(mappedBy="operation")
-	@JoinTable(name="operations_surgeons",
-	joinColumns={@JoinColumn(name="operation_id", referencedColumnName="id")},
-    inverseJoinColumns={@JoinColumn(name="surgeon_ID", referencedColumnName="id")})
+	@ManyToMany(mappedBy="operations")
+	
 	private List<Surgeon> surgeons; //list of surgeons that have this operation
 	
-	@ManyToMany(mappedBy="operation")
+	@ManyToMany(mappedBy="operations")
 	@JoinTable(name="operations_nurses",
 	joinColumns={@JoinColumn(name="operation_id", referencedColumnName="id")},
-    inverseJoinColumns={@JoinColumn(name="nurse_ID", referencedColumnName="id")})
+    inverseJoinColumns={@JoinColumn(name="nurse_id", referencedColumnName="id")})
 	private List<Nurse> nurses; // list of nurses on the operation
 	
 	@ManyToOne(fetch = FetchType.LAZY) //to save time, we do not need to access all time to it.
 	@JoinColumn(name = "patient_id") //use to indicate in the side of the many we are going to have a foreign key, and we specify the name of the column
 	private Patient patient;
-	
-	@OneToOne(mappedBy="operation")
+	@XmlAttribute
+
 	private OperatingRoom room;
 	
 	//CREATION OF GETTERS AND SETTERS

@@ -7,12 +7,18 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "surgeons")
+
 public class Surgeon implements Serializable {
 
 	
@@ -20,20 +26,30 @@ public class Surgeon implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -4442487532035713640L;
+	
 	@Id
 	@GeneratedValue(generator="surgeons")
 	@TableGenerator(name="surgeons", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="surgeons")
-	
+	@XmlAttribute
 	private Integer id;
+	@XmlAttribute
 	private String name;
+	@XmlAttribute
 	private String surname;
+	@XmlAttribute
 	private String speciality;
 	
-	@ManyToMany(mappedBy="surgeons")
-	//The surgeons has a list of operations cause is a many to many relationship
+	@ManyToMany
+	@XmlElement
+	@JoinTable(name="operations_surgeons")
 	private List<Operation> operations;
 	
+	/* ,
+	joinColumns={@JoinColumn(name="surgeon_id", referencedColumnName="id")},
+    inverseJoinColumns={@JoinColumn(name="operation_id", referencedColumnName="id")})
+	@ManyToMany(mappedBy="surgeons") */
+
 	
 	// GETTERS AND SETTERS
 	public String getName() {

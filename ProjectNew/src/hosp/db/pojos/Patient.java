@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,11 +36,11 @@ public class Patient implements Serializable{
 	@TableGenerator(name="patients", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="patients")
 	
-	@XmlTransient
+	@XmlAttribute
 	private Integer id;
-	@XmlElement
+	@XmlAttribute
 	private String name;
-	@XmlElement
+	@XmlAttribute
 	private String surname;
 	
 	@XmlTransient
@@ -49,8 +50,7 @@ public class Patient implements Serializable{
     @XmlElementWrapper(name = "operations")
 	private List<Operation> operations; //indicate that patient has a one to may relationship with operations
 	
-	@XmlTransient
-	@OneToOne(mappedBy="patient")
+	
 	private WaitingRoom room;
 	
 	//GETTERS AND SETTERS

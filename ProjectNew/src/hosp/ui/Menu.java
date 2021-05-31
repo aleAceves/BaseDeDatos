@@ -6,6 +6,11 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -32,6 +37,7 @@ public class Menu {
 	
 	
 	public static JPAUserManager userman = new JPAUserManager();
+	
 	//public static XMLManager xm = new XMLManager();
 
 
@@ -54,6 +60,7 @@ public class Menu {
 			int choice = Integer.parseInt(reader.readLine());
 			
 			switch (choice) {
+			
 			case 1:
 				register();
 				break;
@@ -134,19 +141,27 @@ public class Menu {
 	private static void adminMenu() throws Exception{
 		do {
 			System.out.println("Choose an option:");
-			System.out.println("1: Add surgeon");
-			System.out.println("2: Search a surgeon");
-			System.out.println("3: Add an operation");
-			System.out.println("4: Search an operation");
-			System.out.println("5: Add a surgeon to an operation");
-			System.out.println("6: Eliminate a surgeon from an operation");
-			System.out.println("7: Add a nurse");
-			System.out.println("8: Search a nurse");
-			System.out.println("9: Add a nurse to an operation");
-			System.out.println("10: Eliminate a nurse from an operation");
-			System.out.println("11: Add a patient");
-			System.out.println("12: Search a patient");
+			System.out.println("1:  Add surgeon");
+			System.out.println("3:  Add an operation");
+		    System.out.println("5:  Add a surgeon to an operation");
+            System.out.println("7:  Add a nurse");
 			System.out.println("13: Add an operating room"); 
+			System.out.println("11: Add a patient");
+			System.out.println("");
+			System.out.println("2: Search a surgeon");
+			System.out.println("4: Search an operation");
+			System.out.println("8: Search a nurse");
+			System.out.println("12: Search a patient");
+			System.out.println("");
+		
+			System.out.println("6: Eliminate a surgeon from an operation");
+			
+			System.out.println("");
+			System.out.println("9: Add a nurse to an operation");
+			System.out.println("10: Eliminate a nurse from an operation");		
+			
+			System.out.println("");
+			
 			System.out.println("14: Delete a surgeon");
 			System.out.println("15: Delete a nurse");
 			System.out.println("16: Delete a patient");
@@ -309,10 +324,8 @@ private static void searchOperationRoom() throws IOException {
 
 	
 
-	private static void updateSurgeon() {
-		// TODO Auto-generated method stub
-		
-	}
+
+
 
 
 
@@ -325,6 +338,21 @@ private static void searchOperationRoom() throws IOException {
 
 	private static void updateOperation() {
 		// TODO Auto-generated method stub
+		dbman.showOperations();
+		
+		System.out.println("Please intro the id of the soperation to update");
+		try {
+			int operationId = Integer.parseInt(reader.readLine());
+			System.out.println(dbman.getSurgeon(operationId));
+			System.out.println("writte new info");
+			String sp = reader.readLine();
+			dbman.updateOperation(operationId, sp);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 
@@ -408,8 +436,8 @@ private static void searchOperationRoom() throws IOException {
 		//userman.updatePatient(p); //using jpa
 		dbman.updatePatient(p);
 		System.out.println("Patient updated:\n" + p);
-		
-	}
+		        
+	} 
 
 	
 //-----------------------------------------------------------------------
@@ -434,6 +462,7 @@ private static void searchOperationRoom() throws IOException {
 	}
 
 	private static void fireNurse() throws Exception {
+	
 		System.out.println("Choose the operation where is NOT going to assist:");
 		searchOperationByName();
 		System.out.println("Type the operation's id:");
@@ -447,6 +476,7 @@ private static void searchOperationRoom() throws IOException {
 
 
 	private static void searchNurseByName()throws Exception {
+		dbman.showNurses();
 		System.out.println("Input:");
 		System.out.println("Name contains:");
 		String name = reader.readLine();
@@ -464,7 +494,7 @@ private static void searchOperationRoom() throws IOException {
 		String name=reader.readLine();
 		System.out.println("Surname:");
 		String surname=reader.readLine();
-		dbman.addNurse(new Nurse(name,surname));
+ 
 		
 	}
 	
@@ -497,10 +527,11 @@ private static void searchOperationRoom() throws IOException {
 			
 		}
 	 
-	private static void deleteSurgeon() throws Exception { //TODO
-		System.out.println("Enter the surgeon id of the surgeon you want to eliminate:");
-		searchPatientByName();
-		System.out.println("Type the surgeon's id:");
+	private static void deleteSurgeon() throws 
+	Exception { //TODO
+		
+		searchSurgeonByName();
+		System.out.println("Type the surgeon's id to eliminate:");
 		int surgeonId = Integer.parseInt(reader.readLine());
 		dbman.deleteSurgeon(surgeonId);
 		System.out.println("Deletion completed.");
@@ -508,8 +539,31 @@ private static void searchOperationRoom() throws IOException {
 	
 		
 	}
+	private static void updateSurgeon() {
+		try {
+			searchSurgeonByName();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println("Please intruduce the id of the surgeon to update");
+		try {
+			int surgeonId = Integer.parseInt(reader.readLine());
+			System.out.println(dbman.getSurgeon(surgeonId));
+			System.out.println("writte the new speciality");
+			
+			String sp = reader.readLine();
+			dbman.updateSurgeon(surgeonId, sp);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+			}
+	
 		
 	private static void searchSurgeonByName() throws Exception {
+			dbman.showSurgeons();
 			System.out.println("Input:");
 			System.out.println("Name contains:");
 			String name = reader.readLine();
@@ -523,8 +577,8 @@ private static void searchOperationRoom() throws IOException {
 	
 	private static void hireSurgeon()throws Exception{
 		// we need to find a surgeon and to find an operation; we have methods for that
+		dbman.showOperations();
 		System.out.println("Choose the operation where is going to assist:");
-		searchOperationByName();
 		System.out.println("Type the operation's id:");
 		int operationId = Integer.parseInt(reader.readLine());
 		System.out.println("Choose the surgeon");
@@ -536,7 +590,7 @@ private static void searchOperationRoom() throws IOException {
 	
 	private static void fireSurgeon()throws Exception{
 		System.out.println("Choose the operation where is going to assist:");
-		searchOperationByName();
+		dbman.showOperations();
 		System.out.println("Type the operation's id:");
 		int operationId = Integer.parseInt(reader.readLine());
 		System.out.println("Choose first the surgeon");
@@ -544,6 +598,7 @@ private static void searchOperationRoom() throws IOException {
 		System.out.println("Type the surgeon's id:");
 		int surgeonId = Integer.parseInt(reader.readLine());
 		dbman.fireSurgeon(operationId,surgeonId); 
+		
 		
 	}
 	
@@ -573,29 +628,30 @@ private static void searchOperationRoom() throws IOException {
 			searchOperationRoom();
 			System.out.println("Type the room´s id where the operations is going to take place:");
 			int roomId = Integer.parseInt(reader.readLine());
-			OperatingRoom r=null;
-			r = dbman.getOperationRoom(roomId);
-			dbman.addOperation(new Operation(type,Date.valueOf(startDate),duration,p,r)); //transform date into a sql date
+		//	OperatingRoom r=null;
+		//	r = dbman.getOperationRoom(roomId);
+			dbman.addOperation(new Operation(type,Date.valueOf(startDate),duration,p)); //transform date into a sql date
 			
 		}
 		
 	private static void searchOperationByName() throws Exception {
-			System.out.println("Input:");
 			System.out.println("Name contains:");
 			String name = reader.readLine();
 			List<Operation> operations = dbman.searchOperationByName(name);
 			if (operations.isEmpty()) {
 				System.out.println("No results");
 			}else {
+				
 				System.out.println(operations);
 			}
 		}
 	
 	// DELETE OPERATION USING JPA
 	private static void deleteOperation() throws Exception{
+dbman.showOperations();
 
-		System.out.println("Choose the operation you want to eliminate:");
-		searchOperationByName();
+		System.out.println("Choose the operation you wantto eliminate:");
+		
 		System.out.println("Type the operation's id:");
 		int operationId = Integer.parseInt(reader.readLine());
 		userman.deleteOperation(operationId); //userman because we are using JPA

@@ -23,6 +23,7 @@ public class OperatingRoom implements Serializable{
 	
 	private Integer id;
 	private String name;
+	
 	public Integer getId() {
 		return id;
 	}
