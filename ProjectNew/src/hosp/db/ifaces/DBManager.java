@@ -26,7 +26,8 @@ public interface DBManager { //add all method we are going to use
 	public Operation getOperation(int id);
 	public List<Operation> searchOperationByName(String name);
 	void deleteOperation(int operationId);
-	public void updateOperation(int id,String type)
+	public void updateOperation(int id,String type);
+	//public List<Operation> showOperationsBySurgeonId(Integer surgeonId); //TODO
 	//public List<Operation> getOperationsOfPatient(int OperationId);
 
 	

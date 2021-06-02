@@ -39,7 +39,11 @@ public class JPAUserManager implements UserManager {
 		List<Role> existingRoles = this.getRoles();
 		if (existingRoles.size()<2) {
 			this.newRole(new Role("admin"));
-			this.newRole(new Role("user"));
+			//this.newRole(new Role("user"));
+			//create the roles needed for our database
+			this.newRole(new Role("surgeon"));
+			this.newRole(new Role("nurse"));
+			this.newRole(new Role("patient"));
 		}
 
 	}

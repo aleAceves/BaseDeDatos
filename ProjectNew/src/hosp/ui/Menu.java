@@ -96,9 +96,12 @@ public class Menu {
 			return;
 		} else if (user.getRole().getName().equalsIgnoreCase("admin")) {
 			adminMenu();
-		} else if (user.getRole().getName().equalsIgnoreCase("user")) {
-			adminMenu();
-			//userMenu();
+		} else if (user.getRole().getName().equalsIgnoreCase("surgeon")) {
+			surgeonMenu(); //TODO
+		} else if (user.getRole().getName().equalsIgnoreCase("nurse")) {
+			nurseMenu();//TODO
+		} else if (user.getRole().getName().equalsIgnoreCase("patient")) {
+			patientMenu();//TODO
 		}
 		
 		
@@ -139,40 +142,50 @@ public class Menu {
 //---------------------------------------------------
 	
 	private static void adminMenu() throws Exception{
+		
 		do {
+			System.out.println("~ ~ ~ ~ ADMINISTRATOR MAIN MENU ~ ~ ~ ~");
+			System.out.println(
+					"Select what do you want to manage: \n1.Surgeons. \n2.Nurses. \n3.Patients. \n4.Operations.  \n0.Exit");
+			int option = Integer.parseInt(reader.readLine());
+			switch (option) {
+			case 1:
+				surgeons();
+				break;
+			case 2:
+				nurses();
+				break;
+			case 3:
+				patients();
+				break;
+			case 4:
+				operations();
+			case 0:
+				return;
+			default:
+				break;
+
+			}
+		} while(true);
+		
+		
+		
+}
+	
+	public static void surgeons() throws Exception {
+		do {
+			
+			System.out.println("~ ~ ~ ~ MENU FOR MANAGE SURGEONS ~ ~ ~ ~");
 			System.out.println("Choose an option:");
 			System.out.println("1:  Add surgeon");
-			System.out.println("3:  Add an operation");
 		    System.out.println("5:  Add a surgeon to an operation");
-            System.out.println("7:  Add a nurse");
-			System.out.println("13: Add an operating room"); 
-			System.out.println("11: Add a patient");
-			System.out.println("");
 			System.out.println("2: Search a surgeon");
-			System.out.println("4: Search an operation");
-			System.out.println("8: Search a nurse");
-			System.out.println("12: Search a patient");
-			System.out.println("");
-		
 			System.out.println("6: Eliminate a surgeon from an operation");
 			
-			System.out.println("");
-			System.out.println("9: Add a nurse to an operation");
-			System.out.println("10: Eliminate a nurse from an operation");		
-			
-			System.out.println("");
-			
 			System.out.println("14: Delete a surgeon");
-			System.out.println("15: Delete a nurse");
-			System.out.println("16: Delete a patient");
-			System.out.println("17: Delete an operation");
-			System.out.println("18: Update patient information");
-			System.out.println("19: Update operation info");
-			System.out.println("20: Update nurse info");
+			
 			System.out.println("21: Update surgeon info");
-			System.out.println("22: Show operating rooms");
-			System.out.println("23: Add a waiting room");
-			System.out.println("24: Show waiting rooms");
+			
 			System.out.println("25: Show operations of a surgeon");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
@@ -184,18 +197,50 @@ public class Menu {
 			case 2:
 				searchSurgeonByName();
 				break;
-			case 3:
-				addOperation();
-				break;
-			case 4: 
-				searchOperationByName();
-				break;
+			
 			case 5: 
 				hireSurgeon();
 				break;
 			case 6:
 				fireSurgeon();
 				break;
+			
+			case 14:
+				deleteSurgeon();
+				break;
+			
+			case 21:
+				updateSurgeon();
+				break;
+			
+			case 25:
+				listOperationsOfSurgeon();
+			case 0:
+				return;
+			default:
+				break;	
+			}
+			
+		}while(true); // to show again the menu
+
+	}
+	
+	public static void nurses() throws Exception {
+		do {
+			System.out.println("~ ~ ~ ~ MENU FOR MANAGE NURSES ~ ~ ~ ~");
+			System.out.println("Choose an option:");
+			
+            System.out.println("7:  Add a nurse");
+			System.out.println("8: Search a nurse");
+			System.out.println("9: Add a nurse to an operation");
+			System.out.println("10: Eliminate a nurse from an operation");		
+			System.out.println("15: Delete a nurse");
+			System.out.println("20: Update nurse info");
+			System.out.println("0: Exit");
+			int choice = Integer.parseInt(reader.readLine());
+			
+			switch (choice) {
+			
 			case 7:
 				addNurse();
 				break;
@@ -208,50 +253,15 @@ public class Menu {
 			case 10:
 				fireNurse();
 				break;
-			case 11:
-				addPatient();
-				break;
-			case 12:
-				searchPatientByName();
-				break;
-			case 13:
-				addOperationRoom();
-				break;
-			case 14:
-				deleteSurgeon();
-				break;
+			
 			case 15:
 				deleteNurse();
 				break;
-			case 16:
-				deletePatient();
-				break;
-			case 17:
-				deleteOperation();
-				break;
-			case 18:
-				updatePatient();
-				break;
-			case 19:
-				updateOperation();
-				break;
+			
 			case 20:
 				updateNurse();
 				break;
-			case 21:
-				updateSurgeon();
-				break;
-			case 22:
-				searchOperationRoom();
-				break;
-			case 23:
-				addWaitingRoom();
-				break;
-			case 24:
-				searchWaitingRoom();
-				break;
-			case 25:
-				listOperationsOfSurgeon();
+			
 			case 0:
 				return;
 			default:
@@ -260,13 +270,193 @@ public class Menu {
 			
 		}while(true); // to show again the menu
 
+	}
+	
+	
+	public static void patients() throws Exception {
+		do {
+			System.out.println("~ ~ ~ ~ MENU FOR MANAGE PATIENTS ~ ~ ~ ~");
+			System.out.println("Choose an option:");
+			System.out.println("11: Add a patient");
+			System.out.println("12: Search a patient");
+			System.out.println("16: Delete a patient");
+			System.out.println("18: Update patient information");
+			System.out.println("0: Exit");
+			int choice = Integer.parseInt(reader.readLine());
+			
+			switch (choice) {
+			
+			case 11:
+				addPatient();
+				break;
+			case 12:
+				searchPatientByName();
+				break;
+			
+			case 16:
+				deletePatient();
+				break;
+			
+			case 18:
+				updatePatient();
+				break;
+			
+			case 0:
+				return;
+			default:
+				break;	
+			}
+			
+		}while(true); // to show again the menu
+
+	}
+	
+	public static void operations() throws Exception {
+		do {
+			System.out.println("~ ~ ~ ~ MENU FOR MANAGE OPERATIONS ~ ~ ~ ~");
+			System.out.println("Choose an option:");
+			System.out.println("3:  Add an operation");
+			System.out.println("17: Delete an operation");
+			System.out.println("19: Update operation info");
+			System.out.println("0: Exit");
+			int choice = Integer.parseInt(reader.readLine());
+			
+			switch (choice) {
+			
+			case 3:
+				addOperation();
+				break;
+			
+			case 17:
+				deleteOperation();
+				break;
+			
+			case 19:
+				updateOperation();
+				break;
+			
+			case 0:
+				return;
+			default:
+				break;	
+			}
+			
+		}while(true); // to show again the menu
+
+	}
+
+	
+	
+	private static void surgeonMenu() throws Exception{
+		
+		do {
+			System.out.println("~ ~ ~ ~ SURGEON MENU ~ ~ ~ ~");
+			System.out.println("Choose an option:");
+			System.out.println("1: Check schedule");
+			System.out.println("2: Check your personal information");
+			System.out.println("3: Check operations");
+			System.out.println("0: Exit");
+			int choice = Integer.parseInt(reader.readLine());
+			
+			switch (choice) {
+			case 1:
+				//;
+				break;
+			case 2:
+				//;
+				break;
+			case 3:
+				//;
+				break;
+			case 0:
+				return;
+			default:
+				break;	
+			}
+			
+		}while(true); // to show again the menu
+
+		
+	}
+	
+    private static void nurseMenu() throws Exception{
+		
+		do {
+			System.out.println("~ ~ ~ ~ MENU FOR NURSES ~ ~ ~ ~");
+			System.out.println("Choose an option:");
+			System.out.println("1: Check schedule");
+			System.out.println("2: Check your personal information");
+			System.out.println("3: Check operations");
+			System.out.println("0: Exit");
+			int choice = Integer.parseInt(reader.readLine());
+			
+			switch (choice) {
+			case 1:
+				//;
+				break;
+			case 2:
+				//;
+				break;
+			case 3:
+				//;
+				break;
+			case 0:
+				return;
+			default:
+				break;	
+			}
+			
+		}while(true); // to show again the menu
+
+		
+	}
+
+    private static void patientMenu() throws Exception{
+	
+	do {
+		System.out.println("~ ~ ~ ~ MENU FOR PATIENTS ~ ~ ~ ~");
+		System.out.println("Choose an option:");
+		System.out.println("1: Check schedule");
+		System.out.println("2: Check your personal information");
+		System.out.println("3: Check operations");
+		System.out.println("0: Exit");
+		int choice = Integer.parseInt(reader.readLine());
+		
+		switch (choice) {
+		case 1:
+			//;
+			break;
+		case 2:
+			//;
+			break;
+		case 3:
+			//;
+			break;
+		case 0:
+			return;
+		default:
+			break;	
+		}
+		
+	}while(true); // to show again the menu
+
+	
 }
 	
-private static void listOperationsOfSurgeon() {
-	// TODO Auto-generated method stub
+	
+	
+    // THIS METHODS ASK FOR THE ID OF THE SURGEON, FOR THE ADMINISTRATOR
+private static void listOperationsOfSurgeon() throws Exception {
 	//mostrar lista de los surgeons
-	//seleccionar el id del surgeon
+	System.out.println("From which surgeon do you want to see the operations?");
+	searchSurgeonByName();
+	System.out.println("Please intruduce the id of the surgeon:");
+	int surgeonId = Integer.parseInt(reader.readLine());
+	System.out.println(dbman.getSurgeon(surgeonId)); //seleccionar el id del surgeon
+	
 	//y mostrar las operations que tengan ese id para el surgeon
+	//dbman.showOperationsBySurgeonId(surgeonId); //TODO
+	
 	
 }
 
@@ -323,11 +513,6 @@ private static void searchOperationRoom() throws IOException {
 //------------------------------------------------------------------------
 
 	
-
-
-
-
-
 
 	private static void updateNurse() {
 		// TODO Auto-generated method stub

@@ -145,7 +145,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 			String sql = "SELECT * FROM nurses"; 
 			Statement stm1= c.createStatement();
 			ResultSet rs = stm1.executeQuery(sql);
-			while (yo os rs.next()) { // true: there is another result and I have advanced to it
+			while (rs.next()) { // true: there is another result and I have advanced to it
 								// false: there are no more results
 			
 				int id = rs.getInt("id");
@@ -209,6 +209,28 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 	}
 	
+	/*//TODO //NO FUNCION!!!!
+	// METHOD FOR RETURN A LIST OF OPERATIONS WITH THE SAME ID OF THE SURGEON
+	public List<Operation> showOperationsBySurgeonId(Integer surgeonId){
+		
+		List<Operation> operations = new ArrayList<Operation>();//creation of the list is going to return
+		
+		try {
+			String sql = "SELECT * FROM operations_surgeons WHERE surgeon_id = ?"; //list of rows where the id of the operation is the one that we provided
+			PreparedStatement p = c.prepareStatement(sql);
+			p.setInt(1, surgeonId);
+			ResultSet rs = p.executeQuery();
+			while (rs.next()) {
+				int operationId = rs.getInt("operation_id");
+				operations.add(this.getOperation(operationId)); //we use the surgeon id, to get the whole surgeon and add it to the new list
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return operations;
+		
+	}
+	*/
 	public void addSurgeon(Surgeon surgeon) {
 		//we want to insert the new person into the database
 		//create the statement, the SQL sentence
