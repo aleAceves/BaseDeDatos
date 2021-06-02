@@ -37,10 +37,6 @@ public class Nurse implements Serializable {
 	private String name;
 	@XmlElement
 	private String surname;
-	
-	
-
-	
 	@XmlElement	
 	@ManyToMany
 	@JoinTable(name="operations_nurses")

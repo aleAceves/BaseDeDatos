@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name="roles")
 public class Role implements Serializable{
 
-
+//hi this is a change for commiting
 
 	private static final long serialVersionUID = 247947661084291846L;
 	
