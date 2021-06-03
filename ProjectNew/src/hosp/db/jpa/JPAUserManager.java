@@ -164,6 +164,7 @@ public class JPAUserManager implements UserManager {
 		return (Role) q.getSingleResult();
 		
 	}
+	
 
 	@Override
 	public List<Role> getRoles() {
@@ -171,7 +172,7 @@ public class JPAUserManager implements UserManager {
 		return (List<Role>)q.getResultList(); //return a list of objects, that we are casting
 		
 	}
-
+	
 	@Override
 	public User checkPassword(String email, String password) {
 		try {

@@ -211,7 +211,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 	}
 	
-//TODO //NO FUNCION!!!!
+
 	// METHOD FOR RETURN A LIST OF OPERATIONS WITH THE SAME ID OF THE SURGEON
 	public List<Operation> showOperationsBySurgeonId(Integer surgeonId){
 		
@@ -253,12 +253,21 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 				operations.add(this.getOperation(operationId)); 
 	
-				//we use the surgeon id, to get the whole surgeon and add it to the new list
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		OrderOperations(operations);
+		return operations;
+		
+	}
+	
+	public List<Operation> showOperationsByPatientId(Integer nId){
+		
+		List<Operation> operations = new ArrayList<Operation>();//creation of the list is going to return
+		
+		//TODO
 		return operations;
 		
 	}
@@ -333,6 +342,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 				String Name = rs.getString("name");
 				String Surname = rs.getString("surname");
 				String Speciality = rs.getString("speciality");
+				
 				Surgeon surgeon = new Surgeon (id, Name, Surname, Speciality); 
 				surgeons.add(surgeon); //add the surgeon to the list
 			}
@@ -345,6 +355,10 @@ public class JDBCManager implements DBManager { //everything related with the da
 		return surgeons; // return the list
 		
 	}
+	
+	
+		
+	
 	
 	//SEARCH NURSES BY NAME
 	@Override

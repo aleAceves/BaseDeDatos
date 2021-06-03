@@ -58,6 +58,8 @@ public interface DBManager { //add all method we are going to use
 	public void showNurses();
 	public void showOperations(); 
 	void updateSurgeon(int id, String sp);
+	public List<Operation> showOperationsByPatientId(Integer patientId);
+	
 
 	
 	
