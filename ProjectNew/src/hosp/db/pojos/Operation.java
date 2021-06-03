@@ -44,7 +44,7 @@ public class Operation implements Serializable {
 	@XmlAttribute
 	private String type;
 	@XmlElement
-	@XmlJavaTypeAdapter(SQLDateAdapter.class)
+	//@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date startdate; //import from java.sql
 	@XmlAttribute
 	private Integer duration;
@@ -286,9 +286,11 @@ public class Operation implements Serializable {
 	//TO STRING METHOD with everything
 	@Override
 	public String toString() {
-		return "Operation [id=" + id + ", type=" + type + ", startdate=" + startdate + ", duration=" + duration
-				+ ", surgeons=" + surgeons + ", nurses=" + nurses + ", patient=" + patient + ", room=" + room + "]";
+		return "\nOperation [id=" + id + ", type=" + type + ", startdate=" + startdate + ", duration=" + duration
+				+ ", surgeons=" + surgeons + ", nurses=" + nurses + ", patient=" + patient + ", room=" + room + "]"
+						+ "";
 	}
+	
 	
 	
 

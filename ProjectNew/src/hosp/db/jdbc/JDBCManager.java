@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import hosp.db.ifaces.DBManager;
@@ -152,9 +154,9 @@ public class JDBCManager implements DBManager { //everything related with the da
 			
 				String Name = rs.getString("name");
 				String Surname = rs.getString("surname");
-				Nurse n = new Nurse(id, Name, Surname); 
-				System.out.println("hola"
-					);; //show Nurse 
+			System.out.println(new Nurse(id, Name, Surname));
+		
+					//show Nurse 
 			}
 		}catch(Exception e){
 			System.out.println("something went wrong");
@@ -209,7 +211,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 	}
 	
-	/*//TODO //NO FUNCION!!!!
+//TODO //NO FUNCION!!!!
 	// METHOD FOR RETURN A LIST OF OPERATIONS WITH THE SAME ID OF THE SURGEON
 	public List<Operation> showOperationsBySurgeonId(Integer surgeonId){
 		
@@ -222,15 +224,62 @@ public class JDBCManager implements DBManager { //everything related with the da
 			ResultSet rs = p.executeQuery();
 			while (rs.next()) {
 				int operationId = rs.getInt("operation_id");
-				operations.add(this.getOperation(operationId)); //we use the surgeon id, to get the whole surgeon and add it to the new list
+		
+				operations.add(this.getOperation(operationId)); 
+			
+				//we use the surgeon id, to get the whole surgeon and add it to the new list
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		OrderOperations(operations);
 		return operations;
 		
 	}
-	*/
+	
+	
+	
+	public List<Operation> showOperationsByNurseId(Integer nId){
+		
+		List<Operation> operations = new ArrayList<Operation>();//creation of the list is going to return
+		
+		try {
+			String sql = "SELECT * FROM operations_nurses WHERE nurse_id = ?"; //list of rows where the id of the operation is the one that we provided
+			PreparedStatement p = c.prepareStatement(sql);
+			p.setInt(1, nId);
+			ResultSet rs = p.executeQuery();
+			while (rs.next()) {
+				int operationId = rs.getInt("operation_id");
+		
+				operations.add(this.getOperation(operationId)); 
+	
+				//we use the surgeon id, to get the whole surgeon and add it to the new list
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		OrderOperations(operations);
+		return operations;
+		
+	}
+	
+	
+	
+	
+	
+	
+	public void OrderOperations(List<Operation> LISTA){
+	
+		Collections.sort(LISTA, new Comparator<Operation>() {
+			  public int compare(Operation o1, Operation o2) {
+			      return o1.getStartdate().compareTo(o2.getStartdate());
+			  }
+			});
+		
+		
+		
+	}
+	
 	public void addSurgeon(Surgeon surgeon) {
 		//we want to insert the new person into the database
 		//create the statement, the SQL sentence

@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -180,12 +181,9 @@ public class Menu {
 			System.out.println("1:  Add surgeon");
 		    System.out.println("5:  Add a surgeon to an operation");
 			System.out.println("2: Search a surgeon");
-			System.out.println("6: Eliminate a surgeon from an operation");
-			
-			System.out.println("14: Delete a surgeon");
-			
+			System.out.println("6: Eliminate a surgeon from an operation");		
+			System.out.println("14: Delete a surgeon");		
 			System.out.println("21: Update surgeon info");
-			
 			System.out.println("25: Show operations of a surgeon");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
@@ -236,7 +234,8 @@ public class Menu {
 			System.out.println("10: Eliminate a nurse from an operation");		
 			System.out.println("15: Delete a nurse");
 			System.out.println("20: Update nurse info");
-			System.out.println("0: Exit");
+			System.out.println("20: Show operation of a nurse");
+			System.out.println("30: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
 			switch (choice) {
@@ -261,6 +260,8 @@ public class Menu {
 			case 20:
 				updateNurse();
 				break;
+			case 30:
+				listOperationsOfNurse(); 
 			
 			case 0:
 				return;
@@ -360,7 +361,7 @@ public class Menu {
 			
 			switch (choice) {
 			case 1:
-				//;
+				listOperationsOfSurgeon();
 				break;
 			case 2:
 				//;
@@ -392,14 +393,14 @@ public class Menu {
 			
 			switch (choice) {
 			case 1:
-				//;
+	
 				break;
 			case 2:
 				//;
 				break;
 			case 3:
 				//;
-				break;
+	listOperationsOfNurse(); 
 			case 0:
 				return;
 			default:
@@ -452,14 +453,31 @@ private static void listOperationsOfSurgeon() throws Exception {
 	searchSurgeonByName();
 	System.out.println("Please intruduce the id of the surgeon:");
 	int surgeonId = Integer.parseInt(reader.readLine());
-	System.out.println(dbman.getSurgeon(surgeonId)); //seleccionar el id del surgeon
+	System.out.println(dbman.getSurgeon(surgeonId));
+	System.out.println(dbman.showOperationsBySurgeonId(surgeonId));
 	
+	
+	
+	//seleccionar el id del surgeon
 	//y mostrar las operations que tengan ese id para el surgeon
 	//dbman.showOperationsBySurgeonId(surgeonId); //TODO
 	
-	
 }
 
+
+private static void listOperationsOfNurse() throws Exception {
+	//mostrar lista de los surgeons
+	System.out.println("From which Nurse do you want to see the operations?");
+	searchNurseByName();
+	System.out.println("Please intruduce the id of the nurse:");
+	int NId = Integer.parseInt(reader.readLine());
+	System.out.println(dbman.getNurse(NId));
+	System.out.println(dbman.showOperationsByNurseId(NId));
+	
+	
+
+	
+}
 
 
 private static void searchWaitingRoom() throws IOException {
@@ -679,7 +697,7 @@ private static void searchOperationRoom() throws IOException {
 		String name=reader.readLine();
 		System.out.println("Surname:");
 		String surname=reader.readLine();
- 
+		dbman.addNurse(new Nurse(name,surname));
 		
 	}
 	

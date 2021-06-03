@@ -159,7 +159,7 @@ public class Surgeon implements Serializable {
 	@Override
 	public String toString() {
 		return "Surgeon [id=" + id + ", name=" + name + ", surname=" + surname + ", speciality=" + speciality
-				+ "]";
+				+ "]\n";
 	}
 	
 	//Un to string sin que imprima las operations: eso hace el!!!!! 
