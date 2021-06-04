@@ -12,28 +12,31 @@ import hosp.xml.utils.*;
 
 public class DTDCheckerReport {
 
+	//TO PARSE A XML DOCUMENT
     public static void main(String[] args) {
-        File xmlFile = new File("./xmls/External-Report.xml"); 
+        File xmlFile = new File("./xmls/External-Report.xml"); //load the XML file
         try {
         	// Create a DocumentBuilderFactory
-            DocumentBuilderFactory dBF = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory dBF = DocumentBuilderFactory.newInstance(); //create objects that represent XML documents
             // Set it up so it validates XML documents
             dBF.setValidating(true);
             // Create a DocumentBuilder and an ErrorHandler (to check validity)
             DocumentBuilder builder = dBF.newDocumentBuilder();
-            CustomErrorHandler customErrorHandler = new CustomErrorHandler();
-            builder.setErrorHandler(customErrorHandler);
+            CustomErrorHandler customErrorHandler = new CustomErrorHandler(); //detects if the document is valid and well-formed
+            builder.setErrorHandler(customErrorHandler); 
             // Parse the XML file and print out the result
             Document doc = builder.parse(xmlFile);
-            if (customErrorHandler.isValid()) {
+            
+            if (customErrorHandler.isValid()) { //if the document is valid
                 System.out.println(xmlFile + " was valid!");
             }
+            
         } catch (ParserConfigurationException ex) {
-            System.out.println(xmlFile + " error while parsing!");
+            System.out.println(xmlFile + " error while parsing!"); // if the document has an error while parsing 
         } catch (SAXException ex) {
-            System.out.println(xmlFile + " was not well-formed!");
+            System.out.println(xmlFile + " was not well-formed!");  // if the document is not well-formed
         } catch (IOException ex) {
-            System.out.println(xmlFile + " was not accesible!");
+            System.out.println(xmlFile + " was not accesible!"); // if the document is not accesible 
         }
 
     }

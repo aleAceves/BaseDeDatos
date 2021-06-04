@@ -7,21 +7,34 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
+//ANNOTATIONS FOR JPA
 @Entity
 @Table(name = "operatingRooms")
+
+//ANNOTATIONS FOR JAXB
+@XmlAccessorType(XmlAccessType.FIELD) //Put annotations in the "fits" of the class
+//activates the annotations for XML
+
+@XmlRootElement(name = "OperatingRoom") //OperatingRoom can be the group element of an XML document
+@XmlType(propOrder = { "id", "name" })
+//Indicates the order in which all the attributes, elements, objects are in the XML 
 public class OperatingRoom implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2486511277771155480L;
 	@Id
 	@GeneratedValue(generator="operatingRooms")
 	@TableGenerator(name="operatingRooms", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="operatingRooms")
 	
+	@XmlAttribute  //We could use @XmlTransient that makes the id to not appear in the XML document
 	private Integer id;
+	@XmlAttribute
 	private String name;
 	
 	public Integer getId() {

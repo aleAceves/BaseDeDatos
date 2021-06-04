@@ -2,27 +2,42 @@ package hosp.db.pojos;
 
 import java.io.Serializable;
 
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-
+//ANOTATIONS FOR JPA
 @Entity
 @Table(name = "waitingRooms")
+
+//ANNOTATIONS FOR JAXB
+@XmlAccessorType(XmlAccessType.FIELD) //Put annotations in the "fits" of the class
+//activates the annotations for XML
+
+@XmlRootElement(name = "WaitingRoom") //WaitingRoom can be the group element of an XML document
+@XmlType(propOrder = { "id", "name" })
+//Indicates the order in which all the attributes, elements, objects are in the XML 
+
+
 public class WaitingRoom implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7452405030872022152L;
 	@Id
 	@GeneratedValue(generator="waitingRooms")
 	@TableGenerator(name="waitingRooms", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="waitingRooms")
-	
+	 
+	@XmlAttribute  //We could use @XmlTransient that makes the id to not appear in the XML document
 	private Integer id;
+	@XmlAttribute 
 	private String name;
 	
 	

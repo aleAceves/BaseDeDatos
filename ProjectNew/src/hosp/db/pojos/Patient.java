@@ -21,12 +21,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+//ANOTATIONS FOR JPA
 @Entity
 @Table(name = "patients")
 
-@XmlAccessorType(XmlAccessType.FIELD) //activate the annotations for xml
-@XmlRootElement(name="Patient")
+//ANNOTATIONS FOR JAXB
+@XmlAccessorType(XmlAccessType.FIELD) //Put annotations in the "fits" of the class
+//activates the annotations for XML
+
+@XmlRootElement(name = "Patient") //Patient can be the group element of an XML document
 @XmlType(propOrder= {"name", "surname"}) // the proper order of things
+
 public class Patient implements Serializable{
 	
 	
@@ -36,7 +41,7 @@ public class Patient implements Serializable{
 	@TableGenerator(name="patients", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="patients")
 	
-	@XmlAttribute
+	@XmlAttribute  //We could use @XmlTransient that makes the id to not appear in the XML document
 	private Integer id;
 	@XmlAttribute
 	private String name;
@@ -50,7 +55,7 @@ public class Patient implements Serializable{
     @XmlElementWrapper(name = "operations")
 	private List<Operation> operations; //indicate that patient has a one to may relationship with operations
 	
-	
+	@XmlAttribute
 	private WaitingRoom room;
 	
 	//GETTERS AND SETTERS

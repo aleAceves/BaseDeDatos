@@ -1,6 +1,7 @@
 package hosp.db.pojos;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +13,28 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
  //the name is optional, is going to create a table by default with the name of the class
+//ANOTATIONS FOR JPA
+
 @Entity
 @Table(name = "nurses")
+
+//ANNOTATIONS FOR JAXB
+@XmlAccessorType(XmlAccessType.FIELD) //Put annotations in the "fits" of the class
+//activates the annotations for XML
+
+@XmlRootElement(name = "Nurse") //Nurse can be the group element of an XML document
+@XmlType(propOrder = { "name", "surname", "operations" })
+//Indicates the order in which all the attributes, elements, objects are in the XML 
 
 public class Nurse implements Serializable {
 	
@@ -31,16 +47,20 @@ public class Nurse implements Serializable {
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="nurses")
 	
 	
-	@XmlAttribute //id is not going to appear on a xml; also for photos
+	@XmlAttribute //id is not going to appear on a XML; also for photos 
+	 //We could use @XmlTransient that makes the id to not appear in the XML document
 	private Integer id;
-	@XmlElement
+	@XmlElement //Add an element inside the root element //turns an attribute into an element
 	private String name;
-	@XmlElement
+	@XmlElement 
 	private String surname;
-	@XmlElement	
+	
 	@ManyToMany
 	@JoinTable(name="operations_nurses")
 
+	//Creates an XML for each thing on the list
+	@XmlElement(name= "Operation") //Specify optionally the name
+	@XmlElementWrapper(name= "Operation") //Wrapper is an element which contains elements inside
 	private List<Operation> operations; //The nurse has a list of operations, many to many relationship
 
 	

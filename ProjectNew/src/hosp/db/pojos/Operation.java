@@ -26,11 +26,18 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import hosp.xml.utils.SQLDateAdapter;
 
+//ANOTATIONS FOR JPA
 @Entity
 @Table(name = "operations")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "Operation")
-@XmlType(propOrder = { "id", "type", "startdate", "duration", "surgeons","nurses","patient","room" })
+
+//ANNOTATIONS FOR JAXB
+@XmlAccessorType(XmlAccessType.FIELD) //Put annotations in the "fits" of the class
+//activates the annotations for XML
+
+@XmlRootElement(name = "Operation") //Operation can be the group element of an XML document
+@XmlType(propOrder = { "type", "startdate", "duration", "surgeons","nurses","patient","room" })
+//Indicates the order in which all the attributes, elements, objects are in the XML 
+
 public class Operation implements Serializable {
 	
 	
@@ -39,11 +46,12 @@ public class Operation implements Serializable {
 	@GeneratedValue(generator="operations")
 	@TableGenerator(name="operations", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="operations")
-	@XmlAttribute
+	
+	@XmlAttribute  //We could use @XmlTransient that makes the id to not appear in the XML document
 	private Integer id;
-	@XmlAttribute
+	@XmlAttribute  
 	private String type;
-	@XmlElement
+	@XmlElement 
 	//@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date startdate; //import from java.sql
 	@XmlAttribute
@@ -62,8 +70,8 @@ public class Operation implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY) //to save time, we do not need to access all time to it.
 	@JoinColumn(name = "patient_id") //use to indicate in the side of the many we are going to have a foreign key, and we specify the name of the column
 	private Patient patient;
+	
 	@XmlAttribute
-
 	private OperatingRoom room;
 	
 	//CREATION OF GETTERS AND SETTERS

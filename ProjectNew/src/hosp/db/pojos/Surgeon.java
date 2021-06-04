@@ -12,26 +12,38 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
+//ANOTATIONS FOR JPA
 @Entity
 @Table(name = "surgeons")
 
+//ANNOTATIONS FOR JAXB
+@XmlAccessorType(XmlAccessType.FIELD) //Put annotations in the "fits" of the class 
+//Activates the annotations for XML
+
+@XmlRootElement(name = "Surgeon") //Surgeon can be the group element of an XML document
+@XmlType(propOrder = { "id", "name", "surname", "speciality", "operations" })
+//Indicates the order in which all the attributes, elements, objects are in the XML 
+
 public class Surgeon implements Serializable {
 
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -4442487532035713640L;
 	
 	@Id
 	@GeneratedValue(generator="surgeons")
 	@TableGenerator(name="surgeons", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="surgeons")
-	@XmlAttribute
+	
+	@XmlAttribute     //We could use @XmlTransient that makes the id to not appear in the XML document
 	private Integer id;
 	@XmlAttribute
 	private String name;
@@ -42,8 +54,11 @@ public class Surgeon implements Serializable {
 	
 	
 	@ManyToMany
-	@XmlElement
 	@JoinTable(name="operations_surgeons")
+	
+	//Creates an XML for each thing on the list
+	@XmlElement(name= "Operation") //Specify optionally the name
+	@XmlElementWrapper(name= "Operation") //Wrapper is an element which contains elements inside
 	private List<Operation> operations;
 	
 	/* ,
