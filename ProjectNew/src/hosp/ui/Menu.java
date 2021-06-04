@@ -96,12 +96,16 @@ public class Menu {
 			System.out.println("Wrong email or password");
 			return;
 		} else if (user.getRole().getName().equalsIgnoreCase("admin")) {
+			
 			adminMenu();
 		} else if (user.getRole().getName().equalsIgnoreCase("surgeon")) {
+			
 			surgeonMenu(); //TODO
 		} else if (user.getRole().getName().equalsIgnoreCase("nurse")) {
+			
 			nurseMenu();//TODO
 		} else if (user.getRole().getName().equalsIgnoreCase("patient")) {
+			
 			patientMenu();//TODO
 		}
 		
@@ -179,12 +183,12 @@ public class Menu {
 			System.out.println("~ ~ ~ ~ MENU FOR MANAGE SURGEONS ~ ~ ~ ~");
 			System.out.println("Choose an option:");
 			System.out.println("1:  Add surgeon");
-		    System.out.println("5:  Add a surgeon to an operation");
-			System.out.println("2: Search a surgeon");
-			System.out.println("6: Eliminate a surgeon from an operation");		
-			System.out.println("14: Delete a surgeon");		
-			System.out.println("21: Update surgeon info");
-			System.out.println("25: Show operations of a surgeon");
+		    System.out.println("2:  Add a surgeon to an operation");
+			System.out.println("3: Search a surgeon");
+			System.out.println("4: Eliminate a surgeon from an operation");		
+			System.out.println("5: Delete a surgeon");		
+			System.out.println("6: Update surgeon info");
+			System.out.println("7: Show operations of a surgeon");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
@@ -196,22 +200,22 @@ public class Menu {
 				searchSurgeonByName();
 				break;
 			
-			case 5: 
+			case 3: 
 				hireSurgeon();
 				break;
-			case 6:
+			case 4:
 				fireSurgeon();
 				break;
 			
-			case 14:
+			case 5:
 				deleteSurgeon();
 				break;
 			
-			case 21:
+			case 6:
 				updateSurgeon();
 				break;
 			
-			case 25:
+			case 7:
 				listOperationsOfSurgeon();
 			case 0:
 				return;
@@ -228,39 +232,39 @@ public class Menu {
 			System.out.println("~ ~ ~ ~ MENU FOR MANAGE NURSES ~ ~ ~ ~");
 			System.out.println("Choose an option:");
 			
-            System.out.println("7:  Add a nurse");
-			System.out.println("8: Search a nurse");
-			System.out.println("9: Add a nurse to an operation");
-			System.out.println("10: Eliminate a nurse from an operation");		
-			System.out.println("15: Delete a nurse");
-			System.out.println("20: Update nurse info");
-			System.out.println("20: Show operation of a nurse");
-			System.out.println("30: Exit");
+            System.out.println("1:  Add a nurse");
+			System.out.println("2: Search a nurse");
+			System.out.println("3: Add a nurse to an operation");
+			System.out.println("4: Eliminate a nurse from an operation");		
+			System.out.println("5: Delete a nurse");
+			System.out.println("6: Update nurse info");
+			System.out.println("7: Show operation of a nurse");
+			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
 			switch (choice) {
 			
-			case 7:
+			case 1:
 				addNurse();
 				break;
-			case 8:
+			case 2:
 				searchNurseByName();
 				break;
-			case 9:
+			case 3:
 				hireNurse();
 				break;
-			case 10:
+			case 4:
 				fireNurse();
 				break;
 			
-			case 15:
+			case 5:
 				deleteNurse();
 				break;
 			
-			case 20:
+			case 6:
 				updateNurse();
 				break;
-			case 30:
+			case 7:
 				listOperationsOfNurse(); 
 			
 			case 0:
@@ -278,27 +282,27 @@ public class Menu {
 		do {
 			System.out.println("~ ~ ~ ~ MENU FOR MANAGE PATIENTS ~ ~ ~ ~");
 			System.out.println("Choose an option:");
-			System.out.println("11: Add a patient");
-			System.out.println("12: Search a patient");
-			System.out.println("16: Delete a patient");
-			System.out.println("18: Update patient information");
+			System.out.println("1: Add a patient");
+			System.out.println("2: Search a patient");
+			System.out.println("3: Delete a patient");
+			System.out.println("4: Update patient information");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
 			switch (choice) {
 			
-			case 11:
+			case 1:
 				addPatient();
 				break;
-			case 12:
+			case 2:
 				searchPatientByName();
 				break;
 			
-			case 16:
+			case 3:
 				deletePatient();
 				break;
 			
-			case 18:
+			case 4:
 				updatePatient();
 				break;
 			
@@ -316,23 +320,23 @@ public class Menu {
 		do {
 			System.out.println("~ ~ ~ ~ MENU FOR MANAGE OPERATIONS ~ ~ ~ ~");
 			System.out.println("Choose an option:");
-			System.out.println("3:  Add an operation");
-			System.out.println("17: Delete an operation");
-			System.out.println("19: Update operation info");
+			System.out.println("1:  Add an operation");
+			System.out.println("2: Delete an operation");
+			System.out.println("3: Update operation info");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
 			switch (choice) {
 			
-			case 3:
+			case 1:
 				addOperation();
 				break;
 			
-			case 17:
+			case 2:
 				deleteOperation();
 				break;
 			
-			case 19:
+			case 3:
 				updateOperation();
 				break;
 			
@@ -351,11 +355,10 @@ public class Menu {
 	private static void surgeonMenu() throws Exception{
 		
 		do {
-			System.out.println("~ ~ ~ ~ SURGEON MENU ~ ~ ~ ~");
+			System.out.println(" \t ~ ~ ~ ~ SURGEON MENU ~ ~ ~ ~");
 			System.out.println("Choose an option:");
 			System.out.println("1: Check schedule");
 			System.out.println("2: Check your personal information");
-			System.out.println("3: Check operations");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
@@ -364,10 +367,7 @@ public class Menu {
 				listOperationsOfSurgeon();
 				break;
 			case 2:
-				//;
-				break;
-			case 3:
-				//;
+				showPersonalInfoSurgeon();
 				break;
 			case 0:
 				return;
@@ -380,27 +380,28 @@ public class Menu {
 		
 	}
 	
-    private static void nurseMenu() throws Exception{
+	
+
+
+
+
+	private static void nurseMenu() throws Exception{
 		
 		do {
-			System.out.println("~ ~ ~ ~ MENU FOR NURSES ~ ~ ~ ~");
+			System.out.println("\t ~ ~ ~ ~ MENU FOR NURSES ~ ~ ~ ~");
 			System.out.println("Choose an option:");
 			System.out.println("1: Check schedule");
 			System.out.println("2: Check your personal information");
-			System.out.println("3: Check operations");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
 			switch (choice) {
 			case 1:
-	
+				listOperationsOfNurse(); 
 				break;
 			case 2:
-				//;
+				showPersonalInfoNurse();
 				break;
-			case 3:
-				//;
-	listOperationsOfNurse(); 
 			case 0:
 				return;
 			default:
@@ -419,20 +420,18 @@ public class Menu {
 		System.out.println("Choose an option:");
 		System.out.println("1: Check schedule");
 		System.out.println("2: Check your personal information");
-		System.out.println("3: Check operations");
+		//System.out.println("3: Check operations");
 		System.out.println("0: Exit");
 		int choice = Integer.parseInt(reader.readLine());
 		
 		switch (choice) {
 		case 1:
-			//;
+			listOperationsOfPatient(); 
 			break;
 		case 2:
-			//;
+			showPersonalInfoPatient();
 			break;
-		case 3:
-			//;
-			break;
+
 		case 0:
 			return;
 		default:
@@ -446,27 +445,11 @@ public class Menu {
 	
 	
 	
-    // THIS METHODS ASK FOR THE ID OF THE SURGEON, FOR THE ADMINISTRATOR
-private static void listOperationsOfSurgeon() throws Exception {
-	//mostrar lista de los surgeons
-	System.out.println("From which surgeon do you want to see the operations?");
-	searchSurgeonByName();
-	System.out.println("Please intruduce the id of the surgeon:");
-	int surgeonId = Integer.parseInt(reader.readLine());
-	System.out.println(dbman.getSurgeon(surgeonId));
-	System.out.println(dbman.showOperationsBySurgeonId(surgeonId));
-	
-	
-	
-	//seleccionar el id del surgeon
-	//y mostrar las operations que tengan ese id para el surgeon
-	//dbman.showOperationsBySurgeonId(surgeonId); //TODO
-	
-}
 
 
+
+//SHOW THE OPERATIONS FOR THE NURSE
 private static void listOperationsOfNurse() throws Exception {
-	//mostrar lista de los surgeons
 	System.out.println("From which Nurse do you want to see the operations?");
 	searchNurseByName();
 	System.out.println("Please intruduce the id of the nurse:");
@@ -474,8 +457,6 @@ private static void listOperationsOfNurse() throws Exception {
 	System.out.println(dbman.getNurse(NId));
 	System.out.println(dbman.showOperationsByNurseId(NId));
 	
-	
-
 	
 }
 
@@ -641,6 +622,29 @@ private static void searchOperationRoom() throws IOException {
 		System.out.println("Patient updated:\n" + p);
 		        
 	} 
+    // THIS METHODS ASK FOR THE ID OF THE PATIENT, FOR THE ADMINISTRATOR
+	private static void listOperationsOfPatient() throws Exception {
+	System.out.println("From which patient do you want to see the operations?");
+	searchPatientByName();
+	System.out.println("Please intruduce the id of the surgeon:");
+	int patientId = Integer.parseInt(reader.readLine());
+	System.out.println(dbman.getPatient(patientId));
+	System.out.println(dbman.showOperationsByPatientId(patientId));
+	
+	
+}
+	
+	//SHOW THE PERSONAL INFORMATION OF EACH PATIENT: SUBMENU FOR PATIENT
+    private static void showPersonalInfoPatient() throws Exception{
+    	System.out.println("Type your ID:");
+    	int pId=Integer.parseInt(reader.readLine());
+    	Patient patient=dbman.getPatient(pId);
+    	
+    	System.out.println("Your name:" +patient.getName());
+    	System.out.println("Your surname:" +patient.getSurname());
+    	
+
+	}
 
 	
 //-----------------------------------------------------------------------
@@ -710,6 +714,18 @@ private static void searchOperationRoom() throws IOException {
 		System.out.println("Deletion completed.");
 		
 	}
+	
+	//SHOW THE PERSONAL INFORMATION OF EACH NURSE: SUBMENU FOR NURSE
+    private static void showPersonalInfoNurse() throws Exception{
+    	System.out.println("Type your ID:");
+    	int nurseId=Integer.parseInt(reader.readLine());
+    	Nurse s=dbman.getNurse(nurseId);
+    	
+    	System.out.println("Your name:" +s.getName());
+    	System.out.println("Your surname:" +s.getSurname());
+    	
+
+	}
 
 	
 //----------------------------------------------------------------------------
@@ -726,6 +742,7 @@ private static void searchOperationRoom() throws IOException {
 			String surname=reader.readLine();
 			System.out.println("Speciality:");
 			String speciality=reader.readLine();
+			
 			dbman.addSurgeon(new Surgeon(name,surname,speciality));
 			
 		}
@@ -804,6 +821,29 @@ private static void searchOperationRoom() throws IOException {
 		
 		
 	}
+    // THIS METHODS ASK FOR THE ID OF THE SURGEON, FOR THE ADMINISTRATOR
+	private static void listOperationsOfSurgeon() throws Exception {
+	System.out.println("From which surgeon do you want to see the operations?");
+	searchSurgeonByName();
+	System.out.println("Please intruduce the id of the surgeon:");
+	int surgeonId = Integer.parseInt(reader.readLine());
+	System.out.println(dbman.getSurgeon(surgeonId));
+	System.out.println(dbman.showOperationsBySurgeonId(surgeonId));
+	
+	
+}
+	
+	//SHOW THE PERSONAL INFORMATION OF EACH SURGEON: SUBMENU FOR SURGEON
+    private static void showPersonalInfoSurgeon() throws Exception{
+    	System.out.println("Type your ID:");
+    	int surgeonId=Integer.parseInt(reader.readLine());
+    	Surgeon s=dbman.getSurgeon(surgeonId);
+    	
+    	System.out.println("Your name:" +s.getName());
+    	System.out.println("Your surname:" +s.getSurname());
+    	System.out.println("Your speciality:" +s.getSpeciality());
+
+	}
 	
 	
 //-----------------------------------------------------------------------------
@@ -851,7 +891,7 @@ private static void searchOperationRoom() throws IOException {
 	
 	// DELETE OPERATION USING JPA
 	private static void deleteOperation() throws Exception{
-dbman.showOperations();
+		dbman.showOperations();
 
 		System.out.println("Choose the operation you wantto eliminate:");
 		
@@ -878,149 +918,7 @@ dbman.showOperations();
 		
 	}
 
-	/*
-//---------------------------------------------------------
 
-	//USER MENU
-
-//----------------------------------------------------
-			
-	private static void userMenu()throws Exception {
-		// TODO Auto-generated method stub
-		do {
-			System.out.println("Who are you?:");
-			//TODO
-			System.out.println("1: Surgeon ");
-			System.out.println("2: Nurse ");
-			System.out.println("3: Patient ");
-			System.out.println("0: Exit ");
-			int choice = Integer.parseInt(reader.readLine());
-			
-			switch (choice) {
-			case 1:
-				surgeonMenu();
-				break;
-			case 2:
-				nurseMenu();
-				break;
-			case 3:
-				patientMenu();
-				break;
-			case 0:
-				return;
-			default:
-				break;	
-			}
-			
-		}while(true); // to show again the menu
-
-}
-	
-	
-//---------------------------------------------------
-	
-	//SURGEON MENU
-	
-//-------------------------------------------------
-	
-	
-	private static void surgeonMenu()throws Exception {
-		// TODO Auto-generated method stub
-		do {
-			System.out.println("Choose an option:");
-			System.out.println("1: Check schedule");
-			System.out.println("2: Check rooms");
-			System.out.println("0: Exit");
-			int choice = Integer.parseInt(reader.readLine());
-			
-			switch (choice) {
-			case 1:
-				
-				break;
-			case 2:
-				
-				break;
-			case 0:
-				return;
-			default:
-				break;	
-			}
-			
-		}while(true); // to show again the menu
-
-}
-	
-	
-
-	
-	
-	
-//----------------------------------------------------------
-	
-	//NURSES MENU
-	
-//--------------------------------------------------------
-	
-	private static void nurseMenu()throws Exception {
-		// TODO Auto-generated method stub
-		do {
-			System.out.println("Choose an option:");
-			System.out.println("1: Check schedule");
-			System.out.println("2: Check rooms");
-			System.out.println("0: Exit");
-			int choice = Integer.parseInt(reader.readLine());
-			
-			switch (choice) {
-			case 1:
-			
-				break;
-			case 2:
-				
-				break;
-			case 0:
-				return;
-			default:
-				break;	
-			}
-			
-		}while(true); // to show again the menu
-
-}
-	
-	
-	
-	
-//----------------------------------------------------
-	
-	//PATIENT MENU
-	
-//--------------------------------------------------------
-	private static void patientMenu()throws Exception {
-		// TODO Auto-generated method stub
-		do {
-			System.out.println("Choose an option:");
-			System.out.println("1: Check schedule");
-			System.out.println("2: Check rooms");
-			System.out.println("0: Exit");
-			int choice = Integer.parseInt(reader.readLine());
-			
-			switch (choice) {
-			case 1:
-				
-				break;
-			case 2:
-				
-				break;
-			case 0:
-				return;
-			default:
-				break;	
-			}
-			
-		}while(true); // to show again the menu
-
-}
-*/	
 	
 }
 		

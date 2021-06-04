@@ -40,6 +40,7 @@ public class Surgeon implements Serializable {
 	@XmlAttribute
 	private String speciality;
 	
+	
 	@ManyToMany
 	@XmlElement
 	@JoinTable(name="operations_surgeons")
@@ -119,6 +120,7 @@ public class Surgeon implements Serializable {
 		this.surname = surname;
 		this.speciality = speciality;
 		this.operations = operations;
+		
 	}
 	
 	//CONSTRUCTOR WITHOUT THE ID
@@ -128,6 +130,7 @@ public class Surgeon implements Serializable {
 		this.surname = surname;
 		this.speciality = speciality;
 		this.operations = operations;
+		
 	}
 	
 	//constructor without parameter
@@ -141,6 +144,7 @@ public class Surgeon implements Serializable {
 		this.surname=surname;
 		this.speciality=speciality;
 		this.operations=new ArrayList<Operation>();
+	
 	}
 	
 	
@@ -152,6 +156,7 @@ public class Surgeon implements Serializable {
 		this.surname = surname;
 		this.speciality = speciality;
 		this.operations=new ArrayList<Operation>(); //to initialize the list
+		
 	}
 	// TO STRING METHOD
 	// since is a many to many relationship, the surgeons shows all the operations but the ToString of operation do not show the surgeon
@@ -159,8 +164,9 @@ public class Surgeon implements Serializable {
 	@Override
 	public String toString() {
 		return "Surgeon [id=" + id + ", name=" + name + ", surname=" + surname + ", speciality=" + speciality
-				+ "]\n";
+				+"]\n";
 	}
+
 	
 	//Un to string sin que imprima las operations: eso hace el!!!!! 
 	
