@@ -18,7 +18,7 @@ public interface DBManager { //add all method we are going to use
 	public void fireSurgeon(int operationId, int surgeonId);
 	public List<Surgeon> getSurgeonsOfOperation(int operationId); //surgeons that participate in a given operation
 	public void deleteSurgeon(int surgeonId);
-	void updateSurgeon(int id);
+	
 	
 	
 	//FOR OPERATION
@@ -27,9 +27,8 @@ public interface DBManager { //add all method we are going to use
 	public List<Operation> searchOperationByName(String name);
 	void deleteOperation(int operationId);
 	public void updateOperation(int id,String type);
-	public List<Operation> showOperationsBySurgeonId(Integer surgeonId); //TODO
-	//public List<Operation> getOperationsOfPatient(int OperationId);
-
+	public List<Operation> showOperationsBySurgeonId(Integer surgeonId);
+	
 	
 	//FOR THE NURSES
 	public void addNurse(Nurse nurse);
@@ -48,7 +47,6 @@ public interface DBManager { //add all method we are going to use
 	public void hirePatient(Patient patient);
 	void deleteNurse(int nurseId);
 	public void deletePatient(int patientId);
-	public void updatePatient(Patient p);
 	public OperatingRoom getOperationRoom(int id);
 	public List<OperatingRoom> selectOperatingRooms();
 	public void addOperationRoom(OperatingRoom operatingRoom);

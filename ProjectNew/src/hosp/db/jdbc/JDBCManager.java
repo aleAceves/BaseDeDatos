@@ -719,7 +719,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 	public void deleteSurgeon(int surgeonId) {
 		
 		try {
-			String sql = "DELETE FROM surgeons WHERE id=?";
+			String sql = "DELETE * FROM surgeons WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setInt(1, surgeonId);
 			prep.executeUpdate();
@@ -777,7 +777,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 	}
 
 
-	public void updateSurgeon(int id, String sp) {  //TODO
+	public void updateSurgeon(int id, String sp) {  
 		try {
 			String sql = "UPDATE surgeons SET speciality=? WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
@@ -808,19 +808,8 @@ public class JDBCManager implements DBManager { //everything related with the da
 		}
 		
 	}
-	public void updatePatient(Patient p) {  //TODO
-		try {
-			String sql = "UPDATE patients SET name=?,surname=? WHERE id=?";
-			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setString(1, p.getName());
-			prep.setString(2, p.getSurname());
-			prep.executeUpdate();
-			prep.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-	}
+	
+	
 
 	@Override
 	public OperatingRoom getOperationRoom(int id) {
@@ -919,11 +908,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 	}
 
-	@Override
-	public void updateSurgeon(int id) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 }
 

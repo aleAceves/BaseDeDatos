@@ -100,13 +100,13 @@ public class Menu {
 			adminMenu();
 		} else if (user.getRole().getName().equalsIgnoreCase("surgeon")) {
 			
-			surgeonMenu(); //TODO
+			surgeonMenu(); 
 		} else if (user.getRole().getName().equalsIgnoreCase("nurse")) {
 			
-			nurseMenu();//TODO
+			nurseMenu();
 		} else if (user.getRole().getName().equalsIgnoreCase("patient")) {
 			
-			patientMenu();//TODO
+			patientMenu();
 		}
 		
 		
@@ -182,9 +182,9 @@ public class Menu {
 			
 			System.out.println("~ ~ ~ ~ MENU FOR MANAGE SURGEONS ~ ~ ~ ~");
 			System.out.println("Choose an option:");
-			System.out.println("1:  Add surgeon");
-		    System.out.println("2:  Add a surgeon to an operation");
-			System.out.println("3: Search a surgeon");
+			System.out.println("1: Add surgeon");
+		    System.out.println("2: Search a surgeon");
+			System.out.println("3: Add a surgeon to an operation");
 			System.out.println("4: Eliminate a surgeon from an operation");		
 			System.out.println("5: Delete a surgeon");		
 			System.out.println("6: Update surgeon info");
@@ -237,8 +237,7 @@ public class Menu {
 			System.out.println("3: Add a nurse to an operation");
 			System.out.println("4: Eliminate a nurse from an operation");		
 			System.out.println("5: Delete a nurse");
-			System.out.println("6: Update nurse info");
-			System.out.println("7: Show operation of a nurse");
+			System.out.println("6: Show operation of a nurse");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
@@ -260,11 +259,8 @@ public class Menu {
 			case 5:
 				deleteNurse();
 				break;
-			
+
 			case 6:
-				updateNurse();
-				break;
-			case 7:
 				listOperationsOfNurse(); 
 			
 			case 0:
@@ -285,7 +281,6 @@ public class Menu {
 			System.out.println("1: Add a patient");
 			System.out.println("2: Search a patient");
 			System.out.println("3: Delete a patient");
-			System.out.println("4: Update patient information");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
@@ -300,10 +295,6 @@ public class Menu {
 			
 			case 3:
 				deletePatient();
-				break;
-			
-			case 4:
-				updatePatient();
 				break;
 			
 			case 0:
@@ -323,6 +314,9 @@ public class Menu {
 			System.out.println("1:  Add an operation");
 			System.out.println("2: Delete an operation");
 			System.out.println("3: Update operation info");
+			System.out.println("4: Add an operating room");
+			System.out.println("5: Update operating room");
+			
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
@@ -339,7 +333,13 @@ public class Menu {
 			case 3:
 				updateOperation();
 				break;
-			
+				
+			case 4:
+				addOperationRoom();
+				break;
+			case 5:
+				updateOperatingRoom();
+				break;
 			case 0:
 				return;
 			default:
@@ -352,6 +352,33 @@ public class Menu {
 
 	
 	
+	
+	private static void updateOperatingRoom() throws Exception {
+		// TODO Auto-generated method stub
+		userman.showOperationRooms();
+		
+		System.out.println("Choose a room, type its ID: ");
+		Integer id = Integer.parseInt(reader.readLine());
+		String answer;
+		OperatingRoom or = dbman.getOperationRoom(id);
+		System.out.println("Do you want to change the room name?");
+		System.out.println("Y/N");
+		answer = reader.readLine();
+		if (answer.equalsIgnoreCase("Y")) {
+			System.out.print("Type the new name type. ");
+			
+			String room_type = reader.readLine();
+			if (room_type.equalsIgnoreCase("S"))
+				or.setName(room_type);
+			}
+		userman.updateOperatingRoom(or);
+		System.out.println("Room updated:\n" + or);
+		}
+		
+		
+
+
+
 	private static void surgeonMenu() throws Exception{
 		
 		do {
@@ -513,18 +540,11 @@ private static void searchOperationRoom() throws IOException {
 
 	
 
-	private static void updateNurse() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
 	private static void updateOperation() {
-		// TODO Auto-generated method stub
+		
 		dbman.showOperations();
 		
-		System.out.println("Please intro the id of the soperation to update");
+		System.out.println("Please intro the id of the operation to update");
 		try {
 			int operationId = Integer.parseInt(reader.readLine());
 			System.out.println(dbman.getSurgeon(operationId));
@@ -533,7 +553,7 @@ private static void searchOperationRoom() throws IOException {
 			dbman.updateOperation(operationId, sp);
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
@@ -568,14 +588,8 @@ private static void searchOperationRoom() throws IOException {
 		
 	}
 	
-	// DELETE PATIENT USING JPA
+	// DELETE PATIENT 
 	public static void deletePatient() throws Exception {
-		/*
-		List<Patient> list = userman.selectPatients();// with jpa
-		for (Patient p : list) {
-			System.out.println(p.toString());
-		}
-		*/
 		System.out.println("Choose a patient, type its ID: ");
 		searchPatientByName();
 		
@@ -589,40 +603,7 @@ private static void searchOperationRoom() throws IOException {
 
 	}
 	
-	// UPDATE PATIENT USING JPA
-	private static void updatePatient() throws Exception { //NO FUNCIONA!!!
-		// TODO Auto-generated method stub
-		
-		System.out.println("Choose a patient, type its ID: ");
-		searchPatientByName();
-		System.out.println("Type the patient's id:");
-		int patientId = Integer.parseInt(reader.readLine());
-		Patient p = dbman.getPatient(patientId);
-		
-		System.out.println("Do you want to change the name?");
-		System.out.println("Y/N");
-		String answer;
-		answer = reader.readLine();
-		if (answer.equalsIgnoreCase("Y")) {
-			System.out.print("Type the new patient's name: ");
-			p.setName(reader.readLine());
-		}
-		
-		System.out.println("Do you want to change the surname?");
-		System.out.println("Y/N");
-		
-		answer = reader.readLine();
-		if (answer.equalsIgnoreCase("Y")) {
-			System.out.print("Type the new patient's surname: ");
-			p.setName(reader.readLine());
-		}
-		
-		//userman.updatePatient(p); //using jpa
-		dbman.updatePatient(p);
-		System.out.println("Patient updated:\n" + p);
-		        
-	} 
-    // THIS METHODS ASK FOR THE ID OF THE PATIENT, FOR THE ADMINISTRATOR
+	    // THIS METHODS ASK FOR THE ID OF THE PATIENT, FOR THE ADMINISTRATOR
 	private static void listOperationsOfPatient() throws Exception {
 	System.out.println("From which patient do you want to see the operations?");
 	searchPatientByName();
@@ -710,8 +691,20 @@ private static void searchOperationRoom() throws IOException {
 		searchNurseByName();
 		System.out.println("Type the nurse's id:");
 		int nurseId = Integer.parseInt(reader.readLine());
-		dbman.deleteNurse(nurseId);
+		userman.deleteNurse(nurseId);
 		System.out.println("Deletion completed.");
+		
+	/*	
+		System.out.println("Choose a patient, type its ID: ");
+		searchPatientByName();
+		
+		System.out.println("Choose a patient to delete, type its ID: ");
+		Integer id = Integer.parseInt(reader.readLine());
+		//userman.deletePatient(id);// jpa
+		dbman.deletePatient(id);
+		System.out.println("Deletion completed.");
+
+	*/	
 		
 	}
 	
@@ -726,6 +719,10 @@ private static void searchOperationRoom() throws IOException {
     	
 
 	}
+    
+
+	
+		
 
 	
 //----------------------------------------------------------------------------
@@ -747,8 +744,7 @@ private static void searchOperationRoom() throws IOException {
 			
 		}
 	 
-	private static void deleteSurgeon() throws 
-	Exception { //TODO
+	private static void deleteSurgeon() throws Exception { //TODO
 		
 		searchSurgeonByName();
 		System.out.println("Type the surgeon's id to eliminate:");
@@ -758,12 +754,13 @@ private static void searchOperationRoom() throws IOException {
 		
 	
 		
+	
+		
 	}
 	private static void updateSurgeon() {
 		try {
 			searchSurgeonByName();
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		System.out.println("Please intruduce the id of the surgeon to update");
@@ -776,7 +773,6 @@ private static void searchOperationRoom() throws IOException {
 			dbman.updateSurgeon(surgeonId, sp);
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 			}

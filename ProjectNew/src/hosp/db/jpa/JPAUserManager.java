@@ -1,5 +1,7 @@
 package hosp.db.jpa;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -12,11 +14,14 @@ import javax.persistence.Query;
 
 import hosp.db.ifaces.UserManager;
 import hosp.db.pojos.Nurse;
+import hosp.db.pojos.OperatingRoom;
 import hosp.db.pojos.Operation;
 import hosp.db.pojos.Patient;
 import hosp.db.pojos.Surgeon;
 import hosp.db.pojos.users.Role;
 import hosp.db.pojos.users.User;
+
+
 
 
 
@@ -55,58 +60,48 @@ public class JPAUserManager implements UserManager {
 	}
 	
 
-	// delete surgeon using JDBC
-	@Override
 	
-	public void deleteSurgeon(Integer surgeonId) {
-		int s_id = surgeonId; 
-		Query q2 = em.createNativeQuery("SELECT * FROM surgeons WHERE id = ?", Surgeon.class);
-		q2.setParameter(1, s_id);
-		Surgeon s = (Surgeon) q2.getSingleResult();
-		em.getTransaction().begin();
-		System.out.println(s);
-		em.remove(s);
-		em.getTransaction().commit();
-
-		
-	}
 	
-	//delete nurse using JDBC
+	//delete nurse using JPA
 	@Override
 	public void deleteNurse(Integer nurseId) {
+
+		Query q2 = em.createNativeQuery("SELECT * FROM nurses WHERE id = ?", Nurse.class);
 		
-	
-		int nu_id = nurseId;
-		Query q2 = em.createNativeQuery("SELECT * FROM nurses WHERE id = ?", Patient.class);
-		q2.setParameter(1, nu_id);
-		Nurse p = (Nurse) q2.getSingleResult();
+		q2.setParameter(1, nurseId);
+		
+		Nurse n1 = (Nurse) q2.getSingleResult();
+		
 		em.getTransaction().begin();
-		em.remove(p);
+		em.remove(n1);
+		
 		em.getTransaction().commit();    
 		
+	}
+	
+	
+	//UPDATE OPERATING ROOM
+	@Override
+	public void updateOperatingRoom(OperatingRoom or){
 		
-	}
-	
-	//delete patient using JPA
-	@Override
-	
-	public void deletePatient(Integer id) {
-
-		int patient_id = id;
-		Query q2 = em.createNativeQuery("SELECT * FROM patients WHERE id = ?", Patient.class);
-		q2.setParameter(1, patient_id);
-		Patient p = (Patient) q2.getSingleResult();
+		// Begin transaction
 		em.getTransaction().begin();
-		em.remove(p);
-		em.getTransaction().commit();      
+		// Make changes
+		em.flush();
+		// End transaction
+		em.getTransaction().commit();
+
+
 	}
 	
 	
+	//TODO
+	
 	@Override
-	public List<Patient> selectPatients() {
-		Query q1 = em.createNativeQuery("SELECT * FROM patients", Patient.class);
-		List <Patient> patients= (List<Patient>) q1.getResultList();
-		return patients;
+	public List<OperatingRoom> showOperationRooms() {
+		Query q1 = em.createNativeQuery("SELECT * FROM operating_room", OperatingRoom.class);
+		List <OperatingRoom> rooms= (List<OperatingRoom>) q1.getResultList();
+		return rooms;
 	}
 
 	//delete operation using JPA
@@ -125,21 +120,6 @@ public class JPAUserManager implements UserManager {
 	}
 	
 	
-	//update patient using JPA
-	@Override
-	public void updatePatient(Patient p) {
-		// Begin transaction
-	
-		em.getTransaction().begin();
-		EntityTransaction  t = em.getTransaction(); 
-		t.begin();
-		t.commit();
-		// Make changes
-		em.flush();
-		// End transaction
-		em.getTransaction().commit();
-
-	}
 
 	@Override
 	public void newUser(User u) {
