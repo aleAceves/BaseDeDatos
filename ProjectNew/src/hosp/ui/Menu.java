@@ -65,13 +65,13 @@ public class Menu {
 		dbman.connect();
 		userman.connect();
 		
-		
+	
 		do {
 			System.out.println("Choose an option:");
 			System.out.println("1: Register");
 			System.out.println("2: Log in");
-	
 			System.out.println("0: Exit");
+			try {
 			int choice = Integer.parseInt(reader.readLine());
 			
 			switch (choice) {
@@ -89,8 +89,12 @@ public class Menu {
 				break;
 			default:
 				break;	
-			}
 			
+		}}catch(NumberFormatException nfe){
+			System.out.println("Please type one of the valids Integers");
+		}
+			
+		
 		}while(true); // to show again the menu
 
 		}
@@ -110,17 +114,15 @@ public class Menu {
 			System.out.println("Wrong email or password");
 			return;
 		} else if (user.getRole().getName().equalsIgnoreCase("admin")) {
-			
 			adminMenu();
 		} else if (user.getRole().getName().equalsIgnoreCase("surgeon")) {
-			
-			surgeonMenu(); 
+			surgeonMenu(user); 
 		} else if (user.getRole().getName().equalsIgnoreCase("nurse")) {
 			
-			nurseMenu();
+			nurseMenu(user);
 		} else if (user.getRole().getName().equalsIgnoreCase("patient")) {
 			
-			patientMenu();
+			patientMenu(user);
 		}
 		
 		
@@ -139,13 +141,42 @@ public class Menu {
 		System.out.println(userman.getRoles());
 		// Ask the user for a role
 		System.out.println("Type the chosen role ID:");
-		int id = Integer.parseInt(reader.readLine());
+		int id = 0; 
+		int ide = 0; 
+		//do {
+		id = Integer.parseInt(reader.readLine());
+		
+		
+		switch (id){
+		
+		case 1:
+			System.out.println("You Selected Admin");
+			break;
+		case 2:
+			dbman.showSurgeons();
+			System.out.println("you selected Surgeon please input the id that reference your name");
+			ide = Integer.parseInt(reader.readLine());
+			break;
+		case 3:
+			System.out.println("you selected Nurse, please input the id that reference your name");
+			dbman.showNurses();;
+			ide = Integer.parseInt(reader.readLine());
+			break;
+		case 4:
+			dbman.showPatients();
+			System.out.println("you selected Patient, please input the id that reference your name");
+			ide = Integer.parseInt(reader.readLine());
+			
+		}
+		//}while(id!=1||!=2||id!=3||id!=4);
 		Role role = userman.getRole(id);
+		// Ask the user for a role
+		System.out.println("Type the chosen role ID:");
 		// Generate the hash to store it in the array of bytes
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(password.getBytes());
 		byte[] hash = md.digest();
-		User user = new User(email, hash, role);
+		User user = new User(email, hash, role, ide);
 		userman.newUser(user); //insert the user into the database
 		
 		
@@ -290,6 +321,8 @@ public class Menu {
 				System.out.println( "XML successfully created, "
 						+ "to see the html please go to the xmls folder and open the Nurse.html");
 				break;
+			case 8: 
+				showPersonalInfoNurse();
 			
 			case 0:
 				return;
@@ -309,7 +342,8 @@ public class Menu {
 			System.out.println("1: Add a patient");
 			System.out.println("2: Search a patient");
 			System.out.println("3: Delete a patient");
-			System.out.println("3: Generate XML");
+			System.out.println("4: Generate XML");
+			
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
@@ -325,13 +359,14 @@ public class Menu {
 			case 3:
 				deletePatient();
 				break;
-				
 			case 4:
+				listOperationsOfPatient();
+				break; 
+			case 5:
 				generatePatientXML();
 				System.out.println( "XML successfully created, "
 						+ "to see the html please go to the xmls folder and open the Patient.html");
 				break;
-			
 			case 0:
 				return;
 			default:
@@ -421,7 +456,7 @@ public class Menu {
 
 
 
-	private static void surgeonMenu() throws Exception{
+	private static void surgeonMenu(User user) throws Exception{
 		
 		do {
 			System.out.println(" \t ~ ~ ~ ~ SURGEON MENU ~ ~ ~ ~");
@@ -430,13 +465,12 @@ public class Menu {
 			System.out.println("2: Check your personal information");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
-			
 			switch (choice) {
 			case 1:
-				listOperationsOfSurgeon();
+				listOperationsOfSurgeonById(user.getRef_id());
 				break;
 			case 2:
-				showPersonalInfoSurgeon();
+				showPersonalInfoSurgeonById(user.getRef_id());
 				break;
 			case 0:
 				return;
@@ -454,7 +488,7 @@ public class Menu {
 
 
 
-	private static void nurseMenu() throws Exception{
+	private static void nurseMenu(User user) throws Exception{
 		
 		do {
 			System.out.println("\t ~ ~ ~ ~ MENU FOR NURSES ~ ~ ~ ~");
@@ -466,10 +500,10 @@ public class Menu {
 			
 			switch (choice) {
 			case 1:
-				listOperationsOfNurse(); 
+				listOperationsOfNurseById(user.getRef_id()); 
 				break;
 			case 2:
-				showPersonalInfoNurse();
+				showPersonalInfoNurseById(user.getRef_id());
 				break;
 			case 0:
 				return;
@@ -482,7 +516,7 @@ public class Menu {
 		
 	}
 
-    private static void patientMenu() throws Exception{
+    private static void patientMenu(User user) throws Exception{
 	
 	do {
 		System.out.println("~ ~ ~ ~ MENU FOR PATIENTS ~ ~ ~ ~");
@@ -495,10 +529,10 @@ public class Menu {
 		
 		switch (choice) {
 		case 1:
-			listOperationsOfPatient(); 
+			listOperationsOfPatientById(user.getRef_id()); 
 			break;
 		case 2:
-			showPersonalInfoPatient();
+			showPersonalInfoPatientById(user.getRef_id());
 			break;
 		
 		case 0:
@@ -513,11 +547,20 @@ public class Menu {
 }
 	
 	
-	
 
 
 
 //SHOW THE OPERATIONS FOR THE NURSE
+    private static void listOperationsOfPatientById(int Pid) throws Exception {
+    	System.out.println(dbman.getPatient(Pid));
+    	System.out.println(dbman.showOperationsByPatientId(Pid));
+    }
+    private static void listOperationsOfNurseById(int NId) throws Exception {
+    	System.out.println(dbman.getNurse(NId));
+    	System.out.println(dbman.showOperationsByNurseId(NId));
+    	
+    	
+    }
 private static void listOperationsOfNurse() throws Exception {
 	System.out.println("From which Nurse do you want to see the operations?");
 	searchNurseByName();
@@ -658,11 +701,8 @@ private static void searchOperationRoom() throws IOException {
 }
 	
 	//SHOW THE PERSONAL INFORMATION OF EACH PATIENT: SUBMENU FOR PATIENT
-    private static void showPersonalInfoPatient() throws Exception{
-    	System.out.println("Type your ID:");
-    	int pId=Integer.parseInt(reader.readLine());
+    private static void showPersonalInfoPatientById(int pId) throws Exception{
     	Patient patient=dbman.getPatient(pId);
-    	
     	System.out.println("Your name:" +patient.getName());
     	System.out.println("Your surname:" +patient.getSurname());
     	
@@ -772,6 +812,15 @@ private static void searchOperationRoom() throws IOException {
 	}
 	
 	//SHOW THE PERSONAL INFORMATION OF EACH NURSE: SUBMENU FOR NURSE
+    private static void showPersonalInfoNurseById(int nurseId) throws Exception{
+
+    	Nurse s=dbman.getNurse(nurseId);
+    	
+    	System.out.println("Your name:" +s.getName());
+    	System.out.println("Your surname:" +s.getSurname());
+    	
+
+	}
     private static void showPersonalInfoNurse() throws Exception{
     	System.out.println("Type your ID:");
     	int nurseId=Integer.parseInt(reader.readLine());
@@ -910,11 +959,25 @@ private static void searchOperationRoom() throws IOException {
 	
 	
 }
+	private static void listOperationsOfSurgeonById(int id) throws Exception {
+	System.out.println(dbman.getSurgeon(id));
+	System.out.println(dbman.showOperationsBySurgeonId(id));
+	
+}
 	
 	//SHOW THE PERSONAL INFORMATION OF EACH SURGEON: SUBMENU FOR SURGEON
     private static void showPersonalInfoSurgeon() throws Exception{
-    	System.out.println("Type your ID:");
+    	System.out.println("Type the id of the Surgeon ID:");
     	int surgeonId=Integer.parseInt(reader.readLine());
+    	Surgeon s=dbman.getSurgeon(surgeonId);
+    	
+    	System.out.println("Your name:" +s.getName());
+    	System.out.println("Your surname:" +s.getSurname());
+    	System.out.println("Your speciality:" +s.getSpeciality());
+
+	}
+    private static void showPersonalInfoSurgeonById(int surgeonId) throws Exception{
+
     	Surgeon s=dbman.getSurgeon(surgeonId);
     	
     	System.out.println("Your name:" +s.getName());

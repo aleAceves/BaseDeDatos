@@ -165,6 +165,29 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 		
 	}
+	public void showPatients(){
+		try{
+			String sql = "SELECT * FROM patients"; 
+			Statement stm1= c.createStatement();
+			ResultSet rs = stm1.executeQuery(sql);
+			while (rs.next()) { // true: there is another result and I have advanced to it
+								// false: there are no more results
+			
+				int id = rs.getInt("id");
+			
+				String Name = rs.getString("name");
+				String Surname = rs.getString("surname");
+			System.out.println(new Patient(id, Name, Surname));
+		
+					//show Nurse 
+			}
+		}catch(Exception e){
+			System.out.println("something went wrong");
+			e.printStackTrace();
+		}
+		
+		
+	}
 	public void showSurgeons(){
 		try{
 			String sql = "SELECT * FROM surgeons"; 

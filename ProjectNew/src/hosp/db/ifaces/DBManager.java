@@ -54,6 +54,7 @@ public interface DBManager { //add all method we are going to use
 	public void addWaitingRoom(WaitingRoom waitingRoom);
 	public void showSurgeons();
 	public void showNurses();
+	public void showPatients();
 	public void showOperations(); 
 	void updateSurgeon(int id, String sp);
 	public List<Operation> showOperationsByPatientId(Integer patientId);

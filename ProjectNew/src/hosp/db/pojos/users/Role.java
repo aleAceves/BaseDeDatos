@@ -79,10 +79,14 @@ public class Role implements Serializable{
 	
 	public Role(String name) {
 		super();
+		
 		this.name=name;
 		
 	}
 	
+	public Role(int id2) {
+		// TODO Auto-generated constructor stub
+	}
 	// to string without the users
 	@Override
 	public String toString() {
