@@ -1,6 +1,7 @@
 package hosp.ui;
 
 import java.io.InputStreamReader;
+
 import java.security.MessageDigest;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 
 import hosp.db.ifaces.DBManager;
@@ -27,6 +29,18 @@ import hosp.db.pojos.Operation;
 import hosp.db.pojos.Patient;
 import hosp.db.pojos.Nurse;
 import hosp.db.pojos.OperatingRoom;
+
+import javax.xml.bind.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+ //Si se comenta esta linea el resto de imports me salen que se usan, si no, me sale como que no se usan
+import hosp.xml.utils.Xml2Html; 
+//
+
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 
 public class Menu {
@@ -189,6 +203,7 @@ public class Menu {
 			System.out.println("5: Delete a surgeon");		
 			System.out.println("6: Update surgeon info");
 			System.out.println("7: Show operations of a surgeon");
+			System.out.println("8. Generate XML         ");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
@@ -217,6 +232,12 @@ public class Menu {
 			
 			case 7:
 				listOperationsOfSurgeon();
+				break;
+			case 8:
+				generateSurgeonXML();
+				System.out.println( "XML successfully created, "
+						+ "to see the html please go to the xmls folder and open the Surgeon.html");
+				break;
 			case 0:
 				return;
 			default:
@@ -238,6 +259,7 @@ public class Menu {
 			System.out.println("4: Eliminate a nurse from an operation");		
 			System.out.println("5: Delete a nurse");
 			System.out.println("6: Show operation of a nurse");
+			System.out.println("7: Generate XML");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
@@ -261,7 +283,13 @@ public class Menu {
 				break;
 
 			case 6:
-				listOperationsOfNurse(); 
+				listOperationsOfNurse();
+			
+			case 7:
+				generateNurseXML();
+				System.out.println( "XML successfully created, "
+						+ "to see the html please go to the xmls folder and open the Nurse.html");
+				break;
 			
 			case 0:
 				return;
@@ -281,6 +309,7 @@ public class Menu {
 			System.out.println("1: Add a patient");
 			System.out.println("2: Search a patient");
 			System.out.println("3: Delete a patient");
+			System.out.println("3: Generate XML");
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			
@@ -295,6 +324,12 @@ public class Menu {
 			
 			case 3:
 				deletePatient();
+				break;
+				
+			case 4:
+				generatePatientXML();
+				System.out.println( "XML successfully created, "
+						+ "to see the html please go to the xmls folder and open the Patient.html");
 				break;
 			
 			case 0:
@@ -316,6 +351,7 @@ public class Menu {
 			System.out.println("3: Update operation info");
 			System.out.println("4: Add an operating room");
 			System.out.println("5: Update operating room");
+			System.out.println("6: Generate XML");
 			
 			System.out.println("0: Exit");
 			int choice = Integer.parseInt(reader.readLine());
@@ -339,6 +375,11 @@ public class Menu {
 				break;
 			case 5:
 				updateOperatingRoom();
+				break;
+			case 6:
+				generateOperationXML();
+				System.out.println( "XML successfully created, "
+						+ "to see the html please go to the xmls folder and open the Operation.html");
 				break;
 			case 0:
 				return;
@@ -459,7 +500,7 @@ public class Menu {
 		case 2:
 			showPersonalInfoPatient();
 			break;
-
+		
 		case 0:
 			return;
 		default:
@@ -627,6 +668,27 @@ private static void searchOperationRoom() throws IOException {
     	
 
 	}
+    
+    private static void generatePatientXML() throws Exception{
+		System.out.print("Please introduce the id of the Patient");
+		System.out.print("1. patient id ");
+		Integer patientId = Integer.parseInt(reader.readLine());
+		Patient patient = dbman.getPatient(patientId);
+		// Create a JAXBContext
+		JAXBContext context = JAXBContext.newInstance(Patient.class);
+		// Get the marshaller
+		Marshaller marshal = context.createMarshaller();
+		// Pretty formatting
+		marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		// Marshall the dog to a file
+		File file = new File("./xmls/Output-Patient.xml");
+		marshal.marshal(patient, file);
+		// Marshall the dog to the screen
+		marshal.marshal(patient, System.out);
+		
+		// Generate the HTML
+		Xml2Html.simpleTransform("./xmls/Output-Patient.xml", "./xmls/patientStyle.xslt", "./xmls/Patient.html");
+    }
 
 	
 //-----------------------------------------------------------------------
@@ -721,7 +783,26 @@ private static void searchOperationRoom() throws IOException {
 
 	}
     
-
+    private static void generateNurseXML() throws Exception{
+		System.out.print("Please introduce the id of the Nurse");
+		System.out.print("1. nurse id ");
+		Integer nurseId = Integer.parseInt(reader.readLine());
+		Nurse nurse = dbman.getNurse(nurseId);
+		// Create a JAXBContext
+		JAXBContext context = JAXBContext.newInstance(Nurse.class);
+		// Get the marshaller
+		Marshaller marshal = context.createMarshaller();
+		// Pretty formatting
+		marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		// Marshall the dog to a file
+		File file = new File("./xmls/Output-Nurse.xml");
+		marshal.marshal(nurse, file);
+		// Marshall the dog to the screen
+		marshal.marshal(nurse, System.out);
+		
+		// Generate the HTML
+		Xml2Html.simpleTransform("./xmls/Output-Nurse.xml", "./xmls/nurseStyle.xslt", "./xmls/Nurse.html");
+    }
 	
 		
 
@@ -842,6 +923,26 @@ private static void searchOperationRoom() throws IOException {
 
 	}
 	
+    private static void generateSurgeonXML() throws Exception{
+		System.out.print("Please introduce the id of the Surgeon");
+		System.out.print("1. surgeon id ");
+		Integer surgeonId = Integer.parseInt(reader.readLine());
+		Surgeon surgeon = dbman.getSurgeon(surgeonId);
+		// Create a JAXBContext
+		JAXBContext context = JAXBContext.newInstance(Surgeon.class);
+		// Get the marshaller
+		Marshaller marshal = context.createMarshaller();
+		// Pretty formatting
+		marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		// Marshall the dog to a file
+		File file = new File("./xmls/Output-Surgeon.xml");
+		marshal.marshal(surgeon, file);
+		// Marshall the dog to the screen
+		marshal.marshal(surgeon, System.out);
+		
+		// Generate the HTML
+		Xml2Html.simpleTransform("./xmls/Output-Surgeon.xml", "./xmls/surgeonStyle.xslt", "./xmls/Surgeon.html");
+    }
 	
 //-----------------------------------------------------------------------------
 	
@@ -899,6 +1000,26 @@ private static void searchOperationRoom() throws IOException {
 		
 	}
 	
+    private static void generateOperationXML() throws Exception{
+		System.out.print("Please introduce the id of the operation");
+		System.out.print("1. operation id ");
+		Integer operationId = Integer.parseInt(reader.readLine());
+		Operation operation = dbman.getOperation(operationId);
+		// Create a JAXBContext
+		JAXBContext context = JAXBContext.newInstance(Operation.class);
+		// Get the marshaller
+		Marshaller marshal = context.createMarshaller();
+		// Pretty formatting
+		marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		// Marshall the dog to a file
+		File file = new File("./xmls/Output-Operation.xml");
+		marshal.marshal(operation, file);
+		// Marshall the dog to the screen
+		marshal.marshal(operation, System.out);
+		
+		// Generate the HTML
+		Xml2Html.simpleTransform("./xmls/Output-Operation.xml", "./xmls/operationStyle.xslt", "./xmls/Operation.html");
+    }
 	
 	//---------------------------------------------------------
 
