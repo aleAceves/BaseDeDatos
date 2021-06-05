@@ -23,7 +23,7 @@ public interface UserManager {
 	
 	void deleteOperation(Integer id);
 	
-	void updateOperatingRoom(OperatingRoom or);
+	void updateOperatingRoom(Integer or, String name);
 	List<OperatingRoom> showOperationRooms();
 	
 	

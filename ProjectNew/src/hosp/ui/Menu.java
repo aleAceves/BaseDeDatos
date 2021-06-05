@@ -355,23 +355,24 @@ public class Menu {
 	
 	private static void updateOperatingRoom() throws Exception {
 		// TODO Auto-generated method stub
-		userman.showOperationRooms();
+		//userman.showOperationRooms();
+		System.out.println("Which operating room are you going to modify?");
+		searchOperationRoom();
 		
 		System.out.println("Choose a room, type its ID: ");
 		Integer id = Integer.parseInt(reader.readLine());
-		String answer;
+		String newname=null;
 		OperatingRoom or = dbman.getOperationRoom(id);
 		System.out.println("Do you want to change the room name?");
 		System.out.println("Y/N");
-		answer = reader.readLine();
+		String answer = reader.readLine();
 		if (answer.equalsIgnoreCase("Y")) {
 			System.out.print("Type the new name type. ");
-			
 			String room_type = reader.readLine();
-			if (room_type.equalsIgnoreCase("S"))
-				or.setName(room_type);
+			newname=room_type;
 			}
-		userman.updateOperatingRoom(or);
+		
+		userman.updateOperatingRoom(id,newname);
 		System.out.println("Room updated:\n" + or);
 		}
 		
