@@ -194,7 +194,7 @@ public class Menu {
 	private static void adminMenu() throws Exception{
 		
 		do {
-			System.out.println("~ ~ ~ ~ ADMINISTRATOR MAIN MENU ~ ~ ~ ~");
+			System.out.println("\t~ ~ ~ ~ ADMINISTRATOR MAIN MENU ~ ~ ~ ~");
 			System.out.println(
 					"Select what do you want to manage: \n1.Surgeons. \n2.Nurses. \n3.Patients. \n4.Operations.  \n0.Exit");
 			int option = Integer.parseInt(reader.readLine());
@@ -222,10 +222,19 @@ public class Menu {
 		
 }
 	
+
+	//----------------------------------------------
+		
+		
+		//SUBMENU FOR MANAGE SURGEONS
+		
+		
+	//---------------------------------------------------
+	
 	public static void surgeons() throws Exception {
 		do {
 			
-			System.out.println("~ ~ ~ ~ MENU FOR MANAGE SURGEONS ~ ~ ~ ~");
+			System.out.println("\t~ ~ ~ ~ MENU FOR MANAGE SURGEONS ~ ~ ~ ~");
 			System.out.println("Choose an option:");
 			System.out.println("1: Add surgeon");
 		    System.out.println("2: Search a surgeon");
@@ -235,7 +244,7 @@ public class Menu {
 			System.out.println("6: Update surgeon info");
 			System.out.println("7: Show operations of a surgeon");
 			System.out.println("8. Generate XML         ");
-			System.out.println("0: Exit");
+			System.out.println("0: Back");
 			int choice = Integer.parseInt(reader.readLine());
 			
 			switch (choice) {
@@ -279,19 +288,29 @@ public class Menu {
 
 	}
 	
+
+	//----------------------------------------------
+		
+		
+		//SUBMENU FOR MANAGE NURSES
+		
+		
+	//---------------------------------------------------
+	
+	
 	public static void nurses() throws Exception {
 		do {
-			System.out.println("~ ~ ~ ~ MENU FOR MANAGE NURSES ~ ~ ~ ~");
+			System.out.println("\t~ ~ ~ ~ MENU FOR MANAGE NURSES ~ ~ ~ ~");
 			System.out.println("Choose an option:");
 			
-            System.out.println("1:  Add a nurse");
+            System.out.println("1: Add a nurse");
 			System.out.println("2: Search a nurse");
 			System.out.println("3: Add a nurse to an operation");
 			System.out.println("4: Eliminate a nurse from an operation");		
 			System.out.println("5: Delete a nurse");
 			System.out.println("6: Show operation of a nurse");
 			System.out.println("7: Generate XML");
-			System.out.println("0: Exit");
+			System.out.println("0: Back");
 			int choice = Integer.parseInt(reader.readLine());
 			
 			switch (choice) {
@@ -334,17 +353,27 @@ public class Menu {
 
 	}
 	
+
+	//----------------------------------------------
+		
+		
+		//SUBMENU FOR MANAGE PATIENTS
+		
+		
+	//---------------------------------------------------
+	
+	
 	
 	public static void patients() throws Exception {
 		do {
-			System.out.println("~ ~ ~ ~ MENU FOR MANAGE PATIENTS ~ ~ ~ ~");
+			System.out.println("\t ~ ~ ~ ~ MENU FOR MANAGE PATIENTS ~ ~ ~ ~");
 			System.out.println("Choose an option:");
 			System.out.println("1: Add a patient");
 			System.out.println("2: Search a patient");
 			System.out.println("3: Delete a patient");
 			System.out.println("4: Generate XML");
 			
-			System.out.println("0: Exit");
+			System.out.println("0: Back");
 			int choice = Integer.parseInt(reader.readLine());
 			
 			switch (choice) {
@@ -377,18 +406,31 @@ public class Menu {
 
 	}
 	
+
+	//----------------------------------------------
+		
+		
+		//SUBMENU FOR MANAGE OPERATIONS
+		
+		
+	//---------------------------------------------------
+	
+	
 	public static void operations() throws Exception {
 		do {
 			System.out.println("~ ~ ~ ~ MENU FOR MANAGE OPERATIONS ~ ~ ~ ~");
 			System.out.println("Choose an option:");
 			System.out.println("1:  Add an operation");
+			
 			System.out.println("2: Delete an operation");
 			System.out.println("3: Update operation info");
 			System.out.println("4: Add an operating room");
-			System.out.println("5: Update operating room");
-			System.out.println("6: Generate XML");
+			System.out.println("5: Add a waiting room");
+			System.out.println("6: Update operating room");
+			System.out.println("7: Search an operation");
+			System.out.println("8: Generate XML");
 			
-			System.out.println("0: Exit");
+			System.out.println("0: Back");
 			int choice = Integer.parseInt(reader.readLine());
 			
 			switch (choice) {
@@ -408,10 +450,19 @@ public class Menu {
 			case 4:
 				addOperationRoom();
 				break;
+				
 			case 5:
+				addWaitingRoom();
+				break;
+				
+			case 6:
 				updateOperatingRoom();
 				break;
-			case 6:
+				
+			case 7:
+				searchOperationByName();
+				break;
+			case 8:
 				generateOperationXML();
 				System.out.println( "XML successfully created, "
 						+ "to see the html please go to the xmls folder and open the Operation.html");
@@ -430,8 +481,7 @@ public class Menu {
 	
 	
 	private static void updateOperatingRoom() throws Exception {
-		// TODO Auto-generated method stub
-		//userman.showOperationRooms();
+		
 		System.out.println("Which operating room are you going to modify?");
 		searchOperationRoom();
 		
@@ -463,7 +513,7 @@ public class Menu {
 			System.out.println("Choose an option:");
 			System.out.println("1: Check schedule");
 			System.out.println("2: Check your personal information");
-			System.out.println("0: Exit");
+			System.out.println("0: Back");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 			case 1:
@@ -473,6 +523,7 @@ public class Menu {
 				showPersonalInfoSurgeonById(user.getRef_id());
 				break;
 			case 0:
+				adminMenu();
 				return;
 			default:
 				break;	
@@ -495,7 +546,7 @@ public class Menu {
 			System.out.println("Choose an option:");
 			System.out.println("1: Check schedule");
 			System.out.println("2: Check your personal information");
-			System.out.println("0: Exit");
+			System.out.println("0: Back");
 			int choice = Integer.parseInt(reader.readLine());
 			
 			switch (choice) {
@@ -506,8 +557,10 @@ public class Menu {
 				showPersonalInfoNurseById(user.getRef_id());
 				break;
 			case 0:
+				adminMenu();
 				return;
 			default:
+				
 				break;	
 			}
 			
@@ -519,12 +572,11 @@ public class Menu {
     private static void patientMenu(User user) throws Exception{
 	
 	do {
-		System.out.println("~ ~ ~ ~ MENU FOR PATIENTS ~ ~ ~ ~");
+		System.out.println("\t ~ ~ ~ ~ MENU FOR PATIENTS ~ ~ ~ ~");
 		System.out.println("Choose an option:");
 		System.out.println("1: Check schedule");
 		System.out.println("2: Check your personal information");
-		//System.out.println("3: Check operations");
-		System.out.println("0: Exit");
+		System.out.println("0: Back");
 		int choice = Integer.parseInt(reader.readLine());
 		
 		switch (choice) {
@@ -534,8 +586,8 @@ public class Menu {
 		case 2:
 			showPersonalInfoPatientById(user.getRef_id());
 			break;
-		
 		case 0:
+			adminMenu();
 			return;
 		default:
 			break;	
@@ -794,20 +846,10 @@ private static void searchOperationRoom() throws IOException {
 		searchNurseByName();
 		System.out.println("Type the nurse's id:");
 		int nurseId = Integer.parseInt(reader.readLine());
-		userman.deleteNurse(nurseId);
+		dbman.deleteNurse(nurseId);
 		System.out.println("Deletion completed.");
 		
-	/*	
-		System.out.println("Choose a patient, type its ID: ");
-		searchPatientByName();
 		
-		System.out.println("Choose a patient to delete, type its ID: ");
-		Integer id = Integer.parseInt(reader.readLine());
-		//userman.deletePatient(id);// jpa
-		dbman.deletePatient(id);
-		System.out.println("Deletion completed.");
-
-	*/	
 		
 	}
 	
@@ -882,10 +924,6 @@ private static void searchOperationRoom() throws IOException {
 		int surgeonId = Integer.parseInt(reader.readLine());
 		dbman.deleteSurgeon(surgeonId);
 		System.out.println("Deletion completed.");
-		
-	
-		
-	
 		
 	}
 	private static void updateSurgeon() {

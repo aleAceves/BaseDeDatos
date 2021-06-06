@@ -63,23 +63,7 @@ public class JPAUserManager implements UserManager {
 
 	
 	
-	//delete nurse using JPA
-	@Override
-	public void deleteNurse(Integer nurseId) {
 
-		Query q2 = em.createNativeQuery("SELECT * FROM nurses WHERE id = ?", Nurse.class);
-		
-		q2.setParameter(1, nurseId);
-		
-		Nurse n1 = (Nurse) q2.getSingleResult();
-		
-		em.getTransaction().begin();
-		em.remove(n1);
-		
-		em.getTransaction().commit();  
-		em.close();
-		
-	}
 	
 	
 	//UPDATE OPERATING ROOM
@@ -96,9 +80,9 @@ public class JPAUserManager implements UserManager {
 		em.getTransaction().begin();
 		// Make changes
 		or.setName(name);
-		// End transaction
+		em.flush();	
 		em.getTransaction().commit();
-				
+			
 		// Close the entity manager
 		em.close();
 		
@@ -106,7 +90,7 @@ public class JPAUserManager implements UserManager {
 	}
 	
 	
-	//TODO
+//TODO
 	
 	@Override
 	public List<OperatingRoom> showOperationRooms() {

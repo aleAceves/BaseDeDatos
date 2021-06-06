@@ -290,7 +290,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 		List<Operation> operations = new ArrayList<Operation>();//creation of the list is going to return
 		
-		//TODO
+		
 		return operations;
 		
 	}
@@ -322,8 +322,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 			prep.setString(1, surgeon.getName());
 			prep.setString(2, surgeon.getSurname());
 			prep.setString(3, surgeon.getSpeciality());
-			//put just the atributes TODO (revise)
-			//ResultSet rs = prep.executeQuery();
+			
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
@@ -557,7 +556,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 		return null;
 	}
 	
-	// TODO HACER PARA EL RESTO DE POJOS
+	
 	
 	// IN ORDER TO LINK THE TABLE OPERATIONS AND SURGEONS
 	@Override
@@ -742,7 +741,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 	public void deleteSurgeon(int surgeonId) {
 		
 		try {
-			String sql = "DELETE * FROM surgeons WHERE id=?";
+			String sql = "DELETE FROM surgeons WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setInt(1, surgeonId);
 			prep.executeUpdate();
@@ -767,7 +766,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 		}	
 	}
 
-	//delete patient using JPA
+	//delete patient 
 	@Override
 	public void deletePatient(int patientId) {
 		try {
