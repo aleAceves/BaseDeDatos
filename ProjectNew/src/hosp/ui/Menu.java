@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 
 import java.security.MessageDigest;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -38,6 +39,7 @@ import javax.xml.parsers.ParserConfigurationException;
  //Si se comenta esta linea el resto de imports me salen que se usan, si no, me sale como que no se usan
 import hosp.xml.utils.Xml2Html; 
 //
+
 
 import javax.persistence.Persistence;
 import javax.persistence.Query;
@@ -388,10 +390,8 @@ public class Menu {
 			case 3:
 				deletePatient();
 				break;
+			
 			case 4:
-				listOperationsOfPatient();
-				break; 
-			case 5:
 				generatePatientXML();
 				System.out.println( "XML successfully created, "
 						+ "to see the html please go to the xmls folder and open the Patient.html");
@@ -428,7 +428,13 @@ public class Menu {
 			System.out.println("5: Add a waiting room");
 			System.out.println("6: Update operating room");
 			System.out.println("7: Search an operation");
-			System.out.println("8: Generate XML");
+			System.out.println("8: Show operating rooms");
+			System.out.println("9: Show waiting rooms");
+			System.out.println("10: Update a waiting room");
+			System.out.println("11: Update an operation");
+			
+			System.out.println("12: Generate XML");
+			
 			
 			System.out.println("0: Back");
 			int choice = Integer.parseInt(reader.readLine());
@@ -462,12 +468,29 @@ public class Menu {
 			case 7:
 				searchOperationByName();
 				break;
+				
 			case 8:
+				searchOperationRoom();
+				break;
+				
+			case 9:
+				searchWaitingRoom();
+				break;
+				
+			case 10:
+				updateWaitingRoom();
+				break;
+			
+			case 11:
+				updateOperation(); 
+				
+			case 12:
 				generateOperationXML();
 				System.out.println( "XML successfully created, "
 						+ "to see the html please go to the xmls folder and open the Operation.html");
 				break;
 			case 0:
+				adminMenu();
 				return;
 			default:
 				break;	
@@ -623,6 +646,9 @@ private static void listOperationsOfNurse() throws Exception {
 	
 	
 }
+
+
+
 
 
 private static void searchWaitingRoom() throws IOException {
@@ -1088,7 +1114,7 @@ private static void searchOperationRoom() throws IOException {
 			}
 		}
 	
-	// DELETE OPERATION USING JPA
+	// DELETE OPERATION 
 	private static void deleteOperation() throws Exception{
 		dbman.showOperations();
 
@@ -1136,7 +1162,33 @@ private static void searchOperationRoom() throws IOException {
 		dbman.addOperationRoom(new OperatingRoom(name));
 		
 	}
+	
+	//---------------------------------------------------------
 
+			//WAITING ROOM
+
+	//----------------------------------------------------
+
+	// method for update the waiting room name
+
+	private static void updateWaitingRoom() throws Exception{
+		
+		
+		searchWaitingRoom();
+		System.out.println("Choose a waiting room, type its ID: ");
+		int room_id = Integer.parseInt(reader.readLine());
+		
+		System.out.print("Type the new name for the room: ");
+		String newName = reader.readLine();
+		
+		dbman.updateWaitingRoom(dbman.getWaitingRoom(room_id), newName);
+		
+		
+		
+		System.out.println("Update finished.");
+	}
+	
+	
 
 	
 }

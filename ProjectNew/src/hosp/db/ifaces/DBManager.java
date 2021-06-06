@@ -28,7 +28,7 @@ public interface DBManager { //add all method we are going to use
 	void deleteOperation(int operationId);
 	public void updateOperation(int id,String type);
 	public List<Operation> showOperationsBySurgeonId(Integer surgeonId);
-	
+	public void updateWaitingRoom(WaitingRoom w, String newName);
 	
 	//FOR THE NURSES
 	public void addNurse(Nurse nurse);
@@ -58,6 +58,7 @@ public interface DBManager { //add all method we are going to use
 	public void showOperations(); 
 	void updateSurgeon(int id, String sp);
 	public List<Operation> showOperationsByPatientId(Integer patientId);
+	WaitingRoom getWaitingRoom(int id);
 	
 
 	

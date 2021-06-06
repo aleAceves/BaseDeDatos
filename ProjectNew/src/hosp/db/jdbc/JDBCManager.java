@@ -24,6 +24,7 @@ import hosp.db.pojos.WaitingRoom;
 
 
 
+
 public class JDBCManager implements DBManager { //everything related with the database
 	//not put reader and prints here
 
@@ -855,6 +856,30 @@ public class JDBCManager implements DBManager { //everything related with the da
 		}
 }
 	
+	
+	
+	@Override
+	public WaitingRoom getWaitingRoom(int id) {
+		
+		try {
+			String s = "SELECT * FROM waiting_room WHERE id=?";
+			PreparedStatement p = c.prepareStatement(s);
+			p.setInt(1, id);
+			ResultSet rs = p.executeQuery();
+			WaitingRoom r = null;
+			while (rs.next()) {
+				Integer r_id = rs.getInt("id");
+				String r_name = rs.getString("name");
+
+				r = new WaitingRoom(r_id, r_name);
+			}
+			return r;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+}
+	
 	public List<OperatingRoom> selectOperatingRooms() {
 		try {
 			Statement stmt = c.createStatement();
@@ -929,8 +954,23 @@ public class JDBCManager implements DBManager { //everything related with the da
 		}
 		
 	}
-
 	
+	@Override
+	public void updateWaitingRoom(WaitingRoom w, String newName){
+	
+		try {
+			String sql = "UPDATE waiting_room SET name=? WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, newName);
+			prep.setInt(2, w.getId());
+			prep.executeUpdate();
+			prep.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	
 }
 
