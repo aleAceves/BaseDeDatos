@@ -1129,9 +1129,9 @@ private static void searchOperationRoom() throws IOException {
 			searchOperationRoom();
 			System.out.println("Type the room´s id where the operations is going to take place:");
 			int roomId = Integer.parseInt(reader.readLine());
-		//	OperatingRoom r=null;
-		//	r = dbman.getOperationRoom(roomId);
-			dbman.addOperation(new Operation(type,Date.valueOf(startDate),duration,p)); //transform date into a sql date
+			OperatingRoom r=null;
+			r = dbman.getOperationRoom(roomId);
+			dbman.addOperation(new Operation(type,Date.valueOf(startDate),duration,p,r)); //transform date into a sql date
 			
 		}
 		
