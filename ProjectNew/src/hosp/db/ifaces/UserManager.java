@@ -19,7 +19,7 @@ public interface UserManager {
 	public User checkPassword(String email, String password); //important method
 	
 	
-	void deleteNurse(Integer nurseId);
+	
 	
 	void deleteOperation(Integer id);
 	

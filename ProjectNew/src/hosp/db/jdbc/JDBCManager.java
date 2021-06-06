@@ -24,6 +24,7 @@ import hosp.db.pojos.WaitingRoom;
 
 
 
+
 public class JDBCManager implements DBManager { //everything related with the database
 	//not put reader and prints here
 
@@ -68,9 +69,9 @@ public class JDBCManager implements DBManager { //everything related with the da
 		s1= "CREATE TABLE patients "
 				+ "(id   INTEGER PRIMARY KEY AUTOINCREMENT, "
 				+ " name  TEXT NOT NULL, "
-				+ " surname TEXT NOT NULL)";
-				//+ " room_id INTEGER)";
-				//+ " FOREIGN KEY(room_id) REFERENCES waiting_room (id)) "; 
+				+ " surname TEXT NOT NULL,"
+				+ " room_id INTEGER,"
+				+ " FOREIGN KEY(room_id) REFERENCES waiting_room (id)) "; 
 			
 		
 		stm1.executeUpdate(s1);
@@ -155,6 +156,29 @@ public class JDBCManager implements DBManager { //everything related with the da
 				String Name = rs.getString("name");
 				String Surname = rs.getString("surname");
 			System.out.println(new Nurse(id, Name, Surname));
+		
+					//show Nurse 
+			}
+		}catch(Exception e){
+			System.out.println("something went wrong");
+			e.printStackTrace();
+		}
+		
+		
+	}
+	public void showPatients(){
+		try{
+			String sql = "SELECT * FROM patients"; 
+			Statement stm1= c.createStatement();
+			ResultSet rs = stm1.executeQuery(sql);
+			while (rs.next()) { // true: there is another result and I have advanced to it
+								// false: there are no more results
+			
+				int id = rs.getInt("id");
+			
+				String Name = rs.getString("name");
+				String Surname = rs.getString("surname");
+			System.out.println(new Patient(id, Name, Surname));
 		
 					//show Nurse 
 			}
@@ -267,7 +291,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 		List<Operation> operations = new ArrayList<Operation>();//creation of the list is going to return
 		
-		//TODO
+		
 		return operations;
 		
 	}
@@ -299,8 +323,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 			prep.setString(1, surgeon.getName());
 			prep.setString(2, surgeon.getSurname());
 			prep.setString(3, surgeon.getSpeciality());
-			//put just the atributes TODO (revise)
-			//ResultSet rs = prep.executeQuery();
+			
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
@@ -534,7 +557,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 		return null;
 	}
 	
-	// TODO HACER PARA EL RESTO DE POJOS
+	
 	
 	// IN ORDER TO LINK THE TABLE OPERATIONS AND SURGEONS
 	@Override
@@ -719,7 +742,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 	public void deleteSurgeon(int surgeonId) {
 		
 		try {
-			String sql = "DELETE * FROM surgeons WHERE id=?";
+			String sql = "DELETE FROM surgeons WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setInt(1, surgeonId);
 			prep.executeUpdate();
@@ -744,7 +767,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 		}	
 	}
 
-	//delete patient using JPA
+	//delete patient 
 	@Override
 	public void deletePatient(int patientId) {
 		try {
@@ -833,6 +856,30 @@ public class JDBCManager implements DBManager { //everything related with the da
 		}
 }
 	
+	
+	
+	@Override
+	public WaitingRoom getWaitingRoom(int id) {
+		
+		try {
+			String s = "SELECT * FROM waiting_room WHERE id=?";
+			PreparedStatement p = c.prepareStatement(s);
+			p.setInt(1, id);
+			ResultSet rs = p.executeQuery();
+			WaitingRoom r = null;
+			while (rs.next()) {
+				Integer r_id = rs.getInt("id");
+				String r_name = rs.getString("name");
+
+				r = new WaitingRoom(r_id, r_name);
+			}
+			return r;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+}
+	
 	public List<OperatingRoom> selectOperatingRooms() {
 		try {
 			Statement stmt = c.createStatement();
@@ -907,8 +954,41 @@ public class JDBCManager implements DBManager { //everything related with the da
 		}
 		
 	}
+	
+	@Override
+	public void updateWaitingRoom(WaitingRoom w, String newName){
+	
+		try {
+			String sql = "UPDATE waiting_room SET name=? WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, newName);
+			prep.setInt(2, w.getId());
+			prep.executeUpdate();
+			prep.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@Override
+	public void connectRoomPatient(int room_id, Patient p) {
+		try {
+
+			String sql = "INSERT INTO patients (room_id) " + "VALUES (?);";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, room_id);
+			prep.executeUpdate();
+			prep.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	
+
 	
 }
 

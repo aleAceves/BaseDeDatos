@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
 //activates the annotations for XML
 
 @XmlRootElement(name = "Nurse") //Nurse can be the group element of an XML document
-@XmlType(propOrder = { "name", "surname", "operations" })
+@XmlType(propOrder = { "name", "surname", "operations"})
 //Indicates the order in which all the attributes, elements, objects are in the XML 
 
 public class Nurse implements Serializable {

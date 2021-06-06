@@ -25,8 +25,14 @@ public class User implements Serializable{
 	@ManyToOne(fetch = FetchType.EAGER) //i want the role of the user every time
 	@JoinColumn(name="role_ide")//put the join column in the side of the many
 	private Role role;
-	
+	private Integer Ref_id;
 	//GEETTERS AND SETTERS
+	public Integer getRef_id() {
+		return Ref_id;
+	}
+	public void setRef_id(Integer r) {
+		Ref_id = r;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -91,11 +97,12 @@ public class User implements Serializable{
 		this.role = role;
 	}
 	
-	public User(String email, byte[] password, Role role) {
+	public User(String email, byte[] password, Role role,int Ref_id) {
 		super();
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.Ref_id = Ref_id;
 	}
 	
 	
