@@ -69,9 +69,9 @@ public class JDBCManager implements DBManager { //everything related with the da
 		s1= "CREATE TABLE patients "
 				+ "(id   INTEGER PRIMARY KEY AUTOINCREMENT, "
 				+ " name  TEXT NOT NULL, "
-				+ " surname TEXT NOT NULL)";
-				//+ " room_id INTEGER)";
-				//+ " FOREIGN KEY(room_id) REFERENCES waiting_room (id)) "; 
+				+ " surname TEXT NOT NULL,"
+				+ " room_id INTEGER,"
+				+ " FOREIGN KEY(room_id) REFERENCES waiting_room (id)) "; 
 			
 		
 		stm1.executeUpdate(s1);
@@ -970,6 +970,24 @@ public class JDBCManager implements DBManager { //everything related with the da
 			e.printStackTrace();
 		}
 	}
+	
+	
+	@Override
+	public void connectRoomPatient(int room_id, Patient p) {
+		try {
+
+			String sql = "INSERT INTO patients (room_id) " + "VALUES (?);";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, room_id);
+			prep.executeUpdate();
+			prep.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	
 
 	
 }

@@ -373,7 +373,8 @@ public class Menu {
 			System.out.println("1: Add a patient");
 			System.out.println("2: Search a patient");
 			System.out.println("3: Delete a patient");
-			System.out.println("4: Generate XML");
+			System.out.println("4: Add a room for the patient");
+			System.out.println("5: Generate XML");
 			
 			System.out.println("0: Back");
 			int choice = Integer.parseInt(reader.readLine());
@@ -390,8 +391,12 @@ public class Menu {
 			case 3:
 				deletePatient();
 				break;
-			
+				
 			case 4:
+				associateWaitingRoom();
+				break;
+			
+			case 5:
 				generatePatientXML();
 				System.out.println( "XML successfully created, "
 						+ "to see the html please go to the xmls folder and open the Patient.html");
@@ -416,6 +421,13 @@ public class Menu {
 	//---------------------------------------------------
 	
 	
+	
+		
+		
+	
+
+
+
 	public static void operations() throws Exception {
 		do {
 			System.out.println("~ ~ ~ ~ MENU FOR MANAGE OPERATIONS ~ ~ ~ ~");
@@ -786,6 +798,27 @@ private static void searchOperationRoom() throws IOException {
     	
 
 	}
+    
+    
+    private static void associateWaitingRoom() throws Exception {
+		
+		System.out.println("Waiting rooms:");
+		searchWaitingRoom();
+		System.out.println("Select the room for the patient:");
+		int room_id=Integer.parseInt(reader.readLine());
+		
+		System.out.println("For which patient do you want to add the room?");
+		searchPatientByName();
+		System.out.println(("Type its ID:"));
+		int p_id=Integer.parseInt(reader.readLine());
+		Patient patient=dbman.getPatient(p_id);
+	
+		dbman.connectRoomPatient(room_id, patient);
+		System.out.println("Assignment done.\n");
+	}
+    
+    
+    
     
     private static void generatePatientXML() throws Exception{
 		System.out.print("Please introduce the id of the Patient");

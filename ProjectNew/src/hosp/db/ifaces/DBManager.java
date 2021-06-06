@@ -59,6 +59,8 @@ public interface DBManager { //add all method we are going to use
 	void updateSurgeon(int id, String sp);
 	public List<Operation> showOperationsByPatientId(Integer patientId);
 	WaitingRoom getWaitingRoom(int id);
+	public void connectRoomPatient(int room_id, Patient patient);
+	
 	
 
 	
