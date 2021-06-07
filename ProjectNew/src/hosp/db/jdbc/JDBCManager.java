@@ -289,11 +289,26 @@ public class JDBCManager implements DBManager { //everything related with the da
 	
 	public List<Operation> showOperationsByPatientId(Integer nId){
 		
-		List<Operation> operations = new ArrayList<Operation>();//creation of the list is going to return
+	
+			List<Operation> operations = new ArrayList<Operation>();//creation of the list is going to return
+			
+			try {
+				String sql = "SELECT * FROM operation WHERE patientId = ?"; //list of rows where the id of the operation is the one that we provided
+				PreparedStatement p = c.prepareStatement(sql);
+				p.setInt(1, nId);
+				ResultSet rs = p.executeQuery();
+				while (rs.next()) {
+					int operationId = rs.getInt("id");
+			
+					operations.add(this.getOperation(operationId)); 
 		
-		
-		return operations;
-		
+					
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			OrderOperations(operations);
+			return operations;
 	}
 	
 	

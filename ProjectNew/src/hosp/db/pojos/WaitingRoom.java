@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
 
 //ANOTATIONS FOR JPA
 @Entity
-@Table(name = "waitingRooms")
+@Table(name = "waiting_room")
 
 //ANNOTATIONS FOR JAXB
 @XmlAccessorType(XmlAccessType.FIELD) //Put annotations in the "fits" of the class
@@ -31,9 +31,9 @@ public class WaitingRoom implements Serializable {
 	
 	private static final long serialVersionUID = 7452405030872022152L;
 	@Id
-	@GeneratedValue(generator="waitingRooms")
-	@TableGenerator(name="waitingRooms", table="sqlite_sequence",
-	    pkColumnName="name", valueColumnName="seq", pkColumnValue="waitingRooms")
+	@GeneratedValue(generator="waiting_room")
+	@TableGenerator(name="waiting_room", table="sqlite_sequence",
+	    pkColumnName="name", valueColumnName="seq", pkColumnValue="waiting_room")
 	 
 	@XmlAttribute  //We could use @XmlTransient that makes the id to not appear in the XML document
 	private Integer id;

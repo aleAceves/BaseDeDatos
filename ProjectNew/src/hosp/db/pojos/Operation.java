@@ -28,7 +28,7 @@ import hosp.xml.utils.SQLDateAdapter;
 
 //ANOTATIONS FOR JPA
 @Entity
-@Table(name = "operations")
+@Table(name = "operation")
 
 //ANNOTATIONS FOR JAXB
 @XmlAccessorType(XmlAccessType.FIELD) //Put annotations in the "fits" of the class
@@ -43,9 +43,9 @@ public class Operation implements Serializable {
 	
 	private static final long serialVersionUID = -4212586232702635067L;
 	@Id
-	@GeneratedValue(generator="operations")
-	@TableGenerator(name="operations", table="sqlite_sequence",
-	    pkColumnName="name", valueColumnName="seq", pkColumnValue="operations")
+	@GeneratedValue(generator="operation")
+	@TableGenerator(name="operation", table="sqlite_sequence",
+	    pkColumnName="name", valueColumnName="seq", pkColumnValue="operation")
 	
 	@XmlAttribute  //We could use @XmlTransient that makes the id to not appear in the XML document
 	private Integer id;

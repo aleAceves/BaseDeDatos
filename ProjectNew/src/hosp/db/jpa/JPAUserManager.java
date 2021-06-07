@@ -80,7 +80,6 @@ public class JPAUserManager implements UserManager {
 		em.getTransaction().begin();
 		// Make changes
 		or.setName(name);
-		em.flush();	
 		em.getTransaction().commit();
 			
 		// Close the entity manager

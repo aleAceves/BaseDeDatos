@@ -173,7 +173,6 @@ public class Menu {
 		//}while(id!=1||!=2||id!=3||id!=4);
 		Role role = userman.getRole(id);
 		// Ask the user for a role
-		System.out.println("Type the chosen role ID:");
 		// Generate the hash to store it in the array of bytes
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(password.getBytes());
@@ -528,13 +527,15 @@ public class Menu {
 		System.out.println("Y/N");
 		String answer = reader.readLine();
 		if (answer.equalsIgnoreCase("Y")) {
-			System.out.print("Type the new name type. ");
+			System.out.println("Type the new name type. ");
 			String room_type = reader.readLine();
 			newname=room_type;
+			userman.updateOperatingRoom(id,newname);
 			}
 		
-		userman.updateOperatingRoom(id,newname);
+
 		System.out.println("Room updated:\n" + or);
+		System.out.println("New Room"+dbman.getOperationRoom(id));
 		}
 		
 		
@@ -558,7 +559,7 @@ public class Menu {
 				showPersonalInfoSurgeonById(user.getRef_id());
 				break;
 			case 0:
-				adminMenu();
+		
 				return;
 			default:
 				break;	
@@ -592,7 +593,7 @@ public class Menu {
 				showPersonalInfoNurseById(user.getRef_id());
 				break;
 			case 0:
-				adminMenu();
+				
 				return;
 			default:
 				
@@ -622,7 +623,7 @@ public class Menu {
 			showPersonalInfoPatientById(user.getRef_id());
 			break;
 		case 0:
-			adminMenu();
+
 			return;
 		default:
 			break;	
@@ -717,9 +718,14 @@ private static void searchOperationRoom() throws IOException {
 
 	private static void updateOperation() {
 		
-		dbman.showOperations();
-		
-		System.out.println("Please intro the id of the operation to update");
+		try {
+			searchOperationByName();
+			
+
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		System.out.println("Please intro the id of the operation to update");
 		try {
 			int operationId = Integer.parseInt(reader.readLine());
 			System.out.println(dbman.getSurgeon(operationId));
@@ -864,6 +870,7 @@ private static void searchOperationRoom() throws IOException {
 	
 	private static void hireNurse() throws Exception{
 		// we need to find a nurse and to find an operation; we have methods for that
+		dbman.showOperations();
 		System.out.println("Choose the operation where is going to assist:");
 		searchOperationByName();
 		System.out.println("Type the operation's id:");
@@ -1043,6 +1050,8 @@ private static void searchOperationRoom() throws IOException {
 		searchSurgeonByName();
 		System.out.println("Type the surgeon's id:");
 		int surgeonId = Integer.parseInt(reader.readLine());
+		System.out.println(dbman.getOperation(operationId));
+		System.out.println(dbman.getSurgeon(surgeonId));
 		dbman.hireSurgeon(dbman.getOperation(operationId), dbman.getSurgeon(surgeonId)); //we call the methods that search by the id
 	}
 	
