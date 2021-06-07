@@ -806,14 +806,14 @@ private static void searchOperationRoom() throws IOException {
 		searchWaitingRoom();
 		System.out.println("Select the room for the patient:");
 		int room_id=Integer.parseInt(reader.readLine());
-		
+		WaitingRoom wr= dbman.getWaitingRoom(room_id);
 		System.out.println("For which patient do you want to add the room?");
 		searchPatientByName();
 		System.out.println(("Type its ID:"));
 		int p_id=Integer.parseInt(reader.readLine());
 		Patient patient=dbman.getPatient(p_id);
 	
-		dbman.connectRoomPatient(room_id, patient);
+		dbman.connectRoomPatient(wr, patient);
 		System.out.println("Assignment done.\n");
 	}
     
@@ -1127,7 +1127,7 @@ private static void searchOperationRoom() throws IOException {
 			p = dbman.getPatient(patientId);
 			System.out.println("Which room is going to be selected?");
 			searchOperationRoom();
-			System.out.println("Type the room´s id where the operations is going to take place:");
+			System.out.println("Type the rooms id where the operations is going to take place:");
 			int roomId = Integer.parseInt(reader.readLine());
 			OperatingRoom r=null;
 			r = dbman.getOperationRoom(roomId);

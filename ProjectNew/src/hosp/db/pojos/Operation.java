@@ -121,6 +121,7 @@ public class Operation implements Serializable {
 	public OperatingRoom getOperatingRoom() {
 		return room;
 	}
+	
 	public void setOperatingRoom(OperatingRoom room) {
 		this.room = room;
 	}
@@ -208,6 +209,7 @@ public class Operation implements Serializable {
 		this.surgeons = new ArrayList<Surgeon>();
 		this.nurses = new ArrayList<Nurse>();
 		this.room = r;
+		
 	}
 	
 	public Operation(String type, Date startdate, Integer duration2, Patient patient) {

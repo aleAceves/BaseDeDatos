@@ -83,6 +83,7 @@ public class OperatingRoom implements Serializable{
 		this.id = id;
 		this.name = name;
 	}
+	
 	//constructor without id
 	public OperatingRoom( String name) {
 		super();

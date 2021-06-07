@@ -71,7 +71,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 				+ " name  TEXT NOT NULL, "
 				+ " surname TEXT NOT NULL,"
 				+ " room_id INTEGER,"
-				+ " FOREIGN KEY(room_id) REFERENCES waiting_room (id)) "; 
+				+ " FOREIGN KEY(room_id) REFERENCES waiting_room(id)) "; 
 			
 		
 		stm1.executeUpdate(s1);
@@ -101,8 +101,8 @@ public class JDBCManager implements DBManager { //everything related with the da
 				+ " startdate DATE NOT NULL,"
 				+ " duration INTEGER,"
 			    + " roomId INTEGER,"
-			    + " patientId INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL)";
-				//+ " FOREIGN KEY(roomId) REFERENCES operating_room (id)";
+			    + " patientId INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL, "
+				+ " FOREIGN KEY(roomId) REFERENCES operating_room(id))";
 		stm1.executeUpdate(s1);
 		
 		// Create table operations_surgeons: many to many relationship
@@ -415,14 +415,13 @@ public class JDBCManager implements DBManager { //everything related with the da
 	public void addOperation(Operation operation) {
 		try {
 			// Id is chosen by the database
-			String sql = "INSERT INTO operation (type, startdate , duration , patientId) VALUES (?,?,?,?)";
+			String sql = "INSERT INTO operation (type, startdate , duration , patientId, roomId) VALUES (?,?,?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, operation.getType());
 			prep.setDate(2, operation.getStartdate());
 			prep.setInt(3, operation.getDuration());
 			prep.setInt(4, operation.getPatient().getId());
-			//prep.setInt(5, operation.getOperatingRoom().getId());  PONER ROOM ID OTRA INTERROGACIÇON Y CREAR NUEVAS TABLAS CON ROOMID
-			
+			prep.setInt(5, operation.getOperatingRoom().getId()); 
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
@@ -523,7 +522,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 				String surgeonName = rs.getString("name");
 				String surgeonSurname = rs.getString("surname");
 				String surgeonSpeciality = rs.getString("speciality");
-				//not include operations, just the atributes
+				//not include operations, just the attributes
 				return new Surgeon(id, surgeonName, surgeonSurname,surgeonSpeciality);
 			}
 			rs.close();
@@ -546,7 +545,7 @@ public class JDBCManager implements DBManager { //everything related with the da
 			if (rs.next()) {
 				String nurseName = rs.getString("name");
 				String nurseSurname = rs.getString("surname");
-				//not include operations, just the atributes
+				//not include operations, just the attributes
 				return new Nurse(id, nurseName, nurseSurname);
 			}
 			rs.close();
@@ -973,12 +972,12 @@ public class JDBCManager implements DBManager { //everything related with the da
 	
 	
 	@Override
-	public void connectRoomPatient(int room_id, Patient p) {
+	public void connectRoomPatient(WaitingRoom wr, Patient p) {
 		try {
-
-			String sql = "INSERT INTO patients (room_id) " + "VALUES (?);";
+			p.setWaitingRoom(wr);
+			String sql = "INSERT INTO patients (room_id) VALUES (?)";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setInt(1, room_id);
+			prep.setInt(1, p.getWaitingRoom().getId());
 			prep.executeUpdate();
 			prep.close();
 		} catch (SQLException e) {
