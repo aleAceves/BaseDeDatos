@@ -136,6 +136,16 @@ public class Patient implements Serializable{
 		this.surname = surname;
 		this.room = room;
 	}
+	
+
+	public Patient(String name, String surname, WaitingRoom room) {
+		super();
+		this.name = name;
+		this.surname = surname;
+		this.room = room;
+	}
+	
+	
 	//HASHCODE AND EQUALS METHOD
 	@Override
 	public int hashCode() {

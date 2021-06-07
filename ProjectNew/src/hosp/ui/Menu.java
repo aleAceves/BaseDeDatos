@@ -758,8 +758,19 @@ private static void searchOperationRoom() throws IOException {
 		String name=reader.readLine();
 		System.out.println("Surname:");
 		String surname=reader.readLine();
+		
+		//for adding the room
+		
+		System.out.println("Select a waiting room for the patient:");
+		searchWaitingRoom();
+		System.out.println("Type the room ID:");
+		int room_id=Integer.parseInt(reader.readLine());
+		WaitingRoom wr= dbman.getWaitingRoom(room_id);
 				
-		dbman.addPatient(new Patient(name,surname));
+		dbman.addPatient(new Patient(name,surname,wr));
+		
+		
+		System.out.println("Patient created.\n");
 		
 	}
 	
@@ -803,18 +814,21 @@ private static void searchOperationRoom() throws IOException {
     private static void associateWaitingRoom() throws Exception {
 		
 		System.out.println("Waiting rooms:");
-		searchWaitingRoom();
+		
 		System.out.println("Select the room for the patient:");
+		searchWaitingRoom();
+		System.out.println(("Type its ID:"));
 		int room_id=Integer.parseInt(reader.readLine());
 		WaitingRoom wr= dbman.getWaitingRoom(room_id);
-		System.out.println("For which patient do you want to add the room?");
-		searchPatientByName();
-		System.out.println(("Type its ID:"));
+		
+		//System.out.println("For which patient do you want to add the room?");
+		//searchPatientByName();
+		
 		int p_id=Integer.parseInt(reader.readLine());
 		Patient patient=dbman.getPatient(p_id);
+		
+		
 	
-		dbman.connectRoomPatient(wr, patient);
-		System.out.println("Assignment done.\n");
 	}
     
     

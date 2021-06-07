@@ -435,10 +435,11 @@ public class JDBCManager implements DBManager { //everything related with the da
 		public void addPatient(Patient patient) {
 			try {
 				// Id is chosen by the database
-				String sql = "INSERT INTO patients (name,surname) VALUES (?,?)";
+				String sql = "INSERT INTO patients (name,surname,room_id) VALUES (?,?,?)";
 				PreparedStatement prep = c.prepareStatement(sql);
 				prep.setString(1, patient.getName());
 				prep.setString(2, patient.getSurname());
+				prep.setInt(3, patient.getWaitingRoom().getId());
 
 				prep.executeUpdate();
 				prep.close();
@@ -977,7 +978,8 @@ public class JDBCManager implements DBManager { //everything related with the da
 			p.setWaitingRoom(wr);
 			String sql = "INSERT INTO patients (room_id) VALUES (?)";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setInt(1, p.getWaitingRoom().getId());
+			prep.setInt(1, wr.getId());
+			prep.setInt(2, p.getId());
 			prep.executeUpdate();
 			prep.close();
 		} catch (SQLException e) {
