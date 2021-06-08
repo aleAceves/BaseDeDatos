@@ -199,8 +199,11 @@ private static Connection c;
 								// false: there are no more results
 			
 				int id = rs.getInt("id");
-				String Name = rs.getString("name");
-			System.out.println(new OperatingRoom(id, Name));
+				
+				
+				
+		
+			System.out.println(getOperation(id));
 		
 					//show Nurse 
 			}

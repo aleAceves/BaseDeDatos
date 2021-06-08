@@ -299,7 +299,7 @@ public class Operation implements Serializable {
 	@Override
 	public String toString() {
 		return "\nOperation [id=" + id + ", type=" + type + ", startdate=" + startdate + ", duration=" + duration
-				+ ", surgeons=" + surgeons + ", nurses=" + nurses + ", patient=" +this.patient+ ", room=" + room + "]\n"
+				+ ", surgeons=" + surgeons + ", nurses=" + nurses + ", patient=" + patient + ", room=" + room + "]\n"
 						+ "";
 	}
 	
