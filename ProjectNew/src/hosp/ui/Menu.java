@@ -30,17 +30,14 @@ import hosp.db.pojos.Operation;
 import hosp.db.pojos.Patient;
 import hosp.db.pojos.Nurse;
 import hosp.db.pojos.OperatingRoom;
+//
+import hosp.db.xml.*;
+import hosp.xml.utils.Xml2Html;
 
 import javax.xml.bind.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
- //Si se comenta esta linea el resto de imports me salen que se usan, si no, me sale como que no se usan
-import hosp.xml.utils.Xml2Html; 
-//
-
-
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
@@ -51,7 +48,7 @@ public class Menu {
 	private static DBManager dbman = new JDBCManager();
 	//private static UserManager userman = new JPAUserManager();
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-	
+	public static XMLManager xm = new XMLManager();
 	
 	public static JPAUserManager userman = new JPAUserManager();
 	
@@ -84,6 +81,9 @@ public class Menu {
 			case 2:
 				logIn();
 				break;
+			case 3: 
+				insertardatos();
+				break;
 			case 0:
 				dbman.disconnect(); //close connection with the database
 				userman.disconnect();
@@ -100,9 +100,7 @@ public class Menu {
 		}while(true); // to show again the menu
 
 		}
-		
-	
-	
+
 	private static void logIn() throws Exception {
 		// Ask the user for an email
 		System.out.println("Please, write your email address:");
@@ -279,6 +277,8 @@ public class Menu {
 				System.out.println( "XML successfully created, "
 						+ "to see the html please go to the xmls folder and open the Surgeon.html");
 				break;
+			case 9:
+				generateSurgeonsXML();
 			case 0:
 				return;
 			default:
@@ -443,8 +443,8 @@ public class Menu {
 			System.out.println("9: Show waiting rooms");
 			System.out.println("10: Update a waiting room");
 			System.out.println("11: Update an operation");
-			
-			System.out.println("12: Generate XML");
+			System.out.println("12: Show All Operations");
+			System.out.println("13: Generate XML");
 			
 			
 			System.out.println("0: Back");
@@ -477,6 +477,7 @@ public class Menu {
 				break;
 				
 			case 7:
+				dbman.showOperations();
 				searchOperationByName();
 				break;
 				
@@ -494,8 +495,12 @@ public class Menu {
 			
 			case 11:
 				updateOperation(); 
-				
 			case 12:
+			
+				dbman.showOperations();
+				break; 
+				
+			case 13:
 				generateOperationXML();
 				System.out.println( "XML successfully created, "
 						+ "to see the html please go to the xmls folder and open the Operation.html");
@@ -665,7 +670,7 @@ private static void listOperationsOfNurse() throws Exception {
 
 
 private static void searchWaitingRoom() throws IOException {
-		
+	dbman.showWaitingRooms();	
 	System.out.println("Input:");
 	System.out.println("Name contains:");
 	String name = reader.readLine();
@@ -687,13 +692,13 @@ private static void addWaitingRoom() throws IOException {
 	System.out.println("Name:");
 	String name=reader.readLine();
 	dbman.addWaitingRoom(new WaitingRoom(name));
-		
+
 	}
 
 
 
 private static void searchOperationRoom() throws IOException {
-	
+	dbman.showOperatingRooms();
 	System.out.println("Input:");
 	System.out.println("Name contains:");
 	String name = reader.readLine();
@@ -774,8 +779,7 @@ private static void searchOperationRoom() throws IOException {
 		WaitingRoom wr= dbman.getWaitingRoom(room_id);
 				
 		dbman.addPatient(new Patient(name,surname,wr));
-		
-		
+
 		System.out.println("Patient created.\n");
 		
 	}
@@ -825,7 +829,7 @@ private static void searchOperationRoom() throws IOException {
 		searchWaitingRoom();
 		System.out.println(("Type its ID:"));
 		int room_id=Integer.parseInt(reader.readLine());
-		WaitingRoom wr= dbman.getWaitingRoom(room_id);
+		WaitingRoom wr = dbman.getWaitingRoom(room_id);
 		
 		//System.out.println("For which patient do you want to add the room?");
 		//searchPatientByName();
@@ -1107,10 +1111,30 @@ private static void searchOperationRoom() throws IOException {
 	}
 	
     private static void generateSurgeonXML() throws Exception{
+    	
+ 
+    	
 		System.out.print("Please introduce the id of the Surgeon");
 		System.out.print("1. surgeon id ");
 		Integer surgeonId = Integer.parseInt(reader.readLine());
 		Surgeon surgeon = dbman.getSurgeon(surgeonId);
+		// Create a JAXBContext
+
+		// Get the marshaller
+
+		// Pretty formatting
+	
+		// Marshall the dog to a file
+		xm.marshallSurgeon(surgeon, "./xmls/Output-Surgeon.xml");
+		// Marshall the dog to the screen
+
+		
+		// Generate the HTML
+		Xml2Html.simpleTransform("./xmls/Output-Surgeon.xml", "./xmls/surgeonStyle.xslt", "./xmls/Surgeon.html");
+    }
+    private static void generateSurgeonsXML() throws Exception{
+
+		List<Surgeon> surgeons = dbman.getSurgeons();
 		// Create a JAXBContext
 		JAXBContext context = JAXBContext.newInstance(Surgeon.class);
 		// Get the marshaller
@@ -1118,13 +1142,15 @@ private static void searchOperationRoom() throws IOException {
 		// Pretty formatting
 		marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		// Marshall the dog to a file
-		File file = new File("./xmls/Output-Surgeon.xml");
-		marshal.marshal(surgeon, file);
+	int i = 0; 
+		for (Surgeon surgeon : surgeons) {
+		xm.marshallSurgeon(surgeon, "./xmls/Output-Surgeon.xml");
+		}
 		// Marshall the dog to the screen
-		marshal.marshal(surgeon, System.out);
+		marshal.marshal(surgeons, System.out);
 		
 		// Generate the HTML
-		Xml2Html.simpleTransform("./xmls/Output-Surgeon.xml", "./xmls/surgeonStyle.xslt", "./xmls/Surgeon.html");
+		Xml2Html.simpleTransform("/Output-Surgeons.xml", "./xmls/surgeonsStyle.xslt", "./xmls/Surgeon.html");
     }
 	
 //-----------------------------------------------------------------------------
@@ -1153,8 +1179,8 @@ private static void searchOperationRoom() throws IOException {
 			System.out.println("Type the rooms id where the operations is going to take place:");
 			int roomId = Integer.parseInt(reader.readLine());
 			OperatingRoom r=null;
-			r = dbman.getOperationRoom(roomId);
-			dbman.addOperation(new Operation(type,Date.valueOf(startDate),duration,p,r)); //transform date into a sql date
+			r = dbman.getOperationRoom(roomId);		
+			dbman.addOperation(new Operation(type,Date.valueOf(startDate),duration,p,r)); //transform date into a sql date 		
 			
 		}
 		
@@ -1184,6 +1210,7 @@ private static void searchOperationRoom() throws IOException {
 	}
 	
     private static void generateOperationXML() throws Exception{
+		dbman.showOperations();
 		System.out.print("Please introduce the id of the operation");
 		System.out.print("1. operation id ");
 		Integer operationId = Integer.parseInt(reader.readLine());
@@ -1240,14 +1267,80 @@ private static void searchOperationRoom() throws IOException {
 		dbman.updateWaitingRoom(dbman.getWaitingRoom(room_id), newName);
 		
 		
-		
+		System.out.println("NEW ROOM:\n" );
+		System.out.println("New Room"+dbman.getOperationRoom(room_id));
 		System.out.println("Update finished.");
 	}
+	
+	public static void insertardatos() throws Exception {
+		String na = "Operation";
+		WaitingRoom wt = null;
+		System.out.println("Start Date (yyyy-MM-dd):");
+		LocalDate sd =null;
+		try {
+			sd = LocalDate.parse(reader.readLine(), formatter);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String name = "Waiting Room";		 
+		String surname = " º";
+		Patient p = null;
+			for (int i = 0; i < 5; i++) {
+					name = "Waiting Room";	
+					name = name +" " + i; 
+					dbman.addWaitingRoom(new WaitingRoom(name));
+		System.out.println("Creating Waiting Rooms");
+}
+	
+			for (int i = 0; i < 5; i++) {
+					name = "Operation Room";
+					name = name +" " + i; 
+					dbman.addOperationRoom(new OperatingRoom(name));
+		System.out.println("Creating Operation Rooms");
+}
+ 			for (int i = 0; i < 10; i++) {
+					name = "Surgeon" ;
+					name = name +"" + i; 
+					dbman.addSurgeon(new Surgeon(name,surname,"Generic"));	
+		System.out.println("Creating Surgeons");
+}
+
+
+		for (int i = 0; i < 10; i++) {
+				name = "Nurse";
+				name = name +" " + i; 
+				
+				dbman.addNurse(new Nurse(name,surname));
+	System.out.println("Creating Nurses");
+}
+	
+		 	for (int i = 1; i < 5; i++) {
+		 		 	name = "Patient";
+		 		 	name = name +" " + i; 
+		 		 	wt = dbman.getWaitingRoom(i);
+		 		 	System.out.println(wt);
+		 		 	p = new Patient(name,surname,wt);
+		 		 	dbman.addPatient(p);
+		 		 	na = "Operation";
+		 		 	na =  na+ " " + i; 
+		
+		 		 	dbman.addOperation(new Operation(na,Date.valueOf(sd),i,dbman.getPatient(i),dbman.getOperationRoom(i))); 
+		 			dbman.hireNurse(dbman.getOperation(i), dbman.getNurse(i));
+		 			dbman.hireSurgeon(dbman.getOperation(i), dbman.getSurgeon(i));
+		System.out.println("Creating patients and adding them to operations");
+}
+
+
+
+
+
 	
 	
 
 	
-}
+}}
 		
 	
 		

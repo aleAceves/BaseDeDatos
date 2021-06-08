@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlType;
 //Activates the annotations for XML
 
 @XmlRootElement(name = "Surgeon") //Surgeon can be the group element of an XML document
-@XmlType(propOrder = { "id", "name", "surname", "speciality", "operations" })
+@XmlType(propOrder = { "id", "name", "surname", "speciality","operations" })
 //Indicates the order in which all the attributes, elements, objects are in the XML 
 
 public class Surgeon implements Serializable {
@@ -39,9 +39,9 @@ public class Surgeon implements Serializable {
 	private static final long serialVersionUID = -4442487532035713640L;
 	
 	@Id
-	@GeneratedValue(generator="surgeons")
-	@TableGenerator(name="surgeons", table="sqlite_sequence",
-	    pkColumnName="name", valueColumnName="seq", pkColumnValue="surgeons")
+	@GeneratedValue(generator="surgeon")
+	@TableGenerator(name="surgeon", table="sqlite_sequence",
+	    pkColumnName="name", valueColumnName="seq", pkColumnValue="surgeon")
 	
 	@XmlAttribute     //We could use @XmlTransient that makes the id to not appear in the XML document
 	private Integer id;
@@ -52,7 +52,7 @@ public class Surgeon implements Serializable {
 	@XmlAttribute
 	private String speciality;
 	
-	
+
 	@ManyToMany
 	@JoinTable(name="operations_surgeons")
 	

@@ -1,6 +1,7 @@
 package hosp.db.xml;
 
 import java.io.File;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -12,6 +13,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import hosp.db.pojos.*;
+import hosp.xml.utils.Xml2Html;
 
 public class XMLManager {
 	
@@ -31,14 +33,25 @@ public class XMLManager {
 			File file = new File("./xmls/"+name);
 			marshaller.marshal(nurse, file);
 	}
-	
+	public void marshallSurgeons(List<Surgeon> surgeons,String name) throws JAXBException {
+		JAXBContext jaxbContext = JAXBContext.newInstance(Surgeon.class);
+		Marshaller marshaller = jaxbContext.createMarshaller();
+
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		File file = new File(name);
+		marshaller.marshal(surgeons, file);
+		Xml2Html.simpleTransform("./xmls/Output-Surgeons.xml", "./xmls/surgeonsStyle.xslt", "./xmls/Surgeons.html");
+		marshaller.marshal(surgeons, System.out);
+}
 	public void marshallSurgeon(Surgeon surgeon,String name) throws JAXBException {
 		JAXBContext jaxbContext = JAXBContext.newInstance(Surgeon.class);
 		Marshaller marshaller = jaxbContext.createMarshaller();
 
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-		File file = new File("./xmls/"+name);
+		File file = new File(name);
 		marshaller.marshal(surgeon, file);
+		Xml2Html.simpleTransform("./xmls/Output-Surgeon.xml", "./xmls/surgeonStyle.xslt", "./xmls/Surgeon.html");
+		marshaller.marshal(surgeon, System.out);
 }
 	
 	public void marshallPatient(Patient patient,String name) throws JAXBException {

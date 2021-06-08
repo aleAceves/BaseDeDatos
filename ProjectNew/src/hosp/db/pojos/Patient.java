@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlType;
 //activates the annotations for XML
 
 @XmlRootElement(name = "Patient") //Patient can be the group element of an XML document
-@XmlType(propOrder= {"name", "surname"}) // the proper order of things
+@XmlType(propOrder= {"name", "surname","operations","room"}) // the proper order of things
 
 public class Patient implements Serializable{
 	
@@ -48,14 +48,13 @@ public class Patient implements Serializable{
 	@XmlAttribute
 	private String surname;
 	
-	@XmlTransient
 	
 	@OneToMany(mappedBy="patient",fetch=FetchType.LAZY) // patient is the one, and operations is the many
 	@XmlElement(name = "patient_operations")
     @XmlElementWrapper(name = "operations")
 	private List<Operation> operations; //indicate that patient has a one to may relationship with operations
 	
-	@XmlAttribute
+	@XmlElement
 	private WaitingRoom room;
 	
 	//GETTERS AND SETTERS

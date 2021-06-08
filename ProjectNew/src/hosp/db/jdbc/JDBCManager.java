@@ -1,12 +1,6 @@
 package hosp.db.jdbc;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,17 +19,18 @@ import hosp.db.pojos.WaitingRoom;
 
 
 
+
 public class JDBCManager implements DBManager { //everything related with the database
 	//not put reader and prints here
 
-	private static Connection c;
+private static Connection c;
 	
 	@Override
 	public void connect() {
 		try {
 			// Open database connection
 			Class.forName("org.sqlite.JDBC");
-			this.c = DriverManager.getConnection("jdbc:sqlite:./db/ProjectNew.db");
+			c = DriverManager.getConnection("jdbc:sqlite:./db/ProjectNew.db");
 			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			System.out.println("Database connection opened.");
 			this.createTables();
@@ -166,6 +161,79 @@ public class JDBCManager implements DBManager { //everything related with the da
 		
 		
 	}
+	public List<Surgeon> getSurgeons(){
+		List<Surgeon> surgeons = new ArrayList<Surgeon>(); 
+		try{
+			String sql = "SELECT * FROM surgeons"; 
+			Statement stm1= c.createStatement();
+			ResultSet rs = stm1.executeQuery(sql);
+			while (rs.next()) {
+		
+				int id = rs.getInt("id");
+				
+				String Name = rs.getString("name");
+				String Surname = rs.getString("surname");
+				String Speciality = rs.getString("speciality");
+				Surgeon surgeon = new Surgeon (id, Name, Surname, Speciality);
+				surgeons.add(surgeon); 
+			
+				//we use the surgeon id, to get the whole surgeon and add it to the new list
+			}
+		}catch(Exception e){
+			System.out.println("something went wrong");
+			e.printStackTrace();
+		}
+	return surgeons;
+	}
+	
+	
+	
+	
+	
+	public void showOperatingRooms(){
+		try{
+			String sql = "SELECT * FROM operating_room"; 
+			Statement stm1= c.createStatement();
+			ResultSet rs = stm1.executeQuery(sql);
+			while (rs.next()) { // true: there is another result and I have advanced to it
+								// false: there are no more results
+			
+				int id = rs.getInt("id");
+				String Name = rs.getString("name");
+			System.out.println(new OperatingRoom(id, Name));
+		
+					//show Nurse 
+			}
+		}catch(Exception e){
+			System.out.println("something went wrong");
+			e.printStackTrace();
+		}
+		
+		
+	}
+	public void showWaitingRooms(){
+		try{
+			String sql = "SELECT * FROM waiting_room"; 
+			Statement stm1= c.createStatement();
+			ResultSet rs = stm1.executeQuery(sql);
+			while (rs.next()) { // true: there is another result and I have advanced to it
+								// false: there are no more results
+			
+				int id = rs.getInt("id");
+				String Name = rs.getString("name");
+			System.out.println(new WaitingRoom(id, Name));
+		
+					//show Nurse 
+			}
+		}catch(Exception e){
+			System.out.println("something went wrong");
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	
 	public void showPatients(){
 		try{
 			String sql = "SELECT * FROM patients"; 
@@ -341,6 +409,9 @@ public class JDBCManager implements DBManager { //everything related with the da
 			
 			prep.executeUpdate();
 			prep.close();
+		}catch(SQLException i){
+		
+			i.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -438,11 +509,13 @@ public class JDBCManager implements DBManager { //everything related with the da
 			prep.setInt(4, operation.getPatient().getId());
 			prep.setInt(5, operation.getOperatingRoom().getId()); 
 			prep.executeUpdate();
+	
 			prep.close();
-		} catch (Exception e) {
+		} catch(SQLException i){
+			i.printStackTrace();	
+			}catch(Exception e){
 			e.printStackTrace();
-		}
-
+			}
 	}
 
 	//FOR THE PATIENTS

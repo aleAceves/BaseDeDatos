@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -35,7 +36,7 @@ import hosp.xml.utils.SQLDateAdapter;
 //activates the annotations for XML
 
 @XmlRootElement(name = "Operation") //Operation can be the group element of an XML document
-@XmlType(propOrder = { "type", "startdate", "duration", "surgeons","nurses","patient","room" })
+@XmlType(propOrder = { "type", "startdate", "duration","patient","room" })
 //Indicates the order in which all the attributes, elements, objects are in the XML 
 
 public class Operation implements Serializable {
@@ -52,26 +53,27 @@ public class Operation implements Serializable {
 	@XmlAttribute  
 	private String type;
 	@XmlElement 
+	
 	//@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date startdate; //import from java.sql
 	@XmlAttribute
 	private Integer duration;
 	
 	@ManyToMany(mappedBy="operations")
-	
+	@XmlTransient
 	private List<Surgeon> surgeons; //list of surgeons that have this operation
-	
+	@XmlTransient
 	@ManyToMany(mappedBy="operations")
 	@JoinTable(name="operations_nurses",
 	joinColumns={@JoinColumn(name="operation_id", referencedColumnName="id")},
     inverseJoinColumns={@JoinColumn(name="nurse_id", referencedColumnName="id")})
 	private List<Nurse> nurses; // list of nurses on the operation
-	
-	@ManyToOne(fetch = FetchType.LAZY) //to save time, we do not need to access all time to it.
+	@XmlElement
+	@ManyToOne(fetch = FetchType.EAGER) //to save time, we do not need to access all time to it.
 	@JoinColumn(name = "patient_id") //use to indicate in the side of the many we are going to have a foreign key, and we specify the name of the column
 	private Patient patient;
 	
-	@XmlAttribute
+	@XmlElement
 	private OperatingRoom room;
 	
 	//CREATION OF GETTERS AND SETTERS
@@ -297,7 +299,7 @@ public class Operation implements Serializable {
 	@Override
 	public String toString() {
 		return "\nOperation [id=" + id + ", type=" + type + ", startdate=" + startdate + ", duration=" + duration
-				+ ", surgeons=" + surgeons + ", nurses=" + nurses + ", patient=" + patient + ", room=" + room + "]"
+				+ ", surgeons=" + surgeons + ", nurses=" + nurses + ", patient=" +this.patient+ ", room=" + room + "]\n"
 						+ "";
 	}
 	

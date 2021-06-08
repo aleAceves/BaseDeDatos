@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
 //activates the annotations for XML
 
 @XmlRootElement(name = "Nurse") //Nurse can be the group element of an XML document
-@XmlType(propOrder = { "name", "surname", "operations"})
+@XmlType(propOrder = { "name", "surname"})
 //Indicates the order in which all the attributes, elements, objects are in the XML 
 
 public class Nurse implements Serializable {
@@ -59,8 +59,9 @@ public class Nurse implements Serializable {
 	@JoinTable(name="operations_nurses")
 
 	//Creates an XML for each thing on the list
-	@XmlElement(name= "Operation") //Specify optionally the name
-	@XmlElementWrapper(name= "Operation") //Wrapper is an element which contains elements inside
+//	@XmlElement(name= "Operation") //Specify optionally the name
+//	@XmlElementWrapper(name= "Operation") //Wrapper is an element which contains elements inside
+@XmlTransient
 	private List<Operation> operations; //The nurse has a list of operations, many to many relationship
 
 	

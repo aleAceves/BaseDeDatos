@@ -14,7 +14,7 @@ public class DTDCheckerReport {
 
 	//TO PARSE A XML DOCUMENT
     public static void main(String[] args) {
-        File xmlFile = new File("./xmls/External-Report.xml"); //load the XML file
+        File xmlFile = new File("./xmls/Output-Surgeon.xml"); //load the XML file
         try {
         	// Create a DocumentBuilderFactory
             DocumentBuilderFactory dBF = DocumentBuilderFactory.newInstance(); //create objects that represent XML documents
